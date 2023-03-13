@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UserModel {
     private Long id;
+    private String identificationDocument;
     private String name;
     private String lastName;
     private String phoneNumber;
