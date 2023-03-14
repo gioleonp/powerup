@@ -1,17 +1,13 @@
 package com.pragma.usermicroservice.infrastructure.out.passwordencoder;
 
-import com.pragma.usermicroservice.domain.spi.IPasswordEncoder;
+import com.pragma.usermicroservice.domain.spi.IUserPasswordEncoderPort;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-public class BCryptPasswordEncoderAdapter implements IPasswordEncoder {
-
-
-    private BCryptPasswordEncoderAdapter passwordEncoderAdapter =
-            new BCryptPasswordEncoderAdapter();
-
-    @Override
-    public String decode(String password) {
-        return passwordEncoderAdapter.decode(password);
-    }
+@RequiredArgsConstructor
+public class BCryptPasswordEncoderAdapter implements IUserPasswordEncoderPort {
+    private PasswordEncoder passwordEncoderAdapter = new BCryptPasswordEncoder();
 
     @Override
     public String encode(String password) {

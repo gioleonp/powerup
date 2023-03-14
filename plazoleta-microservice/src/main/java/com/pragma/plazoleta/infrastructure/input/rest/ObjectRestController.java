@@ -1,8 +1,8 @@
-package com.pragma.usermicroservice.infrastructure.input.rest;
+package com.pragma.plazoleta.infrastructure.input.rest;
 
-import com.pragma.usermicroservice.application.dto.request.UserRequestDto;
-import com.pragma.usermicroservice.application.handler.IUserHandler;
-import com.pragma.usermicroservice.application.dto.response.UserResponseDto;
+import com.pragma.plazoleta.application.dto.request.ObjectRequestDto;
+import com.pragma.plazoleta.application.dto.response.ObjectResponseDto;
+import com.pragma.plazoleta.application.handler.IObjectHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,33 +21,33 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/object")
 @RequiredArgsConstructor
-public class UserRestController {
+public class ObjectRestController {
 
-    private final IUserHandler userHandler;
+    private final IObjectHandler objectHandler;
 
-    @Operation(summary = "Add a new user")
+    @Operation(summary = "Add a new object")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Object created", content = @Content),
             @ApiResponse(responseCode = "409", description = "Object already exists", content = @Content)
     })
-    @PostMapping("save")
-    public ResponseEntity<Void> saveObject(@RequestBody UserRequestDto userRequestDto) {
-        userHandler.saveUser(userRequestDto);
+    @PostMapping("/")
+    public ResponseEntity<Void> saveObject(@RequestBody ObjectRequestDto objectRequestDto) {
+        objectHandler.saveObject(objectRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Get all users")
+    @Operation(summary = "Get all objects")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "All users returned",
+            @ApiResponse(responseCode = "200", description = "All objects returned",
                     content = @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = UserResponseDto.class)))),
+                            array = @ArraySchema(schema = @Schema(implementation = ObjectResponseDto.class)))),
             @ApiResponse(responseCode = "404", description = "No data found", content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<UserResponseDto>> getAllObjects() {
-        return ResponseEntity.ok(userHandler.getAllUsers());
+    public ResponseEntity<List<ObjectResponseDto>> getAllObjects() {
+        return ResponseEntity.ok(objectHandler.getAllObjects());
     }
 
 }

@@ -2,7 +2,7 @@ package com.pragma.usermicroservice.infrastructure.configuration;
 
 import com.pragma.usermicroservice.domain.api.IRoleServicePort;
 import com.pragma.usermicroservice.domain.api.IUserServicePort;
-import com.pragma.usermicroservice.domain.spi.IPasswordEncoder;
+import com.pragma.usermicroservice.domain.spi.IUserPasswordEncoderPort;
 import com.pragma.usermicroservice.domain.spi.IRolePersistencePort;
 import com.pragma.usermicroservice.domain.spi.IUserPersistencePort;
 import com.pragma.usermicroservice.domain.usecase.RoleUseCase;
@@ -32,13 +32,13 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public IPasswordEncoder passwordEncoder(){
+    public IUserPasswordEncoderPort userPasswordEncoderPort(){
         return new BCryptPasswordEncoderAdapter();
     }
 
     @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCase(userPersistencePort(), passwordEncoder());
+        return new UserUseCase(userPersistencePort(), userPasswordEncoderPort());
     }
 
     @Bean

@@ -45,7 +45,7 @@ public class UserEntity {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne()
+    @ManyToOne(optional = false)
     @JoinTable(name = "users_roles",
         joinColumns = @JoinColumn(name = "id_user", nullable = false),
         inverseJoinColumns = @JoinColumn(name = "id_role", nullable = false)

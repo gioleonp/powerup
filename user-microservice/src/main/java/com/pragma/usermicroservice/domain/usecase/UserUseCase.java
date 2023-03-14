@@ -3,7 +3,7 @@ package com.pragma.usermicroservice.domain.usecase;
 import com.pragma.usermicroservice.domain.api.IUserServicePort;
 import com.pragma.usermicroservice.domain.exception.DomainException;
 import com.pragma.usermicroservice.domain.model.UserModel;
-import com.pragma.usermicroservice.domain.spi.IPasswordEncoder;
+import com.pragma.usermicroservice.domain.spi.IUserPasswordEncoderPort;
 import com.pragma.usermicroservice.domain.spi.IUserPersistencePort;
 
 import java.util.List;
@@ -13,20 +13,19 @@ import java.util.regex.Pattern;
 public class UserUseCase implements IUserServicePort {
 
     private final IUserPersistencePort userPersistencePort;
-    private final IPasswordEncoder passwordEncoder;
+    private final IUserPasswordEncoderPort passwordEncoder;
 
-    public UserUseCase(IUserPersistencePort userPersistencePort, IPasswordEncoder passwordEncoder) {
+    public UserUseCase(IUserPersistencePort userPersistencePort, IUserPasswordEncoderPort passwordEncoder) {
         this.userPersistencePort = userPersistencePort;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void saveUser(UserModel userModel) {
-
         // Patterns
-        Pattern phoneNumberPattern = Pattern.compile("\\+\\d{13}");
-        Pattern emailPattern = Pattern.compile("\\d{10}");
-        Pattern documentPattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}");
+        Pattern phoneNumberPattern = Pattern.compile("\\+?\\d{12}");
+        Pattern emailPattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}");
+        Pattern documentPattern = Pattern.compile("\\d{10}");
 
         // Validation
         Matcher phoneMatcher = phoneNumberPattern.matcher(userModel.getPhoneNumber());
@@ -34,9 +33,9 @@ public class UserUseCase implements IUserServicePort {
         Matcher documentMatcher = documentPattern.matcher(userModel.getIdentificationDocument());
 
 
-        if(userModel.getName().strip().length() == 0){
+        if(userModel.getName() == null || userModel.getName().strip().length() == 0){
             throw new DomainException("NOMBRE ES UN ATRIBUTO OBLIGATORIO");
-        } else if (userModel.getLastName().strip().length() == 0) {
+        } else if (userModel.getLastName() == null || userModel.getLastName().strip().length() == 0) {
             throw new DomainException("APELLIDO ES UN ATRIBUTO OBLIGATORIO");
         }else if (!phoneMatcher.matches()){
            throw new DomainException("NÚMERO NO VALIDO: " + userModel.getPhoneNumber());
@@ -56,7 +55,6 @@ public class UserUseCase implements IUserServicePort {
 
         // Encrypting
         userModel.setPassword(passwordEncoder.encode(userModel.getPassword()));
-
 
         userPersistencePort.saveUser(userModel);
     }
