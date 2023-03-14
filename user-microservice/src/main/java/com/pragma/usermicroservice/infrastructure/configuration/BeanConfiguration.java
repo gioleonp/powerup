@@ -2,6 +2,7 @@ package com.pragma.usermicroservice.infrastructure.configuration;
 
 import com.pragma.usermicroservice.domain.api.IRoleServicePort;
 import com.pragma.usermicroservice.domain.api.IUserServicePort;
+import com.pragma.usermicroservice.domain.spi.IPasswordEncoder;
 import com.pragma.usermicroservice.domain.spi.IRolePersistencePort;
 import com.pragma.usermicroservice.domain.spi.IUserPersistencePort;
 import com.pragma.usermicroservice.domain.usecase.RoleUseCase;
@@ -12,6 +13,7 @@ import com.pragma.usermicroservice.infrastructure.out.jpa.mapper.IUserEntityMapp
 import com.pragma.usermicroservice.infrastructure.out.jpa.repository.IRolRepository;
 import com.pragma.usermicroservice.infrastructure.out.jpa.repository.IUserRepository;
 import com.pragma.usermicroservice.domain.usecase.UserUseCase;
+import com.pragma.usermicroservice.infrastructure.out.passwordencoder.BCryptPasswordEncoderAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,8 +32,13 @@ public class BeanConfiguration {
     }
 
     @Bean
+    public IPasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoderAdapter();
+    }
+
+    @Bean
     public IUserServicePort userServicePort() {
-        return new UserUseCase(userPersistencePort());
+        return new UserUseCase(userPersistencePort(), passwordEncoder());
     }
 
     @Bean
