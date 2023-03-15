@@ -2,6 +2,10 @@ server:
   port: 8090
 
 spring:
+  application:
+    name:
+      plazoleta-service
+
   datasource:
     url: jdbc:mysql://localhost:3306/plazoleta
     username: powerup
@@ -11,5 +15,11 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8099/eureka    
+
 appDescription: "Plazoleta service"
 appVersion: "1.0.0"
