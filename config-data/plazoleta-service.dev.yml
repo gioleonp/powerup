@@ -1,0 +1,15 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/plazoleta
+    username: powerup
+    password: powerup
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+appDescription: "Plazoleta service"
+appVersion: "1.0.0"
