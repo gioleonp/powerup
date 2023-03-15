@@ -2,6 +2,10 @@ server:
   port: 8091
 
 spring:
+  application:
+    name:
+      user-service
+  
   datasource:
     url: jdbc:mysql://localhost:3306/usuarios
     username: powerup
@@ -11,6 +15,12 @@ spring:
     hibernate:
       ddl-auto: create
     show-sql: true
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8099/eureka    
 
 appDescription: "User service"
 appVersion: "1.0.0"
