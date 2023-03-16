@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+
 public class CategoryModel {
     private int id;
     private String nombre;

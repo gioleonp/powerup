@@ -9,11 +9,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
-        unmappedSourcePolicy = ReportingPolicy.IGNORE)
+        unmappedSourcePolicy = ReportingPolicy.IGNORE
+)
 public interface IRestaurantEntityMapper {
 
     RestaurantEntity toEntity(RestaurantModel restaurantModel);
+    RestaurantModel toRestaurantModel (RestaurantEntity restaurantEntity);
     List<RestaurantModel> toRestaurantModelList(List<RestaurantEntity> restaurantEntityList);
-    RestaurantModel toRestaurantModel(RestaurantEntity restaurantEntity);
-
 }

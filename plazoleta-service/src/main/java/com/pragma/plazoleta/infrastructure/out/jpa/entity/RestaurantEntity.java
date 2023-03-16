@@ -1,5 +1,6 @@
 package com.pragma.plazoleta.infrastructure.out.jpa.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "restaurantes")
+@AllArgsConstructor
+@NoArgsConstructor
 public class RestaurantEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

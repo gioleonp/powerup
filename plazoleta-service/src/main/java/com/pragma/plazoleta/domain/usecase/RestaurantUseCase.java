@@ -1,19 +1,25 @@
 package com.pragma.plazoleta.domain.usecase;
 
+import com.pragma.plazoleta.application.dto.response.UserResponseDto;
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
 import com.pragma.plazoleta.domain.spi.persistence.IRestaurantPersistencePort;
+import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RestaurantUseCase implements IRestaurantServicePort {
 
     private final IRestaurantPersistencePort restaurantPersistencePort;
+    private final IUserServiceCommunicationPort userServiceCommunicationPort;
 
-    public RestaurantUseCase(IRestaurantPersistencePort restaurantPersistencePort){
+    public RestaurantUseCase(IRestaurantPersistencePort restaurantPersistencePort,
+                             IUserServiceCommunicationPort userServiceCommunicationPort) {
         this.restaurantPersistencePort = restaurantPersistencePort;
+        this.userServiceCommunicationPort = userServiceCommunicationPort;
     }
 
     @Override
@@ -26,9 +32,10 @@ public class RestaurantUseCase implements IRestaurantServicePort {
         String phonePattern = "\\+?\\d{12}";
         String nitPattern = "^\\d+$";
 
+        UserResponseDto user = userServiceCommunicationPort.findUser(
+                restaurantModel.getIdPropietario());
 
-        // TODO user rol verification
-        if (restaurantModel.getId() == -1) {
+        if (!user.getRol().getName().equals("ROLE_PROPIETARIO")) {
             throw new DomainException("USER NOT AUTHORIZED");
         } else if (restaurantModel.getDireccion().strip().length() == 0) {
             throw new DomainException("DIRECCION ERRONEA: " + restaurantModel.getDireccion());
@@ -43,5 +50,10 @@ public class RestaurantUseCase implements IRestaurantServicePort {
         }
 
         restaurantPersistencePort.saveRestaurant(restaurantModel);
+    }
+
+    @Override
+    public List<RestaurantModel> getAllRestaurants() {
+        return restaurantPersistencePort.getAllRestaurants();
     }
 }

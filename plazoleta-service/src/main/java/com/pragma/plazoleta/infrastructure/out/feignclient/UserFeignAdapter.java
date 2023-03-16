@@ -1,14 +1,15 @@
-package com.pragma.plazoleta.infrastructure.out.servicecommunication;
+package com.pragma.plazoleta.infrastructure.out.feignclient;
 
 import com.pragma.plazoleta.application.dto.response.UserResponseDto;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-
+@Service
 @RequiredArgsConstructor
 public class UserFeignAdapter implements IUserServiceCommunicationPort {
 
-    private IApiUserService userServiceCommunicationAdapter;
+    private final IApiUserService userServiceCommunicationAdapter;
 
     @Override
     public UserResponseDto findUser(long id) {

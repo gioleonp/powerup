@@ -7,10 +7,10 @@ import lombok.Setter;
 @Setter
 public class UserResponseDto {
     private Long id;
-    private String identificationDocument;
-    private String name;
-    private String lastName;
-    private String phoneNumber;
+    private String documentoDeIdentidad;
+    private String nombre;
+    private String apellido;
+    private String celular;
     private String email;
-    private RoleResponseDto role;
+    private RoleResponseDto rol;
 }
