@@ -1,6 +1,6 @@
 package com.pragma.userservice.application.dto.request;
 
-import lombok.Data;
+import com.pragma.userservice.domain.model.ERoles;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,4 +13,5 @@ public class UserRequestDto {
     private String celular;
     private String email;
     private String contrasenia;
+    private RoleRequestDto rol;
 }

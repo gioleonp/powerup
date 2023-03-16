@@ -8,11 +8,16 @@ import lombok.Setter;
 @Setter
 public class RoleRequestDto {
 
+    private int id;
     private ERoles name;
     private String description;
 
     public RoleRequestDto(ERoles name, String description){
         this.name = name;
         this.description = description;
+    }
+
+    public RoleRequestDto(int id){
+        this.id = id;
     }
 }

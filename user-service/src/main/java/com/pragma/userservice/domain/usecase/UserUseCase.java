@@ -58,10 +58,6 @@ public class UserUseCase implements IUserServicePort {
         // Encrypting
         userModel.setContrasenia(passwordEncoder.encode(userModel.getContrasenia()));
 
-        RoleModel rol = new RoleModel(1, ERoles.ROLE_ADMINISTRADOR, "Administrador de la app");
-
-        userModel.setRol(rol);
-
         userPersistencePort.saveUser(userModel);
     }
 

@@ -1,8 +1,10 @@
 package com.pragma.userservice.infrastructure.input.rest;
 
+import com.pragma.userservice.application.dto.request.RoleRequestDto;
 import com.pragma.userservice.application.dto.request.UserRequestDto;
 import com.pragma.userservice.application.handler.IUserHandler;
 import com.pragma.userservice.application.dto.response.UserResponseDto;
+import com.pragma.userservice.domain.model.ERoles;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -40,9 +42,21 @@ public class UserRestController {
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable("id") Long id){
         return ResponseEntity.ok(userHandler.findUserById(id));
+    }
+
+    @Operation(summary = "Add a new user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "User created", content = @Content),
+            @ApiResponse(responseCode = "409", description = "User already exists", content = @Content)
+    })
+    @PostMapping("admin/save")
+    public ResponseEntity<Void> saveProprietary(@RequestBody UserRequestDto userRequestDto) {
+        userRequestDto.setRol(new RoleRequestDto(2));
+        userHandler.saveUser(userRequestDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Get all users")
