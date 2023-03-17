@@ -2,7 +2,7 @@ package com.pragma.plazoleta.infrastructure.exceptionhandler;
 
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
-import com.pragma.plazoleta.infrastructure.exception.ProprietaryNotMatchException;
+import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;

@@ -6,9 +6,8 @@ import com.pragma.plazoleta.application.dto.response.RestaurantResponseDto;
 import com.pragma.plazoleta.application.handler.IDishHandler;
 import com.pragma.plazoleta.application.handler.IRestaurantHandler;
 import com.pragma.plazoleta.domain.exception.DomainException;
-import com.pragma.plazoleta.infrastructure.exception.ProprietaryNotMatchException;
+import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Check;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,7 +40,6 @@ public class DishRestController {
         RestaurantResponseDto restaurantResponseDto = restaurantHandler.findRestaurantById(
                 dishRequestDto.getRestaurante().getId());
 
-
         /*
           Check if the idProprietary of the restaurant match with the id
           with the id of who is making the petition
@@ -57,6 +55,14 @@ public class DishRestController {
     @GetMapping("")
     public ResponseEntity<List<DishResponseDto>> getAllDishes(){
         return  ResponseEntity.ok(dishHandler.getAllDishes());
+    }
+
+    @PostMapping("/{id_proprietary}/{id_dish}")
+    public ResponseEntity<Void> updateDish(@RequestBody DishRequestDto dishRequestDto,
+                                           @PathVariable("id_proprietary") long id_proprietary,
+                                           @PathVariable("id_dish") int id_dish){
+        dishHandler.updateDish(id_proprietary, id_dish, dishRequestDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

@@ -1,4 +1,4 @@
-package com.pragma.plazoleta.infrastructure.exception;
+package com.pragma.plazoleta.domain.exception;
 
 public class ProprietaryNotMatchException extends RuntimeException{
 
