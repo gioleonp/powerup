@@ -25,7 +25,7 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public void saveUser(UserModel userModel) {
         // Patterns
-        String phoneNumberPattern = "\\+?\\d{12}";
+        String phoneNumberPattern = "\\+?573\\d{9}";
         String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}";
         String documentPattern = "\\d{10}";
 
@@ -70,7 +70,7 @@ public class UserUseCase implements IUserServicePort {
             throw new DomainException("CELULAR NO VALIDO: " + userModel.getCelular());
         } else if (!userModel.getEmail().matches(emailPattern)) {
             throw new DomainException("EMAIL NO VALIDO: " + userModel.getEmail());
-        } else if (!userModel.getEmail().matches(emailPattern)) {
+        } else if (!userModel.getDocumentoDeIdentidad().matches(documentPattern)) {
             throw new DomainException("DOCUMENTO DE IDENTIDAD INVALIDO: "
                     + userModel.getDocumentoDeIdentidad());
         }
