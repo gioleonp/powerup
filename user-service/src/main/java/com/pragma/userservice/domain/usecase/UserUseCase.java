@@ -25,25 +25,52 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public void saveUser(UserModel userModel) {
         // Patterns
-        Pattern phoneNumberPattern = Pattern.compile("\\+?\\d{12}");
-        Pattern emailPattern = Pattern.compile("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}");
-        Pattern documentPattern = Pattern.compile("\\d{10}");
-
-        // Validation
-        Matcher phoneMatcher = phoneNumberPattern.matcher(userModel.getCelular());
-        Matcher emailMatcher = emailPattern.matcher(userModel.getEmail());
-        Matcher documentMatcher = documentPattern.matcher(userModel.getDocumentoDeIdentidad());
+        String phoneNumberPattern = "\\+?\\d{12}";
+        String emailPattern = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}";
+        String documentPattern = "\\d{10}";
 
 
-        if(userModel.getNombre() == null || userModel.getNombre().strip().length() == 0){
+        // Checking for the presence of null values
+        if(userModel.getNombre() == null
+        || userModel.getNombre().strip().length() == 0){
+
             throw new DomainException("NOMBRE ES UN ATRIBUTO OBLIGATORIO");
-        } else if (userModel.getApellido() == null || userModel.getApellido().strip().length() == 0) {
+
+        } else if (userModel.getApellido() == null
+        || userModel.getApellido().strip().length() == 0) {
+
             throw new DomainException("APELLIDO ES UN ATRIBUTO OBLIGATORIO");
-        }else if (!phoneMatcher.matches()){
-           throw new DomainException("NÚMERO NO VALIDO: " + userModel.getCelular());
-        } else if (!emailMatcher.matches()) {
+
+        } else if (userModel.getCelular() == null
+        || userModel.getCelular().strip().length() == 0){
+
+           throw new DomainException("CELULAR ES UN ATRIBUTO OBLIGATORIO");
+
+        } else if (userModel.getEmail() == null
+        || userModel.getEmail().strip().length() == 0) {
+
+            throw new DomainException("EMAIL ES UN ATRIBUTO OBLIGATORIO");
+
+        } else if (userModel.getDocumentoDeIdentidad() == null
+        || userModel.getDocumentoDeIdentidad().strip().length() == 0) {
+
+            throw new DomainException("DOCUMENTO DE IDENTIDAD ES UN ATRIBUTO OBLIGATORIO");
+
+        } else if (userModel.getContrasenia() == null
+        || userModel.getContrasenia().strip().length() == 0) {
+
+            throw new DomainException("CONTRASENIA ES UN ATRIBUTO OBLIGATORIO");
+
+        } else if (userModel.getRol() == null) {
+            throw new DomainException("ROL ES UN CAMPO OBLIGATORIO");
+        }
+
+        // Checking validity of the fields
+        if (!userModel.getCelular().matches(phoneNumberPattern)) {
+            throw new DomainException("CELULAR NO VALIDO: " + userModel.getCelular());
+        } else if (!userModel.getEmail().matches(emailPattern)) {
             throw new DomainException("EMAIL NO VALIDO: " + userModel.getEmail());
-        } else if (!documentMatcher.matches()) {
+        } else if (!userModel.getEmail().matches(emailPattern)) {
             throw new DomainException("DOCUMENTO DE IDENTIDAD INVALIDO: "
                     + userModel.getDocumentoDeIdentidad());
         }
