@@ -1,7 +1,12 @@
 package com.pragma.plazoleta.application.dto.response;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class CategoryResponseDto {
-    private Long id;
+    private int id;
     private String nombre;
     private String descripcion;
 }

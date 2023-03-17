@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface IRestaurantServicePort {
     void saveRestaurant(RestaurantModel restaurantModel);
+    RestaurantModel findRestaurantById(Long id);
     List<RestaurantModel> getAllRestaurants();
 }

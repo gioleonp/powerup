@@ -7,10 +7,15 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class CategoryModel {
+@AllArgsConstructor
+public class DishModel {
     private int id;
     private String nombre;
+    private CategoryModel categoria;
     private String descripcion;
+    private int precio;
+    private RestaurantModel restaurante;
+    private String urlImagen;
+    private Boolean activo = true;
 }

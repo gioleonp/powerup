@@ -53,6 +53,12 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     }
 
     @Override
+    public RestaurantModel findRestaurantById(Long id) {
+        return restaurantPersistencePort.findRestaurantById(id);
+    }
+
+
+    @Override
     public List<RestaurantModel> getAllRestaurants() {
         return restaurantPersistencePort.getAllRestaurants();
     }

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface IRestaurantHandler {
     void saveRestaurant(RestaurantRequestDto restaurantRequestDto);
+    RestaurantResponseDto findRestaurantById(Long id);
     List<RestaurantResponseDto> getAllRestaurants();
 }

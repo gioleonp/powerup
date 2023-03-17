@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RestaurantModel {
-    private long id;
+    private Long id;
     private String nombre;
     private String direccion;
     private long idPropietario;

@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RestaurantResponseDto {
-    private long id;
+    private Long id;
     private String nombre;
     private String direccion;
     private long idPropietario;

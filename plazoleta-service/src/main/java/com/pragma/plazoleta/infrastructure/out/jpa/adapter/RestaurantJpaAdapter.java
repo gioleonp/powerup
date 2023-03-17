@@ -9,6 +9,7 @@ import com.pragma.plazoleta.infrastructure.out.jpa.repository.IRestaurantReposit
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
@@ -22,6 +23,15 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
                 restaurantEntityMapper.toEntity(restaurantModel));
 
         return restaurantEntityMapper.toRestaurantModel(restaurantEntity);
+    }
+
+    @Override
+    public RestaurantModel findRestaurantById(Long id) {
+        Optional<RestaurantEntity> restaurantEntity = restaurantRepository.findById(id);
+        if (restaurantEntity.isEmpty()){
+            throw new NoDataFoundException();
+        }
+        return restaurantEntityMapper.toRestaurantModel(restaurantEntity.get());
     }
 
     @Override
