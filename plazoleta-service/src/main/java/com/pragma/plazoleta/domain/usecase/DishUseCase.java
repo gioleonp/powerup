@@ -30,9 +30,9 @@ public class DishUseCase implements IDishServicePort {
         } else if (dishModel.getPrecio() <= 0) {
             throw new DomainException("PRECIO DEBE SER UN NUMERO ENTERO POSITIVO MAYOR A CERO");
         } else if (dishModel.getCategoria() == null) {
-            throw new DomainException("CATEGORIA ES UN CAMPO OBLIGATORIO");
+            throw new DomainException("CATEGORIA ES UN ATRIBUTO OBLIGATORIO");
         } else if (dishModel.getRestaurante() == null)  {
-            throw new DomainException("RESTAURANTE ES UN VALOR OBLIGATORIO");
+            throw new DomainException("RESTAURANTE ES UN ATRIBUTO OBLIGATORIO");
         }
 
         dishPersistencePort.saveDish(dishModel);

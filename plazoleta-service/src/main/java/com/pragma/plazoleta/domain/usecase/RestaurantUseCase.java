@@ -25,25 +25,51 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     @Override
     public void saveRestaurant(RestaurantModel restaurantModel) {
 
-        // Verify name constains at least one letter
+        // Patterns
         Pattern namePattern = Pattern.compile("[a-zA-Zá-úÁ-Ú]+");
-        Matcher nameMatcher = namePattern.matcher(restaurantModel.getNombre());
-
         String phonePattern = "\\+?\\d{12}";
         String nitPattern = "^\\d+$";
 
+        // Checking for the presence of null values
+        if (restaurantModel.getIdPropietario() == 0) {
+            throw new DomainException("ROL ES UN ATRIBUTO OBLIGATORIO");
+        } else if (restaurantModel.getDireccion() == null
+        || restaurantModel.getDireccion().strip().length() == 0) {
+
+            throw new DomainException("DIRECCION ES UN ATRIBUTO OBLIGATORIO ");
+
+        }else if (restaurantModel.getUrlLogo() == null
+        || restaurantModel.getUrlLogo().strip().length() == 0) {
+
+            throw new DomainException("URL LOGO ES UN ATRIBUTO OBLIGATORIO");
+
+        } else if (restaurantModel.getNombre() == null
+        || restaurantModel.getNombre().strip().length() == 0
+        || namePattern.matcher(restaurantModel.getNombre()).find()){
+
+            throw new DomainException("NOMBRE ES UN ATRIBUTO OBLIGATORIO ");
+
+        } else if (restaurantModel.getTelefono() == null
+        || restaurantModel.getTelefono().strip().length() == 0) {
+
+            throw new DomainException("NUMERO ES UN ATRIBUTO OBLIGATORIO");
+
+        } else if (restaurantModel.getNit() == null
+        || restaurantModel.getNit().strip().length() == 0){
+
+            throw new DomainException("NIT ES UN ATRIBUTO OBLIGATORIO");
+        }
+
+        // If there's no missing data, retrieve user from user service
         UserResponseDto user = userServiceCommunicationPort.findUser(
                 restaurantModel.getIdPropietario());
 
+        // Checking the validity and authorization
         if (!user.getRol().getName().equals("ROLE_PROPIETARIO")) {
             throw new DomainException("USER NOT AUTHORIZED");
-        } else if (restaurantModel.getDireccion().strip().length() == 0) {
-            throw new DomainException("DIRECCION ERRONEA: " + restaurantModel.getDireccion());
-        }else if (restaurantModel.getUrlLogo().strip().length() == 0) {
-            throw new DomainException("URL LOGO INVALIDA");
-        } else if (!nameMatcher.find()){
+        }  else if (!namePattern.matcher(restaurantModel.getNombre()).find()){
             throw new DomainException("NOMBRE INCORRECTO: " + restaurantModel.getNombre());
-        } else if (!restaurantModel.getTelefono().matches(phonePattern)) {
+        }  else if (!restaurantModel.getTelefono().matches(phonePattern)) {
             throw new DomainException("NUMERO INVALIDO: " + restaurantModel.getTelefono());
         } else if (!restaurantModel.getNit().matches(nitPattern)){
             throw new DomainException("NIT INVALIDO: " + restaurantModel.getNit());

@@ -27,6 +27,8 @@ ext {
 	mySqlConnectorVersion = "8.0.32"
 	openApiVersion = "1.6.11"
 	springCloudVersion = "3.1.4"
+	mockitoVersion = "5.2.0"
+	jUnitVersion = "5.8.1"
 }
 
 dependencies {
@@ -51,6 +53,11 @@ dependencies {
 	implementation "org.springframework.cloud:spring-cloud-starter-config:${springCloudVersion}"
 	implementation "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client:${springCloudVersion}"
 	implementation "org.springframework.cloud:spring-cloud-starter-bootstrap:${springCloudVersion}"
+
+	testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+	testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
+	testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+	testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
 }
 
 tasks.named('test') {
