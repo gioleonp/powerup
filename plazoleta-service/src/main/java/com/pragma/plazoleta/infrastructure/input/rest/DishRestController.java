@@ -5,8 +5,10 @@ import com.pragma.plazoleta.application.dto.response.DishResponseDto;
 import com.pragma.plazoleta.application.dto.response.RestaurantResponseDto;
 import com.pragma.plazoleta.application.handler.IDishHandler;
 import com.pragma.plazoleta.application.handler.IRestaurantHandler;
+import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.infrastructure.exception.ProprietaryNotMatchException;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Check;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +32,20 @@ public class DishRestController {
     public ResponseEntity<Void> saveDish(@RequestBody DishRequestDto dishRequestDto,
     @PathVariable("id_proprietary") long id_proprietary){
 
-        RestaurantResponseDto restaurantResponseDto = restaurantHandler.findRestaurantById(
-               dishRequestDto.getRestaurante().getId());
+        // Check if restaurant is not null
+        if (dishRequestDto.getRestaurante() == null){
+            throw new DomainException("RESTAURANTE ES UN ATRIBUTO OBLIGATORIO");
+        }
 
+        // If a restaurant was provided retrieve it from database
+        RestaurantResponseDto restaurantResponseDto = restaurantHandler.findRestaurantById(
+                dishRequestDto.getRestaurante().getId());
+
+
+        /*
+          Check if the idProprietary of the restaurant match with the id
+          with the id of who is making the petition
+        */
         if (restaurantResponseDto.getIdPropietario() != id_proprietary) {
             throw new ProprietaryNotMatchException();
         }

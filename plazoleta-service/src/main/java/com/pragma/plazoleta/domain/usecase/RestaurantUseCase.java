@@ -32,7 +32,7 @@ public class RestaurantUseCase implements IRestaurantServicePort {
 
         // Checking for the presence of null values
         if (restaurantModel.getIdPropietario() == 0) {
-            throw new DomainException("ROL ES UN ATRIBUTO OBLIGATORIO");
+            throw new DomainException("ID PROPIETARIO ES UN ATRIBUTO OBLIGATORIO");
         } else if (restaurantModel.getDireccion() == null
         || restaurantModel.getDireccion().strip().length() == 0) {
 
@@ -44,8 +44,7 @@ public class RestaurantUseCase implements IRestaurantServicePort {
             throw new DomainException("URL LOGO ES UN ATRIBUTO OBLIGATORIO");
 
         } else if (restaurantModel.getNombre() == null
-        || restaurantModel.getNombre().strip().length() == 0
-        || namePattern.matcher(restaurantModel.getNombre()).find()){
+        || restaurantModel.getNombre().strip().length() == 0){
 
             throw new DomainException("NOMBRE ES UN ATRIBUTO OBLIGATORIO ");
 
