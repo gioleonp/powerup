@@ -1,10 +1,13 @@
 package com.pragma.plazoleta.domain.usecase;
 
+import com.pragma.plazoleta.application.dto.response.RestaurantResponseDto;
 import com.pragma.plazoleta.application.dto.response.UserResponseDto;
 import com.pragma.plazoleta.domain.api.IDishServicePort;
+import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import com.pragma.plazoleta.domain.model.DishModel;
+import com.pragma.plazoleta.domain.model.RestaurantModel;
 import com.pragma.plazoleta.domain.spi.persistence.IDishPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.DishEntity;
@@ -15,16 +18,36 @@ public class DishUseCase implements IDishServicePort {
 
     private final IDishPersistencePort dishPersistencePort;
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
+    private final IRestaurantServicePort restaurantServicePort;
 
     public DishUseCase(IDishPersistencePort dishPersistencePort,
-                       IUserServiceCommunicationPort userServiceCommunicationPort){
+                       IUserServiceCommunicationPort userServiceCommunicationPort,
+                       IRestaurantServicePort restaurantServicePort){
         this.dishPersistencePort = dishPersistencePort;
         this.userServiceCommunicationPort = userServiceCommunicationPort;
+        this.restaurantServicePort = restaurantServicePort;
     }
 
     @Override
-    public void saveDish(DishModel dishModel) {
+    public void saveDish(Long id_proprietary, DishModel dishModel) {
+        // Check if restaurant is not null
+        if (dishModel.getRestaurante() == null){
+            throw new DomainException("RESTAURANTE ES UN ATRIBUTO OBLIGATORIO");
+        }
 
+        // If a restaurant was provided retrieve it from database
+        RestaurantModel restaurantModel = restaurantServicePort.findRestaurantById(
+                dishModel.getRestaurante().getId());
+
+        /*
+          Check if the idProprietary of the restaurant match with the id
+          with the id of who is making the petition
+        */
+        if (restaurantModel.getIdPropietario() != id_proprietary) {
+            throw new ProprietaryNotMatchException();
+        }
+
+        // Check validity of the fields
         if (dishModel.getNombre() == null
         || dishModel.getNombre().strip().length() == 0){
             throw new DomainException("NOMBRE ES UN ATRIBUTO OBLIGATORIO");

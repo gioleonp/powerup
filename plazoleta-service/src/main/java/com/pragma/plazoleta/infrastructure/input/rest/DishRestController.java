@@ -29,26 +29,8 @@ public class DishRestController {
 
     @PostMapping("/{id_proprietary}")
     public ResponseEntity<Void> saveDish(@RequestBody DishRequestDto dishRequestDto,
-    @PathVariable("id_proprietary") long id_proprietary){
-
-        // Check if restaurant is not null
-        if (dishRequestDto.getRestaurante() == null){
-            throw new DomainException("RESTAURANTE ES UN ATRIBUTO OBLIGATORIO");
-        }
-
-        // If a restaurant was provided retrieve it from database
-        RestaurantResponseDto restaurantResponseDto = restaurantHandler.findRestaurantById(
-                dishRequestDto.getRestaurante().getId());
-
-        /*
-          Check if the idProprietary of the restaurant match with the id
-          with the id of who is making the petition
-        */
-        if (restaurantResponseDto.getIdPropietario() != id_proprietary) {
-            throw new ProprietaryNotMatchException();
-        }
-
-        dishHandler.saveDish(dishRequestDto);
+    @PathVariable("id_proprietary") long id_proprietary) {
+        dishHandler.saveDish(id_proprietary, dishRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
