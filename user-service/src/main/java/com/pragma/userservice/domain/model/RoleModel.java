@@ -7,10 +7,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class RoleModel {
     private int id;
     private ERoles name;
     private String description;
+
+    public RoleModel(int id){
+        this.id = id;
+    }
 }

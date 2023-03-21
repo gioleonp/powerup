@@ -12,4 +12,8 @@ public interface IUserServicePort {
     UserModel findUserById(Long id);
 
     List<UserModel> getAllUsers();
+    void createAdmin(UserModel userModel);
+    void createProprietary(UserModel userModel);
+    void createEmployee(UserModel userModel);
+    void createClient(UserModel userModel);
 }

@@ -1,16 +1,14 @@
 package com.pragma.plazoleta.domain.usecase;
 
-import com.pragma.plazoleta.application.dto.response.RestaurantResponseDto;
-import com.pragma.plazoleta.application.dto.response.UserResponseDto;
 import com.pragma.plazoleta.domain.api.IDishServicePort;
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import com.pragma.plazoleta.domain.model.DishModel;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
+import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.persistence.IDishPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
-import com.pragma.plazoleta.infrastructure.out.jpa.entity.DishEntity;
 
 import java.util.List;
 
@@ -108,7 +106,7 @@ public class DishUseCase implements IDishServicePort {
 
 
         // Verify if the one making the request is the actual proprietary of the restaurant
-        UserResponseDto proprietary = userServiceCommunicationPort.findUser(id_proprietary);
+        UserModel proprietary = userServiceCommunicationPort.findUserById(id_proprietary);
 
         if (proprietary.getId() != foundDish.getRestaurante().getIdPropietario())  {
             throw new ProprietaryNotMatchException();

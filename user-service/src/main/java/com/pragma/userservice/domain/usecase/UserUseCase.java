@@ -102,4 +102,28 @@ public class UserUseCase implements IUserServicePort {
     public List<UserModel> getAllUsers() {
         return userPersistencePort.getAllUsers();
     }
+
+    @Override
+    public void createAdmin(UserModel userModel) {
+        userModel.setRol(new RoleModel(1));
+        saveUser(userModel);
+    }
+
+    @Override
+    public void createProprietary(UserModel userModel) {
+        userModel.setRol(new RoleModel(2));
+        saveUser(userModel);
+    }
+
+    @Override
+    public void createEmployee(UserModel userModel) {
+        userModel.setRol(new RoleModel(4));
+        saveUser(userModel);
+    }
+
+    @Override
+    public void createClient(UserModel userModel) {
+        userModel.setRol(new RoleModel(3));
+        saveUser(userModel);
+    }
 }

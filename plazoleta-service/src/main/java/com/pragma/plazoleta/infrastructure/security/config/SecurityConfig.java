@@ -1,28 +1,33 @@
-package com.pragma.userservice.infrastructure.security;
+package com.pragma.plazoleta.infrastructure.security.config;
 
+import com.pragma.plazoleta.infrastructure.security.UserDetailServiceImpl;
+import com.pragma.plazoleta.infrastructure.security.filter.JwtAuthorizationFilter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
+@EnableWebSecurity(debug = true)
+@EnableMethodSecurity
 public class SecurityConfig {
-
     private UserDetailServiceImpl userDetailService;
+    private JwtAuthorizationFilter jwtAuthorizationFilter;
 
-    public SecurityConfig(UserDetailServiceImpl userDetailService){
+    public SecurityConfig(UserDetailServiceImpl userDetailService,
+                          JwtAuthorizationFilter jwtAuthorizationFilter){
         this.userDetailService = userDetailService;
+        this.jwtAuthorizationFilter = jwtAuthorizationFilter;
     }
 
     @Bean
@@ -54,10 +59,25 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .authorizeRequests()
+                .antMatchers("/swagger-ui/*", "/v3/**").permitAll()
+                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMINISTRADOR")
+                .antMatchers("/user/**").hasRole("ADMINISTRADOR")
+                .antMatchers("/propietario/**").hasRole("PROPIETARIO")
+                .antMatchers("/restaurante/**").hasRole("PROPIETARIO")
+                .antMatchers("/platos/**").hasRole("PROPIETARIO")
+                .antMatchers("/empleado/**").hasRole("EMPLEADO")
+                .antMatchers("/cliente/**").hasRole("CLIENTE")
+                .antMatchers("/login/**").permitAll()
                 .anyRequest()
-                .permitAll();
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
 
     }
-
 }
