@@ -17,18 +17,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/empleado")
 public class EmployeeRestController {
 
-    private final IUserServiceCommunicationPort userServiceCommunicationPort;
-    private final IEmployeeHandler employeeHandler;
+  private final IUserServiceCommunicationPort userServiceCommunicationPort;
+  private final IEmployeeHandler employeeHandler;
 
-    @PostMapping("/")
-    public ResponseEntity<Void> createEmployee(@RequestBody UserRequestDto userRequestDto,
-                                               @RequestParam("proprietary") Long idProprietary,
-                                               @RequestParam("restaurant") Long idRestaurant){
+  @PostMapping("/")
+  public ResponseEntity<Void> createEmployee(
+      @RequestBody UserRequestDto userRequestDto,
+      @RequestParam("proprietary") Long idProprietary,
+      @RequestParam("restaurant") Long idRestaurant) {
 
-        userServiceCommunicationPort.createEmployee(userRequestDto);
+    userServiceCommunicationPort.createEmployee(userRequestDto);
 
-        employeeHandler.saveEmployee(userRequestDto, idProprietary, idRestaurant);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-
-    }
+    employeeHandler.saveEmployee(userRequestDto, idProprietary, idRestaurant);
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 }

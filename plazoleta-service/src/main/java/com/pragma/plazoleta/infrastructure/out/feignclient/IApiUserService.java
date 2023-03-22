@@ -30,6 +30,9 @@ public interface IApiUserService {
     @PostMapping("api/v1/proprietary/employee")
     public void createEmployee(@RequestBody UserRequestDto userRequestDto);
 
+    @PostMapping("api/v1/client")
+    public void createClient(@RequestBody UserRequestDto userRequestDto);
+
     @GetMapping("api/v1/admin")
     public List<UserResponseDto> getAllUsers();
 

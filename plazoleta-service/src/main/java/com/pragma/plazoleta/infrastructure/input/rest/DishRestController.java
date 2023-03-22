@@ -23,35 +23,36 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DishRestController {
 
-    private final IDishHandler dishHandler;
-    private final IRestaurantHandler restaurantHandler;
+  private final IDishHandler dishHandler;
+  private final IRestaurantHandler restaurantHandler;
 
-    @PostMapping("")
-    public ResponseEntity<Void> saveDish(@RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
-                                         @RequestParam("proprietary") long idProprietary) {
-        dishHandler.saveDish(idProprietary, dishRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
+  @PostMapping("")
+  public ResponseEntity<Void> saveDish(
+      @RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
+      @RequestParam("proprietary") long idProprietary) {
+    dishHandler.saveDish(idProprietary, dishRequestDto);
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 
-    @GetMapping("")
-    public ResponseEntity<List<DishResponseDto>> getAllDishes(){
-        return  ResponseEntity.ok(dishHandler.getAllDishes());
-    }
+  @GetMapping("")
+  public ResponseEntity<List<DishResponseDto>> getAllDishes() {
+    return ResponseEntity.ok(dishHandler.getAllDishes());
+  }
 
-    @PostMapping("/update/{id_dish}")
-    public ResponseEntity<Void> updateDish(
-            @Valid @RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
-            @RequestParam("proprietary") long idProprietary,
-            @PathVariable("id_dish") int idDish){
-        dishHandler.updateDish(idProprietary, idDish, dishRequestDto);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @PostMapping("/update/{id_dish}")
+  public ResponseEntity<Void> updateDish(
+      @Valid @RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
+      @RequestParam("proprietary") long idProprietary,
+      @PathVariable("id_dish") int idDish) {
+    dishHandler.updateDish(idProprietary, idDish, dishRequestDto);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
-
-    @PostMapping("/updateActive")
-    public ResponseEntity<DishResponseDto> updateActive(boolean active,
-                                  @RequestParam("proprietary") long idProprietary,
-                                  @RequestParam("dish") int idDish){
-        return ResponseEntity.ok(dishHandler.updateActive(active, idProprietary, idDish));
-    }
+  @PostMapping("/updateActive")
+  public ResponseEntity<DishResponseDto> updateActive(
+      boolean active,
+      @RequestParam("proprietary") long idProprietary,
+      @RequestParam("dish") int idDish) {
+    return ResponseEntity.ok(dishHandler.updateActive(active, idProprietary, idDish));
+  }
 }

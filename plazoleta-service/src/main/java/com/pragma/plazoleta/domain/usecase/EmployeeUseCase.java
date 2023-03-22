@@ -15,23 +15,22 @@ public class EmployeeUseCase implements IEmployeeServicePort {
     private IUserServiceCommunicationPort userServiceCommunicationPort;
     private IRestaurantServicePort restaurantServicePort;
 
-    public EmployeeUseCase(IEmployeePersistencePort employeePersistencePort,
-                           IUserServiceCommunicationPort userServiceCommunicationPort,
-                           IRestaurantServicePort restaurantServicePort){
+    public EmployeeUseCase(
+            IEmployeePersistencePort employeePersistencePort,
+            IUserServiceCommunicationPort userServiceCommunicationPort,
+            IRestaurantServicePort restaurantServicePort) {
         this.employeePersistencePort = employeePersistencePort;
         this.userServiceCommunicationPort = userServiceCommunicationPort;
         this.restaurantServicePort = restaurantServicePort;
     }
 
     @Override
-    public void saveEmployee(UserModel userModel,
-                             Long idProprietary,
-                             Long idRestaurant) {
+    public void saveEmployee(UserModel userModel, Long idProprietary, Long idRestaurant) {
 
         UserModel foundUser = userServiceCommunicationPort.findByEmail(userModel.getEmail());
         RestaurantModel restaurant = restaurantServicePort.findRestaurantById(idRestaurant);
 
-        if (idProprietary != restaurant.getIdPropietario()){
+        if (idProprietary != restaurant.getIdPropietario()) {
             throw new DomainException("EL PROPIETARIO NO ES DUEÑO DEL RESTAURANTE");
         }
 

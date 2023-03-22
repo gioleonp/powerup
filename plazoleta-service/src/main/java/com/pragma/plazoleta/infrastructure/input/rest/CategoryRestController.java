@@ -19,19 +19,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryRestController {
 
-    private final ICategoryHandler categoryHandler;
+  private final ICategoryHandler categoryHandler;
 
-    @GetMapping("")
-    public ResponseEntity<List<CategoryResponseDto>> getAllCategories(){
-        return ResponseEntity.ok(categoryHandler.getAllCategories());
-    }
+  @GetMapping("")
+  public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
+    return ResponseEntity.ok(categoryHandler.getAllCategories());
+  }
 
-    @PostMapping()
-    public ResponseEntity<Void> saveCategory(@RequestBody CategoryRequestDto categoryRequestDto){
+  @PostMapping()
+  public ResponseEntity<Void> saveCategory(@RequestBody CategoryRequestDto categoryRequestDto) {
 
-        categoryHandler.saveCategory(categoryRequestDto);
+    categoryHandler.saveCategory(categoryRequestDto);
 
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
+    return new ResponseEntity<>(HttpStatus.CREATED);
+  }
 }
