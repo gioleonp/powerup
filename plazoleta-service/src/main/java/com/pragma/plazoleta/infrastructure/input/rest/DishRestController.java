@@ -1,12 +1,9 @@
 package com.pragma.plazoleta.infrastructure.input.rest;
 
-import com.pragma.plazoleta.application.dto.request.DishRequestDto;
+import com.pragma.plazoleta.application.dto.request.DishRequestPriceAndDescriptionDto;
 import com.pragma.plazoleta.application.dto.response.DishResponseDto;
-import com.pragma.plazoleta.application.dto.response.RestaurantResponseDto;
 import com.pragma.plazoleta.application.handler.IDishHandler;
 import com.pragma.plazoleta.application.handler.IRestaurantHandler;
-import com.pragma.plazoleta.domain.exception.DomainException;
-import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +27,8 @@ public class DishRestController {
     private final IRestaurantHandler restaurantHandler;
 
     @PostMapping("")
-    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto,
-    @RequestParam("proprietary") long idProprietary) {
+    public ResponseEntity<Void> saveDish(@RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
+                                         @RequestParam("proprietary") long idProprietary) {
         dishHandler.saveDish(idProprietary, dishRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -41,10 +38,11 @@ public class DishRestController {
         return  ResponseEntity.ok(dishHandler.getAllDishes());
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<Void> updateDish(@RequestBody DishRequestDto dishRequestDto,
-                                           @RequestParam("proprietary") long idProprietary,
-                                           @RequestParam("dish") int idDish){
+    @PostMapping("/update/{id_dish}")
+    public ResponseEntity<Void> updateDish(
+            @Valid @RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
+            @RequestParam("proprietary") long idProprietary,
+            @PathVariable("id_dish") int idDish){
         dishHandler.updateDish(idProprietary, idDish, dishRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }

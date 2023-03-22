@@ -1,9 +1,10 @@
 package com.pragma.plazoleta.application.handler.impl;
 
-import com.pragma.plazoleta.application.dto.request.DishRequestDto;
+import com.pragma.plazoleta.application.dto.request.DishRequestPriceAndDescriptionDto;
 import com.pragma.plazoleta.application.dto.response.DishResponseDto;
 import com.pragma.plazoleta.application.handler.IDishHandler;
 import com.pragma.plazoleta.application.mapper.IDishRequestMapper;
+import com.pragma.plazoleta.application.mapper.IDishRequestPriceAndDescriptionMapper;
 import com.pragma.plazoleta.application.mapper.IDishResponseMapper;
 import com.pragma.plazoleta.domain.api.IDishServicePort;
 import com.pragma.plazoleta.domain.model.DishModel;
@@ -21,9 +22,10 @@ public class DishHandlerImpl implements IDishHandler {
     private final IDishServicePort dishServicePort;
     private final IDishRequestMapper dishRequestMapper;
     private final IDishResponseMapper dishResponseMapper;
+    private final IDishRequestPriceAndDescriptionMapper dishRequestPriceAndDescriptionMapper;
 
     @Override
-    public void saveDish(Long id_proprietary, DishRequestDto dishRequestDto) {
+    public void saveDish(Long id_proprietary, DishRequestPriceAndDescriptionDto dishRequestDto) {
         DishModel dishModel = dishRequestMapper.toDishModel(dishRequestDto);
         dishServicePort.saveDish(id_proprietary, dishModel);
     }
@@ -41,8 +43,8 @@ public class DishHandlerImpl implements IDishHandler {
 
 
     @Override
-    public void updateDish(Long id_proprietary, int id_dish, DishRequestDto dishRequestDto) {
-        DishModel dishModel = dishRequestMapper.toDishModel(dishRequestDto);
+    public void updateDish(Long id_proprietary, int id_dish, DishRequestPriceAndDescriptionDto dishRequestDto) {
+        DishModel dishModel = dishRequestPriceAndDescriptionMapper.toModel(dishRequestDto);
         dishServicePort.updateDish(id_proprietary, id_dish, dishModel);
     }
 

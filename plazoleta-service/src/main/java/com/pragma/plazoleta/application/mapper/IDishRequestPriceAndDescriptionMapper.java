@@ -8,6 +8,7 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
-public interface IDishRequestMapper {
-    DishModel toDishModel(DishRequestPriceAndDescriptionDto dishRequestDto);
+public interface IDishRequestPriceAndDescriptionMapper {
+    DishModel toModel(DishRequestPriceAndDescriptionDto dishRequestDto);
+
 }
