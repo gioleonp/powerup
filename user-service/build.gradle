@@ -30,6 +30,7 @@ ext {
 	springCloudVersion = "3.1.4"
 	mockitoVersion = "5.2.0"
 	jUnitVersion = "5.8.1"
+	h2Version = "2.1.214"
 }
 
 dependencies {
@@ -38,6 +39,7 @@ dependencies {
 	implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 	developmentOnly "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
 	testImplementation "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+	testImplementation "com.h2database:h2:${h2Version}"
 
 	runtimeOnly "mysql:mysql-connector-java:${mySqlConnectorVersion}"
 

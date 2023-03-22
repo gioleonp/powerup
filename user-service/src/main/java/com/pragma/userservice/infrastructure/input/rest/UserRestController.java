@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,7 +42,7 @@ public class UserRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping("/user/{email}")
+    @GetMapping("/user/email/{email}")
     public ResponseEntity<UserResponseDto> findUserByEmail(@PathVariable("email") String email){
         return ResponseEntity.ok(userHandler.findUserByEmail(email));
     }
@@ -55,7 +56,7 @@ public class UserRestController {
     }
 
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/id/{id}")
     public ResponseEntity<UserResponseDto> findUserById(@PathVariable("id") Long id){
         return ResponseEntity.ok(userHandler.findUserById(id));
     }
@@ -80,7 +81,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "409", description = "Admin already exists", content = @Content)
     })
     @PostMapping("/admin")
-    public ResponseEntity<Void> createAdmin(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<Void> createAdmin(@Valid @RequestBody UserRequestDto userRequestDto) {
         userHandler.createAdmin(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -96,7 +97,7 @@ public class UserRestController {
                     content = @Content)
     })
     @PostMapping("/admin/proprietary")
-    public ResponseEntity<Void> createProprietary(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<Void> createProprietary(@Valid @RequestBody UserRequestDto userRequestDto) {
         userHandler.createProprietary(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -112,7 +113,7 @@ public class UserRestController {
                     content = @Content)
     })
     @PostMapping("/client")
-    public ResponseEntity<Void> createClient(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<Void> createClient(@Valid @RequestBody UserRequestDto userRequestDto) {
         userHandler.createClient(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -128,7 +129,7 @@ public class UserRestController {
                     content = @Content)
     })
     @PostMapping("/proprietary/employee")
-    public ResponseEntity<Void> createEmployee(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<Void> createEmployee(@Valid @RequestBody UserRequestDto userRequestDto) {
         userHandler.createEmployee(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
