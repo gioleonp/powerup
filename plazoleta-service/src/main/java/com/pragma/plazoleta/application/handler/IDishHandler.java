@@ -12,6 +12,7 @@ public interface IDishHandler {
     DishResponseDto findDishById(int id);
     List<DishResponseDto> getAllDishes();
     void updateDish(Long id_proprietary, int id_dish, DishRequestDto dishRequestDto);
+    DishResponseDto updateActive(boolean active, Long idProprietary, int idDish);
 
 
 }

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,10 +29,10 @@ public class DishRestController {
     private final IDishHandler dishHandler;
     private final IRestaurantHandler restaurantHandler;
 
-    @PostMapping("/{id_proprietary}")
-    public ResponseEntity<Void> saveDish(@RequestBody DishRequestDto dishRequestDto,
-    @PathVariable("id_proprietary") long id_proprietary) {
-        dishHandler.saveDish(id_proprietary, dishRequestDto);
+    @PostMapping("")
+    public ResponseEntity<Void> saveDish(@Valid @RequestBody DishRequestDto dishRequestDto,
+    @RequestParam("proprietary") long idProprietary) {
+        dishHandler.saveDish(idProprietary, dishRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -39,13 +41,19 @@ public class DishRestController {
         return  ResponseEntity.ok(dishHandler.getAllDishes());
     }
 
-    @PostMapping("/{id_proprietary}/{id_dish}")
+    @PostMapping("/update")
     public ResponseEntity<Void> updateDish(@RequestBody DishRequestDto dishRequestDto,
-                                           @PathVariable("id_proprietary") long id_proprietary,
-                                           @PathVariable("id_dish") int id_dish){
-        dishHandler.updateDish(id_proprietary, id_dish, dishRequestDto);
+                                           @RequestParam("proprietary") long idProprietary,
+                                           @RequestParam("dish") int idDish){
+        dishHandler.updateDish(idProprietary, idDish, dishRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
+    @PostMapping("/updateActive")
+    public ResponseEntity<DishResponseDto> updateActive(boolean active,
+                                  @RequestParam("proprietary") long idProprietary,
+                                  @RequestParam("dish") int idDish){
+        return ResponseEntity.ok(dishHandler.updateActive(active, idProprietary, idDish));
+    }
 }

@@ -9,4 +9,5 @@ public interface IDishPersistencePort {
     DishModel findDishById(int id);
     List<DishModel> getAllDishes();
     DishModel updateDish(DishModel dishModel);
+    DishModel updateActive(DishModel dishModel);
 }
