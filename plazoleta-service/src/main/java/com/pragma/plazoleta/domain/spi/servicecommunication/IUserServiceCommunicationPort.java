@@ -12,6 +12,7 @@ public interface IUserServiceCommunicationPort {
     UserModel findFullUserByEmail(String email);
     UserModel findByEmail(String email);
     void createProprietary(UserRequestDto userRequestDto);
+    void createEmployee(UserRequestDto userRequestDto);
 
     List<UserModel> getAllUsers();
 

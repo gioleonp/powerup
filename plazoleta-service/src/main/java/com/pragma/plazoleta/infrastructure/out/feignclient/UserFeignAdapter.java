@@ -1,7 +1,6 @@
 package com.pragma.plazoleta.infrastructure.out.feignclient;
 
 import com.pragma.plazoleta.application.dto.request.UserRequestDto;
-import com.pragma.plazoleta.application.dto.response.UserResponseDto;
 import com.pragma.plazoleta.application.dto.response.UserResponseWithPasswordDto;
 import com.pragma.plazoleta.application.mapper.IUserResponseMapper;
 import com.pragma.plazoleta.domain.model.UserModel;
@@ -38,6 +37,11 @@ public class UserFeignAdapter implements IUserServiceCommunicationPort {
     @Override
     public void createProprietary(UserRequestDto userRequestDto) {
         userServiceCommunicationAdapter.createProprietary(userRequestDto);
+    }
+
+    @Override
+    public void createEmployee(UserRequestDto userRequestDto) {
+         userServiceCommunicationAdapter.createEmployee(userRequestDto);
     }
 
     @Override
