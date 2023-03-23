@@ -9,8 +9,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 class UserUseCaseTest {
@@ -21,19 +22,22 @@ class UserUseCaseTest {
 
     @Mock IUserPasswordEncoderPort userPasswordEncoderPort;
 
+    UserModel expectedUser =
+            new UserModel(
+                    1L,
+                    "1002192504",
+                    "chuty",
+                    "bnet",
+                    "573004586742",
+                    "chuty@example.com",
+                    "password",
+                    null);
+
     @Test
     void saveUser() {
-        // Given
-        UserModel user = new UserModel();
-        user.setDocumentoDeIdentidad("1002192504");
-        user.setNombre("chuty");
-        user.setApellido("bnet");
-        user.setEmail("chuty@example.com");
-        user.setCelular("573004586742");
-        user.setContrasenia("password");
 
         // When
-        underTest.saveUser(user);
+        underTest.saveUser(expectedUser);
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
@@ -42,14 +46,13 @@ class UserUseCaseTest {
 
     @Test
     void findUserByEmail() {
-        // Given
-        String email = "test@example.com";
+        when(userPersistencePort.findUserByEmail(expectedUser.getEmail())).thenReturn(expectedUser);
 
         // When
-        underTest.findUserByEmail(email);
+        UserModel userModel = underTest.findUserByEmail(expectedUser.getEmail());
 
         // Then
-        verify(userPersistencePort).findUserByEmail(email);
+        assertThat(userModel).isEqualTo(expectedUser);
     }
 
     @Test

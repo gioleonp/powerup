@@ -9,12 +9,12 @@ import lombok.Setter;
 public class RoleRequestDto {
 
     private int id;
-    private ERoles name;
-    private String description;
+    private ERoles nombre;
+    private String descripcion;
 
-    public RoleRequestDto(ERoles name, String description){
-        this.name = name;
-        this.description = description;
+    public RoleRequestDto(ERoles nombre, String descripcion){
+        this.nombre = nombre;
+        this.descripcion = descripcion;
     }
 
     public RoleRequestDto(int id){

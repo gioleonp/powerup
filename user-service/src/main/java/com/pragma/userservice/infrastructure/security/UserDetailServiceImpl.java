@@ -25,7 +25,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
         UserModel user = servicePort.findUserByEmail(username);
         Collection<? extends SimpleGrantedAuthority> authorities =
-                Arrays.asList(new SimpleGrantedAuthority(user.getRol().getName().toString()));
+                Arrays.asList(new SimpleGrantedAuthority(user.getRol().getNombre().toString()));
 
         return new UserDetailsImpl(user, authorities);
     }

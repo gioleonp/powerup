@@ -1,16 +1,12 @@
 package com.pragma.userservice.domain.usecase;
 
 import com.pragma.userservice.domain.api.IUserServicePort;
-import com.pragma.userservice.domain.exception.DomainException;
-import com.pragma.userservice.domain.model.ERoles;
 import com.pragma.userservice.domain.model.RoleModel;
 import com.pragma.userservice.domain.model.UserModel;
 import com.pragma.userservice.domain.spi.passwordencoding.IUserPasswordEncoderPort;
 import com.pragma.userservice.domain.spi.persistence.IUserPersistencePort;
 
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class UserUseCase implements IUserServicePort {
 

@@ -9,8 +9,8 @@ import lombok.Setter;
 @Setter
 public class RoleModel {
     private int id;
-    private ERoles name;
-    private String description;
+    private ERoles nombre;
+    private String descripcion;
 
     public RoleModel(int id){
         this.id = id;

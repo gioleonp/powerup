@@ -28,6 +28,6 @@ public class RoleEntity {
     private int id;
     @Column(length = 50, nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
-    private ERoles name;
-    private String description;
+    private ERoles nombre;
+    private String descripcion;
 }
