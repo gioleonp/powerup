@@ -21,6 +21,7 @@ import com.pragma.plazoleta.infrastructure.out.jpa.mapper.ICategoryEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IEmployeeEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
+import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantNameAndUrlMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.ICategoryRepository;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IEmployeeRepository;
@@ -35,6 +36,7 @@ public class BeanConfiguration {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
+    private final IRestaurantNameAndUrlMapper restaurantNameAndUrlMapper;
 
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
 
@@ -47,47 +49,45 @@ public class BeanConfiguration {
     private final IEmployeeRepository employeeRepository;
     private final IEmployeeEntityMapper employeeEntityMapper;
 
-
     @Bean
-    public IRestaurantPersistencePort restaurantPersistencePort(){
-        return new RestaurantJpaAdapter(restaurantRepository, restaurantEntityMapper);
+    public IRestaurantPersistencePort restaurantPersistencePort() {
+        return new RestaurantJpaAdapter(
+                restaurantRepository, restaurantEntityMapper, restaurantNameAndUrlMapper);
     }
 
     @Bean
-    public IRestaurantServicePort restaurantServicePort(){
+    public IRestaurantServicePort restaurantServicePort() {
         return new RestaurantUseCase(restaurantPersistencePort(), userServiceCommunicationPort);
     }
 
-    public IDishPersistencePort dishPersistencePort(){
+    public IDishPersistencePort dishPersistencePort() {
         return new DishJpaAdapter(dishRepository, dishEntityMapper);
     }
 
     @Bean
-    public IDishServicePort dishServicePort(){
-        return new DishUseCase(dishPersistencePort(), userServiceCommunicationPort, restaurantServicePort());
+    public IDishServicePort dishServicePort() {
+        return new DishUseCase(
+                dishPersistencePort(), userServiceCommunicationPort, restaurantServicePort());
     }
 
     @Bean
-    public ICategoryPersistencePort categoryPersistencePort(){
+    public ICategoryPersistencePort categoryPersistencePort() {
         return new CategoryJpaAdapter(categoryRepository, categoryEntityMapper);
     }
 
     @Bean
-    public ICategoryServicePort categoryServicePort(){
+    public ICategoryServicePort categoryServicePort() {
         return new CategoryUseCase(categoryPersistencePort());
     }
 
-
     @Bean
-    public IEmployeePersistencePort employeePersistencePort(){
+    public IEmployeePersistencePort employeePersistencePort() {
         return new EmployeeJpaAdapter(employeeRepository, employeeEntityMapper);
     }
 
     @Bean
     public IEmployeeServicePort employeeServicePort() {
-        return new EmployeeUseCase(employeePersistencePort(),
-                userServiceCommunicationPort,
-                restaurantServicePort());
+        return new EmployeeUseCase(
+                employeePersistencePort(), userServiceCommunicationPort, restaurantServicePort());
     }
-
 }

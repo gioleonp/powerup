@@ -1,12 +1,18 @@
 package com.pragma.plazoleta.infrastructure.out.jpa.adapter;
 
 import com.pragma.plazoleta.domain.model.RestaurantModel;
+import com.pragma.plazoleta.domain.model.RestaurantNameAndUrlModel;
 import com.pragma.plazoleta.domain.spi.persistence.IRestaurantPersistencePort;
 import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.RestaurantEntity;
+import com.pragma.plazoleta.infrastructure.out.jpa.entity.RestaurantNameAndUrlEntity;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
+import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantNameAndUrlMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IRestaurantRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +22,12 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
+    private final IRestaurantNameAndUrlMapper restaurantNameAndUrlMapper;
 
     @Override
     public RestaurantModel saveRestaurant(RestaurantModel restaurantModel) {
-        RestaurantEntity restaurantEntity = restaurantRepository.save(
-                restaurantEntityMapper.toEntity(restaurantModel));
+        RestaurantEntity restaurantEntity =
+                restaurantRepository.save(restaurantEntityMapper.toEntity(restaurantModel));
 
         return restaurantEntityMapper.toRestaurantModel(restaurantEntity);
     }
@@ -28,7 +35,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     @Override
     public RestaurantModel findRestaurantById(Long id) {
         Optional<RestaurantEntity> restaurantEntity = restaurantRepository.findById(id);
-        if (restaurantEntity.isEmpty()){
+        if (restaurantEntity.isEmpty()) {
             throw new NoDataFoundException();
         }
         return restaurantEntityMapper.toRestaurantModel(restaurantEntity.get());
@@ -37,9 +44,17 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     @Override
     public List<RestaurantModel> getAllRestaurants() {
         List<RestaurantEntity> restaurantEntityList = restaurantRepository.findAll();
-        if (restaurantEntityList.isEmpty()){
+        if (restaurantEntityList.isEmpty()) {
             throw new NoDataFoundException();
         }
         return restaurantEntityMapper.toRestaurantModelList(restaurantEntityList);
+    }
+
+    @Override
+    public List<RestaurantNameAndUrlModel> getRestaurantsWithPagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("nombre").ascending());
+        List<RestaurantNameAndUrlEntity> restaurantEntityList =
+                restaurantRepository.findAllRestaurantsWithPagination(pageable).toList();
+        return restaurantNameAndUrlMapper.toRestaurantModel(restaurantEntityList);
     }
 }

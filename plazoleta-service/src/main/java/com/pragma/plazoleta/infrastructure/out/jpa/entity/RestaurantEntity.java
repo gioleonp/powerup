@@ -34,12 +34,12 @@ public class RestaurantEntity {
     @Column(name = "id_propietario")
     private long idPropietario;
 
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String telefono;
 
     @Column(name = "url_logo", nullable = false)
     private String urlLogo;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true, nullable = false)
     private String nit;
 
 
