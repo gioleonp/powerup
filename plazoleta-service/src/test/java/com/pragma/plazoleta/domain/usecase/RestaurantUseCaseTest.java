@@ -1,13 +1,12 @@
 package com.pragma.plazoleta.domain.usecase;
 
 import com.pragma.plazoleta.domain.exception.DomainException;
+import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
 import com.pragma.plazoleta.domain.model.RolModel;
 import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.persistence.IRestaurantPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
-import com.pragma.plazoleta.infrastructure.out.jpa.repository.IRestaurantRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +14,6 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -80,7 +78,7 @@ class RestaurantUseCaseTest {
         restaurantModel.setNit("1000000");
 
         // Then
-        assertThatExceptionOfType(DomainException.class)
+        assertThatExceptionOfType(ProprietaryNotMatchException.class)
                 .isThrownBy(() -> underTest.saveRestaurant(restaurantModel))
                 .withMessageMatching("USER NOT AUTHORIZED");
     }

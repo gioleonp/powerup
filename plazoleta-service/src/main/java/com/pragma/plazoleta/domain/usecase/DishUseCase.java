@@ -29,11 +29,6 @@ public class DishUseCase implements IDishServicePort {
 
     @Override
     public void saveDish(Long id_proprietary, DishModel dishModel) {
-        // Check if restaurant is not null
-        if (dishModel.getRestaurante() == null){
-            throw new DomainException("RESTAURANTE ES UN ATRIBUTO OBLIGATORIO");
-        }
-
         // If a restaurant was provided retrieve it from database
         RestaurantModel restaurantModel = restaurantServicePort.findRestaurantById(
                 dishModel.getRestaurante().getId());
