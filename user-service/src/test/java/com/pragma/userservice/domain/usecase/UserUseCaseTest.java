@@ -22,19 +22,9 @@ class UserUseCaseTest {
 
     @Mock IUserPasswordEncoderPort userPasswordEncoderPort;
 
-    UserModel expectedUser =
-            new UserModel(
-                    1L,
-                    "1002192504",
-                    "chuty",
-                    "bnet",
-                    "573004586742",
-                    "chuty@example.com",
-                    "password",
-                    null);
-
     @Test
     void saveUser() {
+        UserModel expectedUser = UserUseCaseDataTest.getUserModel();
 
         // When
         underTest.saveUser(expectedUser);
@@ -46,6 +36,8 @@ class UserUseCaseTest {
 
     @Test
     void findUserByEmail() {
+        UserModel expectedUser = UserUseCaseDataTest.getUserModel();
+
         when(userPersistencePort.findUserByEmail(expectedUser.getEmail())).thenReturn(expectedUser);
 
         // When
@@ -79,16 +71,10 @@ class UserUseCaseTest {
     @Test
     void createAdmin() {
         // Given
-        UserModel user = new UserModel();
-        user.setDocumentoDeIdentidad("1002192504");
-        user.setNombre("chuty");
-        user.setApellido("bnet");
-        user.setEmail("chuty@example.com");
-        user.setCelular("573004586742");
-        user.setContrasenia("password");
+        UserModel expectedUser = UserUseCaseDataTest.getUserModel();
 
         // When
-        underTest.createAdmin(user);
+        underTest.createAdmin(expectedUser);
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
@@ -97,16 +83,10 @@ class UserUseCaseTest {
     @Test
     void createProprietary() {
         // Given
-        UserModel user = new UserModel();
-        user.setDocumentoDeIdentidad("1002192504");
-        user.setNombre("chuty");
-        user.setApellido("bnet");
-        user.setEmail("chuty@example.com");
-        user.setCelular("573004586742");
-        user.setContrasenia("password");
+        UserModel expectedUser = UserUseCaseDataTest.getUserModel();
 
         // When
-        underTest.createProprietary(user);
+        underTest.createProprietary(expectedUser);
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
@@ -115,16 +95,10 @@ class UserUseCaseTest {
     @Test
     void createEmployee() {
         // Given
-        UserModel user = new UserModel();
-        user.setDocumentoDeIdentidad("1002192504");
-        user.setNombre("chuty");
-        user.setApellido("bnet");
-        user.setEmail("chuty@example.com");
-        user.setCelular("573004586742");
-        user.setContrasenia("password");
+        UserModel expectedUser = UserUseCaseDataTest.getUserModel();
 
         // When
-        underTest.createEmployee(user);
+        underTest.createEmployee(expectedUser);
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
@@ -133,16 +107,10 @@ class UserUseCaseTest {
     @Test
     void createClient() {
         // Given
-        UserModel user = new UserModel();
-        user.setDocumentoDeIdentidad("1002192504");
-        user.setNombre("chuty");
-        user.setApellido("bnet");
-        user.setEmail("chuty@example.com");
-        user.setCelular("573004586742");
-        user.setContrasenia("password");
+        UserModel expectedUser = UserUseCaseDataTest.getUserModel();
 
         // When
-        underTest.createClient(user);
+        underTest.createClient(expectedUser);
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
