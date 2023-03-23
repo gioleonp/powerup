@@ -1,9 +1,8 @@
 package com.pragma.plazoleta.domain.usecase;
 
-import com.pragma.plazoleta.application.dto.response.DishResponseDto;
+
 import com.pragma.plazoleta.domain.api.IDishServicePort;
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
-import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import com.pragma.plazoleta.domain.model.DishModel;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
@@ -89,5 +88,11 @@ public class DishUseCase implements IDishServicePort {
         dishModel.setActivo(active);
 
         return dishPersistencePort.updateActive(dishModel);
+    }
+
+    @Override
+    public List<DishModel> getDishesByRestaurantWithPaginationByCategory(
+            Long idRestaurant, int page, int size) {
+        return dishPersistencePort.getDishesByRestaurantWithPaginationByCategory(idRestaurant, page, size);
     }
 }

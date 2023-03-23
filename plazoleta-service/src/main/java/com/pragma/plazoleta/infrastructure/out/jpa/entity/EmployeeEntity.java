@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table(name = "restaurante_empleado")
+@Table(name = "restaurantes_empleados")
 @IdClass(EmployeeId.class)
 public class EmployeeEntity {
     @Id

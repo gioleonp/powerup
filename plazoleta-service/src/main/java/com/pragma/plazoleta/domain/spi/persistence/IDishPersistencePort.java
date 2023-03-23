@@ -10,4 +10,5 @@ public interface IDishPersistencePort {
     List<DishModel> getAllDishes();
     DishModel updateDish(DishModel dishModel);
     DishModel updateActive(DishModel dishModel);
+    List<DishModel> getDishesByRestaurantWithPaginationByCategory(Long idRestaurant, int page, int size);
 }

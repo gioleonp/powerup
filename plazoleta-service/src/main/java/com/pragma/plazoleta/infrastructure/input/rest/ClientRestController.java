@@ -1,8 +1,10 @@
 package com.pragma.plazoleta.infrastructure.input.rest;
 
 import com.pragma.plazoleta.application.dto.request.UserRequestDto;
+import com.pragma.plazoleta.application.dto.response.DishResponseDto;
 import com.pragma.plazoleta.application.dto.response.RestaurantResponseDto;
 import com.pragma.plazoleta.application.dto.response.RestaurantResponseNameAndUrlDto;
+import com.pragma.plazoleta.application.handler.IDishHandler;
 import com.pragma.plazoleta.application.handler.IRestaurantHandler;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import io.swagger.v3.oas.annotations.Operation;
@@ -15,6 +17,7 @@ import net.bytebuddy.build.Plugin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +33,7 @@ public class ClientRestController {
 
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
     private final IRestaurantHandler restaurantHandler;
+    private final IDishHandler dishHandler;
 
     @Operation(summary = "Add a new client")
     @ApiResponses(
@@ -54,5 +58,18 @@ public class ClientRestController {
             @RequestParam("page") int page, @RequestParam("size") int size) {
 
         return ResponseEntity.ok(restaurantHandler.getRestaurantsWithPagination(page, size));
+    }
+
+    @GetMapping("/cliente/restaurante/{id_restaurante}")
+    public ResponseEntity<List<DishResponseDto>> getMenu(
+            @PathVariable("id_restaurante") Long idRestaurante,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size) {
+
+        List<DishResponseDto> dishResponseDtos =
+                dishHandler.getDishesByRestaurantWithPaginationByCategory(
+                        idRestaurante, page, size);
+
+        return ResponseEntity.ok(dishResponseDtos);
     }
 }

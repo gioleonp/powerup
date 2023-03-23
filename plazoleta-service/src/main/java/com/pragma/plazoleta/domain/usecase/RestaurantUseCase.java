@@ -34,7 +34,7 @@ public class RestaurantUseCase implements IRestaurantServicePort {
                 restaurantModel.getIdPropietario());
 
         // Checking the validity and authorization
-        if (!user.getRol().getName().equals("ROLE_PROPIETARIO")) {
+        if (!user.getRol().getNombre().equals("ROLE_PROPIETARIO")) {
             throw new ProprietaryNotMatchException();
         }
 

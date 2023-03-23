@@ -45,13 +45,7 @@ class RestaurantUseCaseTest {
                 .thenReturn(expectedUser);
 
         // Given
-        RestaurantModel restaurantModel = new RestaurantModel();
-        restaurantModel.setNombre("Restaurante prueba");
-        restaurantModel.setDireccion("Direccion prueba");
-        restaurantModel.setTelefono("573004586742");
-        restaurantModel.setIdPropietario(1L);
-        restaurantModel.setUrlLogo("http://url.com");
-        restaurantModel.setNit("1000000");
+        RestaurantModel restaurantModel = RestaurantUseCaseDataTest.getRestaurantModel();
 
         // When
         underTest.saveRestaurant(restaurantModel);
@@ -69,13 +63,7 @@ class RestaurantUseCaseTest {
                 .thenReturn(expectedUser);
 
         // Given
-        RestaurantModel restaurantModel = new RestaurantModel();
-        restaurantModel.setNombre("Restaurante prueba");
-        restaurantModel.setDireccion("Direccion prueba");
-        restaurantModel.setTelefono("573004586742");
-        restaurantModel.setIdPropietario(1L);
-        restaurantModel.setUrlLogo("http://url.com");
-        restaurantModel.setNit("1000000");
+        RestaurantModel restaurantModel = RestaurantUseCaseDataTest.getRestaurantModel();
 
         // Then
         assertThatExceptionOfType(ProprietaryNotMatchException.class)

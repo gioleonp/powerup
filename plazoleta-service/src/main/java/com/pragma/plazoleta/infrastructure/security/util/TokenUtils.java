@@ -8,12 +8,15 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.pragma.plazoleta.infrastructure.security.UserDetailsImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class TokenUtils {
@@ -23,8 +26,7 @@ public class TokenUtils {
     private final JWTVerifier verifier =
             JWT.require(Algorithm.HMAC256(SECRET_KEY.getBytes())).build();
 
-
-    public String createToken(UserDetailsImpl userDetails){
+    public String createToken(UserDetailsImpl userDetails) {
 
         List<GrantedAuthority> authorities = (List<GrantedAuthority>) userDetails.getAuthorities();
 
@@ -37,23 +39,22 @@ public class TokenUtils {
                 .sign(Algorithm.HMAC256(SECRET_KEY.getBytes()));
     }
 
-    public UsernamePasswordAuthenticationToken getAuthenticationToken(String token){
+    public UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
         try {
             DecodedJWT claim = verifier.verify(token);
-            List<GrantedAuthority> authorities =
-                    claim.getClaim("authorities").asList(GrantedAuthority.class);
+            String authorities = claim.getClaim("authorities").asString();
+
+            List<? extends GrantedAuthority> grantedAuthorities =
+                    Arrays.asList(
+                            new SimpleGrantedAuthority(
+                                    authorities.replaceAll("[\\[\\]]", "")));
 
             String username = claim.getSubject();
 
-            return new UsernamePasswordAuthenticationToken(
-                    username,
-                    null,
-                    authorities
-            );
+            return new UsernamePasswordAuthenticationToken(username, null, grantedAuthorities);
         } catch (JWTVerificationException ex) {
             System.out.println(ex.getMessage());
             return null;
         }
     }
-
 }

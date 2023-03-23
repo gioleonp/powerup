@@ -13,7 +13,7 @@ public class DishResponseDto {
     private CategoryModel categoria;
     private String descripcion;
     private int precio;
-    private RestaurantModel restaurante;
+    private RestaurantResponseDto restaurante;
     private String urlImagen;
     private Boolean activo;
 }

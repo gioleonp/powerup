@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class DishRequestDto {
 
+    private long id;
+
     @NotBlank(message = "NOMBRE ES UN ATRIBUTO OBLIGATORIO")
     private String nombre;
 
@@ -31,7 +33,7 @@ public class DishRequestDto {
     private int precio;
 
     @NotNull(message = "RESTAURANTE ES UN ATRIBUTO OBLIGATORIO")
-    private RestaurantModel restaurante;
+    private RestaurantRequestDto restaurante;
 
     @NotBlank(message = "URL IMAGEN ES UN ATRIBUTO OBLIGATORIO")
     private String urlImagen;

@@ -31,4 +31,16 @@ public class ProprietaryRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/empleado")
+    public ResponseEntity<Void> createEmployee(
+            @RequestBody UserRequestDto userRequestDto,
+            @RequestParam("proprietary") Long idProprietary,
+            @RequestParam("restaurant") Long idRestaurant) {
+
+        userServiceCommunicationPort.createEmployee(userRequestDto);
+
+        employeeHandler.saveEmployee(userRequestDto, idProprietary, idRestaurant);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 }

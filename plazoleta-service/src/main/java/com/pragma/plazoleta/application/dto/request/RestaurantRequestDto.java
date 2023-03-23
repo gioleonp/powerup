@@ -14,6 +14,8 @@ import java.rmi.MarshalException;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RestaurantRequestDto {
+
+    private Long id;
     @NotBlank(message = "NOMBRE ES UN ATRIBUTO OBLIGATORIO")
     @Pattern(regexp = "[a-zA-Zá-úÁ-Ú]+", message = "NOMBRE INVALIDO")
     private String nombre;

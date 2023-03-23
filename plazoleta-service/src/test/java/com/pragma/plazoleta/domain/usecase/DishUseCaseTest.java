@@ -28,55 +28,22 @@ class DishUseCaseTest {
     @Mock IUserServiceCommunicationPort userServiceCommunicationPort;
     @Mock IRestaurantPersistencePort restaurantPersistencePort;
 
-    DishModel expectedDishModel =
-            new DishModel(
-                    1,
-                    "macarrones",
-                    new CategoryModel(1, "pastas", ""),
-                    "macarrones con queso",
-                    20,
-                    null,
-                    "imagen.url",
-                    true);
-
-    RestaurantModel expectedRestaurant =
-            new RestaurantModel(
-                    1L,
-                    "donde keylly",
-                    "piedra de bolivar",
-                    1L,
-                    "573058388527",
-                    "http.foto.com",
-                    "1000000");
-
     Long idProprietary = 1L;
 
     @Test
     void saveDishOk() {
 
-        Long idProprietary = 1L;
+        DishModel expectedDishModel = DishUseCaseDataTest.getDishModel();
 
-        RestaurantModel expectedRestaurant =
-                new RestaurantModel(
-                        1L,
-                        "donde keylly",
-                        "piedra de bolivar",
-                        1L,
-                        "573058388527",
-                        "http.foto.com",
-                        "1000000");
-
-        // Given
-        expectedDishModel.setRestaurante(expectedRestaurant);
-
-        when(restaurantServicePort.findRestaurantById(expectedRestaurant.getId()))
-                .thenReturn(expectedRestaurant);
+        when(restaurantServicePort.findRestaurantById(expectedDishModel.getRestaurante().getId()))
+                .thenReturn(expectedDishModel.getRestaurante());
 
         // Then
         underTest.saveDish(idProprietary, expectedDishModel);
 
         verify(dishPersistencePort).saveDish(expectedDishModel);
-        verify(restaurantServicePort).findRestaurantById(expectedRestaurant.getId());
+        verify(restaurantServicePort)
+                .findRestaurantById(expectedDishModel.getRestaurante().getId());
     }
 
     @Test
@@ -85,10 +52,10 @@ class DishUseCaseTest {
         Long idProprietary = 2L;
 
         // Given
-        expectedDishModel.setRestaurante(expectedRestaurant);
+        DishModel expectedDishModel = DishUseCaseDataTest.getDishModel();
 
-        when(restaurantServicePort.findRestaurantById(expectedRestaurant.getId()))
-                .thenReturn(expectedRestaurant);
+        when(restaurantServicePort.findRestaurantById(expectedDishModel.getRestaurante().getId()))
+                .thenReturn(expectedDishModel.getRestaurante());
 
         // Then
         assertThatExceptionOfType(ProprietaryNotMatchException.class)
@@ -102,7 +69,7 @@ class DishUseCaseTest {
         UserModel foundUserModel = new UserModel();
         foundUserModel.setId(idProprietary);
 
-        expectedDishModel.setRestaurante(expectedRestaurant);
+        DishModel expectedDishModel = DishUseCaseDataTest.getDishModel();
 
         when(dishPersistencePort.findDishById(expectedDishModel.getId()))
                 .thenReturn(expectedDishModel);
@@ -123,7 +90,7 @@ class DishUseCaseTest {
         UserModel foundUserModel = new UserModel();
         foundUserModel.setId(2L);
 
-        expectedDishModel.setRestaurante(expectedRestaurant);
+        DishModel expectedDishModel = DishUseCaseDataTest.getDishModel();
 
         when(dishPersistencePort.findDishById(expectedDishModel.getId()))
                 .thenReturn(expectedDishModel);

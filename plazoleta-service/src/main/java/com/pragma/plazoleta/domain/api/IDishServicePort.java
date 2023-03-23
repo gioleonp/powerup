@@ -10,5 +10,6 @@ public interface IDishServicePort {
     List<DishModel> getAllDishes();
     void updateDish(Long id_proprietary, int id_dish, DishModel dishModel);
     DishModel updateActive(boolean active, Long idProprietary, int idDish);
+    List<DishModel> getDishesByRestaurantWithPaginationByCategory(Long idRestaurant, int page, int size);
 
 }

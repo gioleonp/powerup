@@ -26,7 +26,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserModel userResponseDto = userServiceCommunicationPort.findFullUserByEmail(username);
         List<GrantedAuthority> authorities = Arrays.asList(
-                new SimpleGrantedAuthority(userResponseDto.getRol().getName()));
+                new SimpleGrantedAuthority(userResponseDto.getRol().getNombre()));
         return new UserDetailsImpl(userResponseDto, authorities);
     }
 }
