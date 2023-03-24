@@ -4,18 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class DishModel {
+@NoArgsConstructor
+public class OrderModel {
+
     private Long id;
-    private String nombre;
-    private CategoryModel categoria;
-    private String descripcion;
-    private int precio;
+    private Long idCliente;
+    private LocalDateTime fecha;
+    private EOrderState estado;
+    private EmployeeModel chef;
     private RestaurantModel restaurante;
-    private String urlImagen;
-    private Boolean activo = true;
 }

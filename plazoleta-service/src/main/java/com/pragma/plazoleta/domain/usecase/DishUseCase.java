@@ -44,7 +44,7 @@ public class DishUseCase implements IDishServicePort {
     }
 
     @Override
-    public DishModel findDishById(int id) {
+    public DishModel findDishById(Long id) {
         return dishPersistencePort.findDishById(id);
     }
 
@@ -54,7 +54,7 @@ public class DishUseCase implements IDishServicePort {
     }
 
     @Override
-    public void updateDish(Long id_proprietary, int id_dish, DishModel dishModel) {
+    public void updateDish(Long id_proprietary, Long id_dish, DishModel dishModel) {
         // check it the dish already exists.
         DishModel foundDish = dishPersistencePort.findDishById(id_dish);
 
@@ -73,7 +73,7 @@ public class DishUseCase implements IDishServicePort {
     }
 
     @Override
-    public DishModel updateActive(boolean active, Long idProprietary, int idDish) {
+    public DishModel updateActive(boolean active, Long idProprietary, Long idDish) {
 
         DishModel dishModel = dishPersistencePort.findDishById(idDish);
 

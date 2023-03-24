@@ -7,10 +7,8 @@ import com.pragma.plazoleta.infrastructure.out.jpa.entity.DishEntity;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IDishEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IDishRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +26,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
     }
 
     @Override
-    public DishModel findDishById(int id) {
+    public DishModel findDishById(Long id) {
         Optional<DishEntity> dishEntity = dishRepository.findById(id);
         if (dishEntity.isEmpty()) {
             throw new NoDataFoundException();

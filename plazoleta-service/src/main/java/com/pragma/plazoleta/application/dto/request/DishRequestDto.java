@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class DishRequestDto {
 
-    private long id;
+    private Long id;
 
     @NotBlank(message = "NOMBRE ES UN ATRIBUTO OBLIGATORIO")
     private String nombre;

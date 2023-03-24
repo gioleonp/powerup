@@ -14,43 +14,43 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserFeignAdapter implements IUserServiceCommunicationPort {
 
-  private final IApiUserService userServiceCommunicationAdapter;
-  private final IUserResponseMapper userResponseMapper;
+    private final IApiUserService userServiceCommunicationAdapter;
+    private final IUserResponseMapper userResponseMapper;
 
-  @Override
-  public UserModel findUserById(long id) {
-    return userResponseMapper.toModel(userServiceCommunicationAdapter.findUserById(id));
-  }
+    @Override
+    public UserModel findUserById(long id) {
+        return userResponseMapper.toModel(userServiceCommunicationAdapter.findUserById(id));
+    }
 
-  @Override
-  public UserModel findFullUserByEmail(String email) {
-    UserResponseWithPasswordDto userResponse =
-        userServiceCommunicationAdapter.findFullUserByEmail(email);
-    return userResponseMapper.toModelWithPassword(userResponse);
-  }
+    @Override
+    public UserModel findFullUserByEmail(String email) {
+        UserResponseWithPasswordDto userResponse =
+                userServiceCommunicationAdapter.findFullUserByEmail(email);
+        return userResponseMapper.toModelWithPassword(userResponse);
+    }
 
-  @Override
-  public UserModel findByEmail(String email) {
-    return userResponseMapper.toModel(userServiceCommunicationAdapter.findUserByEmail(email));
-  }
+    @Override
+    public UserModel findByEmail(String email) {
+        return userResponseMapper.toModel(userServiceCommunicationAdapter.findUserByEmail(email));
+    }
 
-  @Override
-  public void createProprietary(UserRequestDto userRequestDto) {
-    userServiceCommunicationAdapter.createProprietary(userRequestDto);
-  }
+    @Override
+    public void createProprietary(UserRequestDto userRequestDto) {
+        userServiceCommunicationAdapter.createProprietary(userRequestDto);
+    }
 
-  @Override
-  public void createEmployee(UserRequestDto userRequestDto) {
-    userServiceCommunicationAdapter.createEmployee(userRequestDto);
-  }
+    @Override
+    public void createEmployee(UserRequestDto userRequestDto) {
+        userServiceCommunicationAdapter.createEmployee(userRequestDto);
+    }
 
-  @Override
-  public void createClient(UserRequestDto userRequestDto) {
-    userServiceCommunicationAdapter.createClient(userRequestDto);
-  }
+    @Override
+    public void createClient(UserRequestDto userRequestDto) {
+        userServiceCommunicationAdapter.createClient(userRequestDto);
+    }
 
-  @Override
-  public List<UserModel> getAllUsers() {
-    return userResponseMapper.toModelList(userServiceCommunicationAdapter.getAllUsers());
-  }
+    @Override
+    public List<UserModel> getAllUsers() {
+        return userResponseMapper.toModelList(userServiceCommunicationAdapter.getAllUsers());
+    }
 }

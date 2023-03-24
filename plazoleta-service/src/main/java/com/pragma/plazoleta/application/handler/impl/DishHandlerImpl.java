@@ -32,7 +32,7 @@ public class DishHandlerImpl implements IDishHandler {
     }
 
     @Override
-    public DishResponseDto findDishById(int id) {
+    public DishResponseDto findDishById(Long id) {
         return dishResponseMapper.toResponse(dishServicePort.findDishById(id));
     }
 
@@ -44,13 +44,13 @@ public class DishHandlerImpl implements IDishHandler {
 
     @Override
     public void updateDish(
-            Long id_proprietary, int id_dish, DishRequestPriceAndDescriptionDto dishRequestDto) {
+            Long id_proprietary, Long id_dish, DishRequestPriceAndDescriptionDto dishRequestDto) {
         DishModel dishModel = dishRequestPriceAndDescriptionMapper.toModel(dishRequestDto);
         dishServicePort.updateDish(id_proprietary, id_dish, dishModel);
     }
 
     @Override
-    public DishResponseDto updateActive(boolean active, Long idProprietary, int idDish) {
+    public DishResponseDto updateActive(boolean active, Long idProprietary, Long idDish) {
         DishModel dishModel = dishServicePort.updateActive(active, idProprietary, idDish);
         return dishResponseMapper.toResponse(dishModel);
     }

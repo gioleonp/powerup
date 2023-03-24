@@ -9,14 +9,14 @@ public interface IDishHandler {
 
     void saveDish(Long id_proprietary, DishRequestDto dishRequestDto);
 
-    DishResponseDto findDishById(int id);
+    DishResponseDto findDishById(Long id);
 
     List<DishResponseDto> getAllDishes();
 
     void updateDish(
-            Long id_proprietary, int id_dish, DishRequestPriceAndDescriptionDto dishRequestDto);
+            Long id_proprietary, Long id_dish, DishRequestPriceAndDescriptionDto dishRequestDto);
 
-    DishResponseDto updateActive(boolean active, Long idProprietary, int idDish);
+    DishResponseDto updateActive(boolean active, Long idProprietary, Long idDish);
 
     List<DishResponseDto> getDishesByRestaurantWithPaginationByCategory(
             Long idRestaurant, int page, int size);

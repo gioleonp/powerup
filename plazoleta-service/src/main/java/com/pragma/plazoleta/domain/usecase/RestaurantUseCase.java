@@ -1,21 +1,24 @@
 package com.pragma.plazoleta.domain.usecase;
 
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
-import com.pragma.plazoleta.domain.exception.DomainException;
-import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;import com.pragma.plazoleta.domain.model.RestaurantModel;
-import com.pragma.plazoleta.domain.model.RestaurantNameAndUrlModel;import com.pragma.plazoleta.domain.model.UserModel;
+import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
+import com.pragma.plazoleta.domain.model.RestaurantModel;
+import com.pragma.plazoleta.domain.model.RestaurantNameAndUrlModel;
+import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.persistence.IRestaurantPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 
-import java.util.List;import java.util.regex.Pattern;
+import java.util.List;
+import java.util.regex.Pattern;
 
 public class RestaurantUseCase implements IRestaurantServicePort {
 
     private final IRestaurantPersistencePort restaurantPersistencePort;
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
 
-    public RestaurantUseCase(IRestaurantPersistencePort restaurantPersistencePort,
-                             IUserServiceCommunicationPort userServiceCommunicationPort) {
+    public RestaurantUseCase(
+            IRestaurantPersistencePort restaurantPersistencePort,
+            IUserServiceCommunicationPort userServiceCommunicationPort) {
         this.restaurantPersistencePort = restaurantPersistencePort;
         this.userServiceCommunicationPort = userServiceCommunicationPort;
     }
@@ -23,15 +26,16 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     @Override
     public void saveRestaurant(RestaurantModel restaurantModel) {
 
-        String correctedPhoneNumber = restaurantModel.getTelefono().contains("+")
-                ? restaurantModel.getTelefono()
-                : "+" + restaurantModel.getTelefono();
+        String correctedPhoneNumber =
+                restaurantModel.getTelefono().contains("+")
+                        ? restaurantModel.getTelefono()
+                        : "+" + restaurantModel.getTelefono();
 
         restaurantModel.setTelefono(correctedPhoneNumber);
 
         // If there's no missing data, retrieve user from user service
-        UserModel user = userServiceCommunicationPort.findUserById(
-                restaurantModel.getIdPropietario());
+        UserModel user =
+                userServiceCommunicationPort.findUserById(restaurantModel.getIdPropietario());
 
         // Checking the validity and authorization
         if (!user.getRol().getNombre().equals("ROLE_PROPIETARIO")) {

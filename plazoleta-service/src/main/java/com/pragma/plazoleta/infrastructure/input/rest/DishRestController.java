@@ -36,7 +36,7 @@ public class DishRestController {
     public ResponseEntity<Void> updateDish(
             @Valid @RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
             @RequestParam("proprietary") long idProprietary,
-            @PathVariable("id_dish") int idDish) {
+            @PathVariable("id_dish") Long idDish) {
         dishHandler.updateDish(idProprietary, idDish, dishRequestDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -45,7 +45,7 @@ public class DishRestController {
     public ResponseEntity<DishResponseDto> updateActive(
             @RequestParam("active") boolean active,
             @RequestParam("proprietary") long idProprietary,
-            @PathVariable("id_dish") int idDish) {
+            @PathVariable("id_dish") Long idDish) {
         return ResponseEntity.ok(dishHandler.updateActive(active, idProprietary, idDish));
     }
 
