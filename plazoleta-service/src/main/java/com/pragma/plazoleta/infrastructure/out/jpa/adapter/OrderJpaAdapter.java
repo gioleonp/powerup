@@ -19,4 +19,9 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
         return orderEntityMapper.toModel(orderEntity);
     }
+
+    @Override
+    public int getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient) {
+        return orderRepository.getNumberOfOrdersWithStateInPreparationPendingOrReady(idClient);
+    }
 }

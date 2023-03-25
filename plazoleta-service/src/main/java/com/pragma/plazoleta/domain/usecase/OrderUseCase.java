@@ -4,16 +4,14 @@ import com.pragma.plazoleta.domain.api.IOrderDishServicePort;
 import com.pragma.plazoleta.domain.api.IOrderServicePort;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
-import com.pragma.plazoleta.domain.model.EOrderState;
+import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;import com.pragma.plazoleta.domain.model.EOrderState;
 import com.pragma.plazoleta.domain.model.OrderDishModel;
 import com.pragma.plazoleta.domain.model.OrderModel;
 import com.pragma.plazoleta.domain.model.UserModel;
-import com.pragma.plazoleta.domain.spi.persistence.IOrderDishPersistencePort;
 import com.pragma.plazoleta.domain.spi.persistence.IOrderPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class OrderUseCase implements IOrderServicePort {
 
@@ -39,8 +37,15 @@ public class OrderUseCase implements IOrderServicePort {
         // check if the user is a client
         UserModel userModel = userServiceCommunicationPort.findUserById(orderModel.getIdCliente());
         if (!userModel.getRol().getNombre().contains("CLIENTE")) {
-            throw new NotClientToMakeAnOrderException(
-                    "El usuario no tiene permiso para realizar esta accion");
+            throw new NotClientToMakeAnOrderException();
+        }
+
+        // check if a user already has orders in pending, preparing or ready.
+        int orderWithStatePendingPreparingOrReady =
+                orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(
+                        userModel.getId());
+        if (orderWithStatePendingPreparingOrReady > 0) {
+            throw new UserAlreadyHaveAnOrderPreparingPendingOrReadyException();
         }
 
         // save order

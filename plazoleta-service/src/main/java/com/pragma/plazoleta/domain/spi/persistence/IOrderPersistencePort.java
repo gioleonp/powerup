@@ -5,4 +5,5 @@ import com.pragma.plazoleta.domain.model.OrderModel;
 public interface IOrderPersistencePort {
 
     OrderModel createOrder(OrderModel order);
+    int getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient);
 }

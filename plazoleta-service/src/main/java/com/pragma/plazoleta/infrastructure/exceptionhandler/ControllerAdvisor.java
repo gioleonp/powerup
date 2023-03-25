@@ -2,7 +2,9 @@ package com.pragma.plazoleta.infrastructure.exceptionhandler;
 
 import com.pragma.plazoleta.domain.exception.DishNotCorrespondToRestaurantException;
 import com.pragma.plazoleta.domain.exception.DomainException;
-import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
+import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
+import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
+import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import feign.RetryableException;
 import org.springframework.http.HttpStatus;
@@ -64,6 +66,13 @@ public class ControllerAdvisor {
     @ExceptionHandler(NotClientToMakeAnOrderException.class)
     public ResponseEntity<Map<String, String>> notClientException(
             NotClientToMakeAnOrderException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+    @ExceptionHandler(UserAlreadyHaveAnOrderPreparingPendingOrReadyException.class)
+    public ResponseEntity<Map<String, String>> userOrderState(
+            UserAlreadyHaveAnOrderPreparingPendingOrReadyException ignoredDomainException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
     }
