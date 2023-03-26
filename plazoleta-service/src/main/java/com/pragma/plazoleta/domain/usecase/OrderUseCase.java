@@ -73,7 +73,4 @@ public class OrderUseCase implements IOrderServicePort {
         return orderPersistencePort.findAllOrdersByStateAndRestaurant(
                 state, employeeModel.getIdRestaurante(), page, size);
     }
-
-    @Override
-    public void assignOrder(Long idOrder, Long idEmployee) {}
 }

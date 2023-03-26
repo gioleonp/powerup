@@ -6,5 +6,6 @@ public interface IOrderPersistencePort {
 
     OrderModel createOrder(OrderModel order);
     int getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient);
-    List<OrderModel> findAllOrdersByStateAndRestaurant(EOrderState state, Long idRestaurant);
+
+    List<OrderModel> findAllOrdersByStateAndRestaurant(EOrderState state, Long idRestaurant, int page, int size);
 }
