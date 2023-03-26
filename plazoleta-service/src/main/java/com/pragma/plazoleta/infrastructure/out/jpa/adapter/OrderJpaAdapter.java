@@ -1,11 +1,16 @@
 package com.pragma.plazoleta.infrastructure.out.jpa.adapter;
 
+import com.pragma.plazoleta.domain.model.EOrderState;
 import com.pragma.plazoleta.domain.model.OrderModel;
 import com.pragma.plazoleta.domain.spi.persistence.IOrderPersistencePort;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IOrderEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IOrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class OrderJpaAdapter implements IOrderPersistencePort {
@@ -23,5 +28,19 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     @Override
     public int getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient) {
         return orderRepository.getNumberOfOrdersWithStateInPreparationPendingOrReady(idClient);
+    }
+
+    @Override
+    public List<OrderModel> findAllOrdersByStateAndRestaurant(
+            EOrderState state, Long idRestaurant, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<OrderEntity> orderEntities =
+                orderRepository
+                        .findAllOrderByStateAndRestaurant(state.toString(), idRestaurant, pageable)
+                        .toList();
+
+        return orderEntityMapper.toModelList(orderEntities);
     }
 }

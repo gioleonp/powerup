@@ -38,4 +38,9 @@ public class EmployeeUseCase implements IEmployeeServicePort {
 
         employeePersistencePort.saveEmploy(employeeModel);
     }
+
+    @Override
+    public EmployeeModel findByIdUsuario(Long idEmployee) {
+        return employeePersistencePort.findByIdUsuario(idEmployee);
+    }
 }

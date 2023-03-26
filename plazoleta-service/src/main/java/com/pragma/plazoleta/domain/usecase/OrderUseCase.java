@@ -1,10 +1,12 @@
 package com.pragma.plazoleta.domain.usecase;
 
+import com.pragma.plazoleta.domain.api.IEmployeeServicePort;
 import com.pragma.plazoleta.domain.api.IOrderDishServicePort;
 import com.pragma.plazoleta.domain.api.IOrderServicePort;
-import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
-import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;import com.pragma.plazoleta.domain.model.EOrderState;
+import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
+import com.pragma.plazoleta.domain.model.EOrderState;
+import com.pragma.plazoleta.domain.model.EmployeeModel;
 import com.pragma.plazoleta.domain.model.OrderDishModel;
 import com.pragma.plazoleta.domain.model.OrderModel;
 import com.pragma.plazoleta.domain.model.UserModel;
@@ -18,14 +20,17 @@ public class OrderUseCase implements IOrderServicePort {
     private final IOrderPersistencePort orderPersistencePort;
     private final IOrderDishServicePort orderDishServicePort;
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
+    private final IEmployeeServicePort employeeServicePort;
 
     public OrderUseCase(
             IOrderPersistencePort orderPersistencePort,
             IOrderDishServicePort orderDishServicePort,
-            IUserServiceCommunicationPort userServiceCommunicationPort) {
+            IUserServiceCommunicationPort userServiceCommunicationPort,
+            IEmployeeServicePort employeeServicePort) {
         this.orderPersistencePort = orderPersistencePort;
         this.orderDishServicePort = orderDishServicePort;
         this.userServiceCommunicationPort = userServiceCommunicationPort;
+        this.employeeServicePort = employeeServicePort;
     }
 
     @Override
@@ -58,4 +63,17 @@ public class OrderUseCase implements IOrderServicePort {
 
         orderDishServicePort.createOrderDish(orderDishModels, orderModel);
     }
+
+    @Override
+    public List<OrderModel> findAllOrdersByStatusAndRestaurant(
+            EOrderState state, Long idEmployee, int page, int size) {
+
+        EmployeeModel employeeModel = employeeServicePort.findByIdUsuario(idEmployee);
+
+        return orderPersistencePort.findAllOrdersByStateAndRestaurant(
+                state, employeeModel.getIdRestaurante(), page, size);
+    }
+
+    @Override
+    public void assignOrder(Long idOrder, Long idEmployee) {}
 }

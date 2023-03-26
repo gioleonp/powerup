@@ -1,8 +1,14 @@
 package com.pragma.plazoleta.domain.api;
 
-import com.pragma.plazoleta.domain.model.OrderDishModel;import com.pragma.plazoleta.domain.model.OrderModel;import java.util.List;
+import com.pragma.plazoleta.domain.model.EOrderState;
+import com.pragma.plazoleta.domain.model.OrderDishModel;
+import com.pragma.plazoleta.domain.model.OrderModel;
+import java.util.List;
 
 public interface IOrderServicePort {
 
     void createOrder(OrderModel orderModel, List<OrderDishModel> orderDishModelList);
+
+    List<OrderModel> findAllOrdersByStatusAndRestaurant(
+            EOrderState state, Long idEmployee, int page, int size);
 }

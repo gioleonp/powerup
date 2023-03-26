@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/platos/**").hasRole("PROPIETARIO")
                 .antMatchers("/api/v1/empleado/**").hasRole("EMPLEADO")
                 .antMatchers("/api/v1/cliente/**").hasRole("CLIENTE")
-                .antMatchers("/api/v1/pedido/**").hasRole("CLIENTE")
+                .antMatchers("/api/v1/pedido/**").hasAnyRole("CLIENTE", "EMPLEADO")
                 .anyRequest()
                 .permitAll()
                 .and()

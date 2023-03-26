@@ -38,8 +38,16 @@ public class OrderEntity {
 
     @ManyToOne()
     @JoinColumns({
-        @JoinColumn(name = "id_chef", referencedColumnName = "id_usuario", insertable = false, updatable = false),
-        @JoinColumn(name = "id_restaurante", referencedColumnName = "id_restaurante", insertable = false, updatable = false)
+        @JoinColumn(
+                name = "id_chef",
+                referencedColumnName = "id_usuario",
+                insertable = false,
+                updatable = false),
+        @JoinColumn(
+                name = "id_restaurante",
+                referencedColumnName = "id_restaurante",
+                insertable = false,
+                updatable = false)
     })
     private EmployeeEntity chef;
 

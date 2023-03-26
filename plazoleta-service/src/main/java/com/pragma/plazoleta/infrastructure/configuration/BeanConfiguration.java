@@ -127,6 +127,9 @@ public class BeanConfiguration {
     @Bean
     public IOrderServicePort orderServicePort() {
         return new OrderUseCase(
-                orderPersistencePort(), orderDishServicePort(), userServiceCommunicationPort);
+                orderPersistencePort(),
+                orderDishServicePort(),
+                userServiceCommunicationPort,
+                employeeServicePort());
     }
 }
