@@ -39,7 +39,13 @@ public class OrderHandlerImpl implements IOrderHandler {
     public List<OrderResponseDto> findAllOrdersByStatusAndRestaurant(
             EOrderState state, Long idRestaurant, int page, int size) {
         List<OrderModel> orders =
-                orderServicePort.findAllOrdersByStatusAndRestaurant(state, idRestaurant, page, size);
+                orderServicePort.findAllOrdersByStatusAndRestaurant(
+                        state, idRestaurant, page, size);
         return orderResponseMapper.toResponseList(orders);
+    }
+
+    @Override
+    public void assignOrder(Long idOrder, Long idRestaurant) {
+        orderServicePort.assignOrder(idOrder, idRestaurant);
     }
 }

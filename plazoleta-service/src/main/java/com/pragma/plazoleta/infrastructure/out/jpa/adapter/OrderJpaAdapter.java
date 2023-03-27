@@ -3,6 +3,7 @@ package com.pragma.plazoleta.infrastructure.out.jpa.adapter;
 import com.pragma.plazoleta.domain.model.EOrderState;
 import com.pragma.plazoleta.domain.model.OrderModel;
 import com.pragma.plazoleta.domain.spi.persistence.IOrderPersistencePort;
+import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IOrderEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IOrderRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class OrderJpaAdapter implements IOrderPersistencePort {
@@ -42,5 +44,15 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
                         .toList();
 
         return orderEntityMapper.toModelList(orderEntities);
+    }
+
+    @Override
+    public OrderModel findById(Long id) {
+
+        Optional<OrderEntity> order = orderRepository.findById(id);
+        if (order.isEmpty()) {
+            throw new NoDataFoundException();
+        }
+        return orderEntityMapper.toModel(order.get());
     }
 }

@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -36,20 +35,8 @@ public class OrderEntity {
     @Enumerated(value = EnumType.STRING)
     private EOrderState estado;
 
-    @ManyToOne()
-    @JoinColumns({
-        @JoinColumn(
-                name = "id_chef",
-                referencedColumnName = "id_usuario",
-                insertable = false,
-                updatable = false),
-        @JoinColumn(
-                name = "id_restaurante",
-                referencedColumnName = "id_restaurante",
-                insertable = false,
-                updatable = false)
-    })
-    private EmployeeEntity chef;
+    @Column(name = "id_chef")
+    private Long idChef;
 
     @ManyToOne()
     @JoinColumn(name = "id_restaurante")

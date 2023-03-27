@@ -3,6 +3,8 @@ package com.pragma.plazoleta.domain.usecase;
 import com.pragma.plazoleta.domain.api.IEmployeeServicePort;
 import com.pragma.plazoleta.domain.api.IOrderDishServicePort;
 import com.pragma.plazoleta.domain.api.IOrderServicePort;
+import com.pragma.plazoleta.domain.exception.DomainException;
+import com.pragma.plazoleta.domain.exception.EmployeeNotBelongToTheRestaurantException;
 import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
 import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
 import com.pragma.plazoleta.domain.model.EOrderState;
@@ -72,5 +74,24 @@ public class OrderUseCase implements IOrderServicePort {
 
         return orderPersistencePort.findAllOrdersByStateAndRestaurant(
                 state, employeeModel.getIdRestaurante(), page, size);
+    }
+
+    @Override
+    public void assignOrder(Long idOrder, Long idEmployee) {
+
+        OrderModel order = orderPersistencePort.findById(idOrder);
+        EmployeeModel employeeModel = employeeServicePort.findByIdUsuario(idEmployee);
+
+        if (!order.getRestaurante().getId().equals(employeeModel.getIdRestaurante())) {
+            throw new EmployeeNotBelongToTheRestaurantException();
+        } else if (order.getEstado() != EOrderState.PENDIENTE) {
+            throw new DomainException("ONLY A PENDING ORDER CAN BE TAKEN BY A EMPLOYEE");
+        }
+
+        order.setIdChef(employeeModel.getIdUsuario()); // assign employee
+        order.setEstado(EOrderState.EN_PREPARACION); // change state
+
+        // updating the order.
+        orderPersistencePort.createOrder(order);
     }
 }

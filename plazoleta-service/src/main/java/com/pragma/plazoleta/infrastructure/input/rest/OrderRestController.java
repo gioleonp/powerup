@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class OrderRestController {
 
     private final IOrderHandler orderHandler;
 
-    @PostMapping("")
+    @PostMapping("new")
     public ResponseEntity<Void> createOrder(@Valid @RequestBody OrderRequestDto order) {
         orderHandler.createOrder(order, order.getPlatos());
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -38,5 +39,12 @@ public class OrderRestController {
         return new ResponseEntity<>(
                 orderHandler.findAllOrdersByStatusAndRestaurant(state, idEmployee, page, size),
                 HttpStatus.OK);
+    }
+
+    @GetMapping("/{id_pedido}")
+    public ResponseEntity<Void> assignOrder(
+            @PathVariable("id_pedido") Long idPedido, @RequestParam("employee") Long idEmployee) {
+        orderHandler.assignOrder(idPedido, idEmployee);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

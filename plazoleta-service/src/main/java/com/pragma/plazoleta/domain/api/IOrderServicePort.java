@@ -11,4 +11,6 @@ public interface IOrderServicePort {
 
     List<OrderModel> findAllOrdersByStatusAndRestaurant(
             EOrderState state, Long idEmployee, int page, int size);
+
+    void assignOrder(Long idOrder, Long idEmployee);
 }

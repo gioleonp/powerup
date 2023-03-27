@@ -16,6 +16,6 @@ public class OrderModel {
     private Long idCliente;
     private LocalDateTime fecha;
     private EOrderState estado;
-    private EmployeeModel chef;
+    private Long idChef;
     private RestaurantModel restaurante;
 }

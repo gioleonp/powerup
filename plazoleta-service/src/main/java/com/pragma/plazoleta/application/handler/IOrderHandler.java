@@ -13,4 +13,6 @@ public interface IOrderHandler {
 
     List<OrderResponseDto> findAllOrdersByStatusAndRestaurant(
             EOrderState state, Long idRestaurant, int page, int size);
+
+    void assignOrder(Long idOrder, Long idRestaurant);
 }
