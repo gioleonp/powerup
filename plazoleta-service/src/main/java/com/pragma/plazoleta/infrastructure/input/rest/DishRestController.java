@@ -51,7 +51,7 @@ public class DishRestController {
 
     @PostMapping("")
     public ResponseEntity<Void> saveDish(
-            @RequestBody DishRequestDto dishRequestDto,
+            @Valid @RequestBody DishRequestDto dishRequestDto,
             @RequestParam("proprietary") long idProprietary) {
         dishHandler.saveDish(idProprietary, dishRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

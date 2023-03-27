@@ -42,9 +42,14 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(
-            DomainException ignoredDomainException) {
+            MethodArgumentNotValidException ignoredMethodValidationException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+                .body(
+                        Collections.singletonMap(
+                                MESSAGE,
+                                ignoredMethodValidationException
+                                        .getFieldError()
+                                        .getDefaultMessage()));
     }
 
     /*
@@ -52,11 +57,9 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> feignExceptions(
             RetryableException ignoredDomainException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getLocalizedMessage()));
     }
-
      */
-
     @ExceptionHandler(DomainException.class)
     public ResponseEntity<Map<String, String>> DomainExceptions(
             DomainException ignoredDomainException) {

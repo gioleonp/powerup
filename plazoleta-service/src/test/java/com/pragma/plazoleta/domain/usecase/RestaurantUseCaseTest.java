@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import java.util.Arrays;
+import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
@@ -72,14 +74,22 @@ class RestaurantUseCaseTest {
     }
 
     @Test
-    void findRestaurantById() {
-
-
-
-    }
+    void findRestaurantById() {}
 
     @Test
-    void getAllRestaurants() {}
+    void getAllRestaurants() {
+        // Given
+        List<RestaurantModel> expectedRestaurants =
+                Arrays.asList(RestaurantUseCaseDataTest.getRestaurantModel());
+
+        // When
+        when(restaurantPersistencePort.getAllRestaurants()).thenReturn(expectedRestaurants);
+        underTest.getAllRestaurants();
+
+        // Then
+        verify(restaurantPersistencePort).getAllRestaurants();
+        assertThat(underTest.getAllRestaurants()).isEqualTo(expectedRestaurants);
+    }
 
     @Test
     void getRestaurantsWithPagination() {}
