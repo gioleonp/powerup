@@ -85,7 +85,7 @@ public class BeanConfiguration {
     @Bean
     public IDishServicePort dishServicePort() {
         return new DishUseCase(
-                dishPersistencePort(), userServiceCommunicationPort, restaurantServicePort());
+                dishPersistencePort(), restaurantServicePort());
     }
 
     @Bean

@@ -3,6 +3,7 @@ package com.pragma.plazoleta.infrastructure.exceptionhandler;
 import com.pragma.plazoleta.domain.exception.DishNotCorrespondToRestaurantException;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
+import com.pragma.plazoleta.domain.exception.SameStateException;
 import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
 import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
@@ -55,6 +56,20 @@ public class ControllerAdvisor {
     }
 
      */
+
+    @ExceptionHandler(DomainException.class)
+    public ResponseEntity<Map<String, String>> DomainExceptions(
+            DomainException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+    @ExceptionHandler(SameStateException.class)
+    public ResponseEntity<Map<String, String>> sameException(
+            SameStateException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
 
     @ExceptionHandler(DishNotCorrespondToRestaurantException.class)
     public ResponseEntity<Map<String, String>> DishNotCorrespondToRestaurantException(

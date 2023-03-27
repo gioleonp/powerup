@@ -1,6 +1,7 @@
 package com.pragma.plazoleta.domain.usecase;
 
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
+import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import com.pragma.plazoleta.domain.model.CategoryModel;
 import com.pragma.plazoleta.domain.model.DishModel;
@@ -66,45 +67,80 @@ class DishUseCaseTest {
     @Test
     void UpdateDishOk() {
         // Given
-        UserModel foundUserModel = new UserModel();
-        foundUserModel.setId(idProprietary);
-
         DishModel expectedDishModel = DishUseCaseDataTest.getDishModel();
 
         when(dishPersistencePort.findDishById(expectedDishModel.getId()))
                 .thenReturn(expectedDishModel);
-
-        when(userServiceCommunicationPort.findUserById(idProprietary)).thenReturn(foundUserModel);
 
         // When
         underTest.updateDish(idProprietary, expectedDishModel.getId(), expectedDishModel);
 
         // Then
         verify(dishPersistencePort).updateDish(expectedDishModel);
-        verify(userServiceCommunicationPort).findUserById(idProprietary);
     }
 
     @Test
     void UpdateDishWithWrongProprietary() {
         // Given
-        UserModel foundUserModel = new UserModel();
-        foundUserModel.setId(2L);
-
+        Long wrongIdProprietary = 2L;
         DishModel expectedDishModel = DishUseCaseDataTest.getDishModel();
 
         when(dishPersistencePort.findDishById(expectedDishModel.getId()))
                 .thenReturn(expectedDishModel);
-
-        when(userServiceCommunicationPort.findUserById(idProprietary)).thenReturn(foundUserModel);
 
         // When
         assertThatExceptionOfType(ProprietaryNotMatchException.class)
                 .isThrownBy(
                         () ->
                                 underTest.updateDish(
-                                        idProprietary,
+                                        wrongIdProprietary,
                                         expectedDishModel.getId(),
                                         expectedDishModel))
+                .withMessageMatching("USER NOT AUTHORIZED");
+    }
+
+    @Test
+    void updateActiveOk() {
+        // Given
+        boolean state = false;
+        DishModel dish = DishUseCaseDataTest.getDishModel();
+
+        // When
+        when(dishPersistencePort.findDishById(dish.getId())).thenReturn(dish);
+        underTest.updateActive(state, idProprietary, dish.getId());
+
+        // Then
+        verify(dishPersistencePort).updateActive(dish);
+    }
+
+    @Test
+    void updateActiveSameState() {
+        // Given
+        boolean state = true;
+        DishModel dish = DishUseCaseDataTest.getDishModel();
+
+        // When
+        when(dishPersistencePort.findDishById(dish.getId())).thenReturn(dish);
+
+        // Then
+        assertThatExceptionOfType(DomainException.class)
+                .isThrownBy(() -> underTest.updateActive(state, idProprietary, dish.getId()))
+                .withMessageMatching(
+                        "YOU MUST TO CHANGE THE STATE OF YOUR DISH TO A DIFFERENT ONE");
+    }
+
+    @Test
+    void updateActiveWrongProprietary() {
+        // Given
+        boolean state = true;
+        DishModel dish = DishUseCaseDataTest.getDishModel();
+
+        // When
+        when(dishPersistencePort.findDishById(dish.getId())).thenReturn(dish);
+
+        // Then
+        assertThatExceptionOfType(ProprietaryNotMatchException.class)
+                .isThrownBy(() -> underTest.updateActive(state, 2L, dish.getId()))
                 .withMessageMatching("USER NOT AUTHORIZED");
     }
 }

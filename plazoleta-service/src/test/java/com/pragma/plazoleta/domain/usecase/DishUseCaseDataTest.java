@@ -4,7 +4,7 @@ import com.pragma.plazoleta.domain.model.CategoryModel;import com.pragma.plazole
     public static DishModel getDishModel(){
         DishModel expectedDishModel =
                 new DishModel(
-                        1,
+                        1L,
                         "macarrones",
                         new CategoryModel(1, "pastas", ""),
                         "macarrones con queso",
