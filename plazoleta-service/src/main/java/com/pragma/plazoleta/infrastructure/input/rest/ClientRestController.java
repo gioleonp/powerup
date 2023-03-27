@@ -52,24 +52,4 @@ public class ClientRestController {
         userServiceCommunicationPort.createClient(userDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-    @GetMapping("/cliente/restaurantes")
-    public ResponseEntity<List<RestaurantResponseNameAndUrlDto>> getRestaurantsWithPagination(
-            @RequestParam("page") int page, @RequestParam("size") int size) {
-
-        return ResponseEntity.ok(restaurantHandler.getRestaurantsWithPagination(page, size));
-    }
-
-    @GetMapping("/cliente/restaurante/{id_restaurante}")
-    public ResponseEntity<List<DishResponseDto>> getMenu(
-            @PathVariable("id_restaurante") Long idRestaurante,
-            @RequestParam("page") int page,
-            @RequestParam("size") int size) {
-
-        List<DishResponseDto> dishResponseDtos =
-                dishHandler.getDishesByRestaurantWithPaginationByCategory(
-                        idRestaurante, page, size);
-
-        return ResponseEntity.ok(dishResponseDtos);
-    }
 }

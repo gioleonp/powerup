@@ -4,6 +4,10 @@ import com.pragma.plazoleta.application.dto.request.UserRequestDto;
 import com.pragma.plazoleta.application.handler.IEmployeeHandler;
 import com.pragma.plazoleta.application.handler.IProprietaryHandler;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,12 +29,14 @@ public class ProprietaryRestController {
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
     private final IEmployeeHandler employeeHandler;
 
-    @PostMapping("")
-    public ResponseEntity<Void> createProprietary(@RequestBody UserRequestDto userRequestDto){
-        userServiceCommunicationPort.createProprietary(userRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
+    @Operation(summary = "Save employee")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "201",
+                        description = "Employee saved",
+                        content = @Content)
+            })
     @PostMapping("/empleado")
     public ResponseEntity<Void> createEmployee(
             @RequestBody UserRequestDto userRequestDto,
@@ -42,5 +48,4 @@ public class ProprietaryRestController {
         employeeHandler.saveEmployee(userRequestDto, idProprietary, idRestaurant);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
 }

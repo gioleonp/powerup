@@ -3,6 +3,10 @@ package com.pragma.plazoleta.infrastructure.input.rest;
 import com.pragma.plazoleta.application.dto.request.CategoryRequestDto;
 import com.pragma.plazoleta.application.dto.response.CategoryResponseDto;
 import com.pragma.plazoleta.application.handler.ICategoryHandler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,18 +23,38 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryRestController {
 
-  private final ICategoryHandler categoryHandler;
+    private final ICategoryHandler categoryHandler;
 
-  @GetMapping("")
-  public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
-    return ResponseEntity.ok(categoryHandler.getAllCategories());
-  }
+    @Operation(summary = "Get all categories")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "All categories found",
+                        content = @Content),
+                @ApiResponse(
+                        responseCode = "404",
+                        description = "No data found",
+                        content = @Content)
+            })
+    @GetMapping("")
+    public ResponseEntity<List<CategoryResponseDto>> getAllCategories() {
+        return ResponseEntity.ok(categoryHandler.getAllCategories());
+    }
 
-  @PostMapping()
-  public ResponseEntity<Void> saveCategory(@RequestBody CategoryRequestDto categoryRequestDto) {
+    @Operation(summary = "Save category")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "201",
+                        description = "Category saved",
+                        content = @Content)
+            })
+    @PostMapping()
+    public ResponseEntity<Void> saveCategory(@RequestBody CategoryRequestDto categoryRequestDto) {
 
-    categoryHandler.saveCategory(categoryRequestDto);
+        categoryHandler.saveCategory(categoryRequestDto);
 
-    return new ResponseEntity<>(HttpStatus.CREATED);
-  }
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 }
