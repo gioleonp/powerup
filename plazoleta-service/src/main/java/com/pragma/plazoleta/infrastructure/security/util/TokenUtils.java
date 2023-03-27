@@ -5,7 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.pragma.plazoleta.domain.model.RolModel;
+import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import com.pragma.plazoleta.infrastructure.security.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,16 +18,16 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class TokenUtils {
 
     private final String SECRET_KEY = "1231rfdsfcseafas";
     private final Long TOKEN_TIME_VALIDITY = 1_313_131L;
     private final JWTVerifier verifier =
             JWT.require(Algorithm.HMAC256(SECRET_KEY.getBytes())).build();
+    private final IUserServiceCommunicationPort userServiceCommunicationPort;
 
     public String createToken(UserDetailsImpl userDetails) {
 
@@ -33,7 +36,6 @@ public class TokenUtils {
         return JWT.create()
                 .withIssuer("plazoleta service")
                 .withSubject(userDetails.getUsername())
-                .withClaim("authorities", authorities.toString())
                 .withClaim("id", userDetails.getUserResponseDto().getId())
                 .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_TIME_VALIDITY * 1000))
                 .sign(Algorithm.HMAC256(SECRET_KEY.getBytes()));
@@ -42,12 +44,12 @@ public class TokenUtils {
     public UsernamePasswordAuthenticationToken getAuthenticationToken(String token) {
         try {
             DecodedJWT claim = verifier.verify(token);
-            String authorities = claim.getClaim("authorities").asString();
+            String id = claim.getClaim("id").toString();
+
+            RolModel role = userServiceCommunicationPort.findUserById(Long.parseLong(id)).getRol();
 
             List<? extends GrantedAuthority> grantedAuthorities =
-                    Arrays.asList(
-                            new SimpleGrantedAuthority(
-                                    authorities.replaceAll("[\\[\\]]", "")));
+                    Arrays.asList(new SimpleGrantedAuthority(role.getNombre()));
 
             String username = claim.getSubject();
 
