@@ -1,8 +1,7 @@
 package com.pragma.plazoleta.application.mapper;
 
-import com.pragma.plazoleta.application.dto.request.RestaurantNameAndUrlDto;
 import com.pragma.plazoleta.application.dto.response.RestaurantResponseNameAndUrlDto;
-import com.pragma.plazoleta.domain.model.RestaurantNameAndUrlModel;
+import com.pragma.plazoleta.domain.model.RestaurantModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import java.util.List;
@@ -14,8 +13,8 @@ import java.util.List;
 public interface IRestaurantResponseNameAndUrlMapper {
 
     RestaurantResponseNameAndUrlDto toRestaurantResponseNameAndUrl(
-            RestaurantNameAndUrlModel restaurantNameAndUrlModel);
+             RestaurantModel restaurantModel);
 
     List<RestaurantResponseNameAndUrlDto> toRestaurantResponseNameAndUrlList(
-            List<RestaurantNameAndUrlModel> restaurantNameAndUrlModel);
+            List<RestaurantModel> restaurantModelList);
 }

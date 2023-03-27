@@ -9,7 +9,7 @@ import com.pragma.plazoleta.application.mapper.IRestaurantResponseMapper;
 import com.pragma.plazoleta.application.mapper.IRestaurantResponseNameAndUrlMapper;
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
-import com.pragma.plazoleta.domain.model.RestaurantNameAndUrlModel;import lombok.RequiredArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +45,7 @@ public class RestaurantHandlerImpl implements IRestaurantHandler {
     @Override
     public List<RestaurantResponseNameAndUrlDto> getRestaurantsWithPagination(
             int offset, int count) {
-        List<RestaurantNameAndUrlModel> restaurants =
+        List<RestaurantModel> restaurants =
                 restaurantServicePort.getRestaurantsWithPagination(offset, count);
 
         return restaurantResponseNameAndUrlMapper.toRestaurantResponseNameAndUrlList(restaurants);

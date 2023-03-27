@@ -3,13 +3,10 @@ package com.pragma.plazoleta.domain.usecase;
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
-import com.pragma.plazoleta.domain.model.RestaurantNameAndUrlModel;
 import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.persistence.IRestaurantPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
-
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class RestaurantUseCase implements IRestaurantServicePort {
 
@@ -56,7 +53,7 @@ public class RestaurantUseCase implements IRestaurantServicePort {
     }
 
     @Override
-    public List<RestaurantNameAndUrlModel> getRestaurantsWithPagination(int page, int size) {
+    public List<RestaurantModel> getRestaurantsWithPagination(int page, int size) {
         return restaurantPersistencePort.getRestaurantsWithPagination(page, size);
     }
 }

@@ -2,12 +2,11 @@ package com.pragma.plazoleta.domain.usecase;
 
 import com.pragma.plazoleta.domain.api.IDishServicePort;
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
-import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
-import com.pragma.plazoleta.domain.exception.SameStateException;import com.pragma.plazoleta.domain.model.DishModel;
+import com.pragma.plazoleta.domain.exception.SameStateException;
+import com.pragma.plazoleta.domain.model.DishModel;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
 import com.pragma.plazoleta.domain.spi.persistence.IDishPersistencePort;
-import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 
 import java.util.List;
 

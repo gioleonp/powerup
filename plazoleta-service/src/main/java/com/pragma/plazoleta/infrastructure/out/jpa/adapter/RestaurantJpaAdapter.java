@@ -1,13 +1,10 @@
 package com.pragma.plazoleta.infrastructure.out.jpa.adapter;
 
 import com.pragma.plazoleta.domain.model.RestaurantModel;
-import com.pragma.plazoleta.domain.model.RestaurantNameAndUrlModel;
 import com.pragma.plazoleta.domain.spi.persistence.IRestaurantPersistencePort;
 import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.RestaurantEntity;
-import com.pragma.plazoleta.infrastructure.out.jpa.entity.RestaurantNameAndUrlEntity;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
-import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantNameAndUrlMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IRestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +19,6 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
-    private final IRestaurantNameAndUrlMapper restaurantNameAndUrlMapper;
 
     @Override
     public RestaurantModel saveRestaurant(RestaurantModel restaurantModel) {
@@ -51,10 +47,11 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     }
 
     @Override
-    public List<RestaurantNameAndUrlModel> getRestaurantsWithPagination(int page, int size) {
+    public List<RestaurantModel> getRestaurantsWithPagination(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("nombre").ascending());
-        List<RestaurantNameAndUrlEntity> restaurantEntityList =
+        List<RestaurantEntity> restaurantEntityList =
                 restaurantRepository.findAllRestaurantsWithPagination(pageable).toList();
-        return restaurantNameAndUrlMapper.toRestaurantModel(restaurantEntityList);
+
+        return restaurantEntityMapper.toRestaurantModelList(restaurantEntityList);
     }
 }

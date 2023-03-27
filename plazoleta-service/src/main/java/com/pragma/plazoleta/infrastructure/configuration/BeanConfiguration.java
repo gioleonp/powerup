@@ -31,7 +31,6 @@ import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IEmployeeEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IOrderDishEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IOrderEntityMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantEntityMapper;
-import com.pragma.plazoleta.infrastructure.out.jpa.mapper.IRestaurantNameAndUrlMapper;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.ICategoryRepository;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IDishRepository;
 import com.pragma.plazoleta.infrastructure.out.jpa.repository.IEmployeeRepository;
@@ -48,7 +47,6 @@ public class BeanConfiguration {
 
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
-    private final IRestaurantNameAndUrlMapper restaurantNameAndUrlMapper;
 
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
 
@@ -70,7 +68,7 @@ public class BeanConfiguration {
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort() {
         return new RestaurantJpaAdapter(
-                restaurantRepository, restaurantEntityMapper, restaurantNameAndUrlMapper);
+                restaurantRepository, restaurantEntityMapper);
     }
 
     @Bean
