@@ -50,14 +50,16 @@ class UserUseCaseTest {
 
     @Test
     void findUserById() {
-        // Given
-        Long id = 1L;
+        UserModel userModel = UserUseCaseDataTest.getUserModel();
+
+        when(userPersistencePort.findUserById(userModel.getId())).thenReturn(userModel);
 
         // When
-        underTest.findUserById(id);
+        underTest.findUserById(userModel.getId());
 
         // Then
-        verify(userPersistencePort).findUserById(id);
+        verify(userPersistencePort).findUserById(userModel.getId());
+        assertThat(userPersistencePort.findUserById(userModel.getId())).isEqualTo(userModel);
     }
 
     @Test
@@ -79,6 +81,7 @@ class UserUseCaseTest {
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
+        verify(userPasswordEncoderPort).encode(any(String.class));
     }
 
     @Test
@@ -91,6 +94,7 @@ class UserUseCaseTest {
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
+        verify(userPasswordEncoderPort).encode(any(String.class));
     }
 
     @Test
@@ -103,6 +107,7 @@ class UserUseCaseTest {
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
+        verify(userPasswordEncoderPort).encode(any(String.class));
     }
 
     @Test
@@ -115,5 +120,6 @@ class UserUseCaseTest {
 
         // Then
         verify(userPersistencePort).saveUser(any(UserModel.class));
+        verify(userPasswordEncoderPort).encode(any(String.class));
     }
 }
