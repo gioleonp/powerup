@@ -36,6 +36,6 @@ class RestaurantRepositoryTest {
         List<RestaurantEntity> restaurantEntityList =
                 underTest.findAllRestaurantsWithPagination(pageable).toList();
 
-        assertThat(restaurantEntityList).isNotNull();
+        assertThat(restaurantEntityList.size()).isGreaterThan(0);
     }
 }
