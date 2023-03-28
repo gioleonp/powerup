@@ -1,7 +1,9 @@
 package com.pragma.plazoleta.infrastructure.out.jpa.entity;
 
 import com.pragma.plazoleta.domain.model.EOrderState;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +22,8 @@ import java.time.LocalDateTime;
 @Table(name = "pedidos")
 @Setter
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderEntity {
 
     @Id

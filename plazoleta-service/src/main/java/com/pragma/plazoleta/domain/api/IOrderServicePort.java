@@ -13,4 +13,6 @@ public interface IOrderServicePort {
             EOrderState state, Long idEmployee, int page, int size);
 
     void assignOrder(Long idOrder, Long idEmployee);
+
+    void orderReady(Long idOrder, Long idEmployee);
 }

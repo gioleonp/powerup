@@ -48,4 +48,9 @@ public class OrderHandlerImpl implements IOrderHandler {
     public void assignOrder(Long idOrder, Long idRestaurant) {
         orderServicePort.assignOrder(idOrder, idRestaurant);
     }
+
+    @Override
+    public void orderReady(Long idOrder, Long idRestaurant) {
+        orderServicePort.orderReady(idOrder, idRestaurant);
+    }
 }

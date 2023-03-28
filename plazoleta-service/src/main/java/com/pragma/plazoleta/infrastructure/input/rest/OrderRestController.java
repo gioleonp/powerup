@@ -72,8 +72,23 @@ public class OrderRestController {
             })
     @GetMapping("/{id_pedido}")
     public ResponseEntity<Void> assignOrder(
-            @PathVariable("id_pedido") Long idPedido, @RequestParam("employee") Long idEmployee) {
-        orderHandler.assignOrder(idPedido, idEmployee);
+            @PathVariable("id_pedido") Long idOrder, @RequestParam("employee") Long idEmployee) {
+        orderHandler.assignOrder(idOrder, idEmployee);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @Operation(summary = "Order ready")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Order state was successfully changed to Ready",
+                        content = @Content)
+            })
+    @GetMapping("/ready/{id_pedido}")
+    public ResponseEntity<Void> orderReady(
+            @PathVariable("id_pedido") Long idOrder, @RequestParam("employee") Long idEmployee) {
+        orderHandler.orderReady(idOrder, idEmployee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
