@@ -12,6 +12,6 @@ public class OrderResponseDto {
     private Long idCliente;
     private LocalDateTime fecha;
     private EOrderState estado;
-    private EmployeeResponseDto chef;
+    private Long idChef;
     private RestaurantResponseDto restaurante;
 }

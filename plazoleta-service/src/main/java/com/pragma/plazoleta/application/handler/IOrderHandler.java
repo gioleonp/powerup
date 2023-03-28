@@ -15,4 +15,6 @@ public interface IOrderHandler {
             EOrderState state, Long idRestaurant, int page, int size);
 
     void assignOrder(Long idOrder, Long idRestaurant);
+
+    void orderReady(Long idOrder, Long idRestaurant);
 }

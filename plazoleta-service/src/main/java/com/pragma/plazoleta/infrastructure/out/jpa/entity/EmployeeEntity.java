@@ -1,7 +1,8 @@
 package com.pragma.plazoleta.infrastructure.out.jpa.entity;
 
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.context.annotation.Configuration;
 
@@ -15,6 +16,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "restaurantes_empleados")
 @IdClass(EmployeeId.class)
 public class EmployeeEntity {

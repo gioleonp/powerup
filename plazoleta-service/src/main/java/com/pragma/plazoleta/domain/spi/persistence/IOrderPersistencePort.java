@@ -14,4 +14,6 @@ public interface IOrderPersistencePort {
             EOrderState state, Long idRestaurant, int page, int size);
 
     OrderModel findById(Long id);
+
+    OrderModel orderReady(OrderModel order);
 }
