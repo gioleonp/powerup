@@ -91,4 +91,21 @@ public class OrderRestController {
         orderHandler.orderReady(idOrder, idEmployee);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "Deliver order")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Order was successfully delivered",
+                        content = @Content)
+            })
+    @GetMapping("/deliver/{id_pedido}")
+    public ResponseEntity<Void> deliverOrder(
+            @PathVariable("id_pedido") Long idOrder,
+            @RequestParam("employee") Long idEmployee,
+            @RequestParam("code") String code) {
+        orderHandler.deliverOrder(idOrder, idEmployee, code);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

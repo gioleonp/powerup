@@ -16,4 +16,6 @@ public interface IOrderPersistencePort {
     OrderModel findById(Long id);
 
     OrderModel orderReady(OrderModel order);
+
+    OrderModel deliverOrder(OrderModel order);
 }

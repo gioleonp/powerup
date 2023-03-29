@@ -18,7 +18,7 @@ public class MessageSendingAdapter implements IMessageSendingPort {
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message messageToSend =
                 Message.creator(
-                                new PhoneNumber(messageModel.getPhoneNumber()),
+                                new PhoneNumber("+573058388527"),
                                 new PhoneNumber("+15077095761"),
                                 messageModel.getMessage())
                         .create();
