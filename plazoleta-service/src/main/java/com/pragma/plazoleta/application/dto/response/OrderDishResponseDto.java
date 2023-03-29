@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class OrderDishResponseDto {
 
-    private Long idRestuarante;
+    private Long idPedido;
     private int idPlato;
     private int cantidad;
 }

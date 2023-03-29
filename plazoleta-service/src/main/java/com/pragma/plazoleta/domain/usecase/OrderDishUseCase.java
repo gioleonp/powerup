@@ -34,4 +34,9 @@ public class OrderDishUseCase implements IOrderDishServicePort {
 
         orderDishPersistencePort.saveAll(orderDishModelList);
     }
+
+    @Override
+    public List<OrderDishModel> findAllByIdPedido(Long idPedido) {
+        return orderDishPersistencePort.findAllByIdPedido(idPedido);
+    }
 }
