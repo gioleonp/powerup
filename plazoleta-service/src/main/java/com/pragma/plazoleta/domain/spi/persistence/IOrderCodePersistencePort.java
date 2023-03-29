@@ -9,4 +9,5 @@ public interface IOrderCodePersistencePort {
     OrderCodeModel getOrderCode(String orderCode);
 
     void deleteOrderCode(String orderCode);
+    OrderCodeModel getOrderCodeByIdOrder(Long idOrderCode);
 }

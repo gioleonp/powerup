@@ -37,4 +37,14 @@ public class OrderCodeJpaAdapter implements IOrderCodePersistencePort {
 
         orderCodeRepository.deleteById(orderCode);
     }
+
+    @Override
+    public OrderCodeModel getOrderCodeByIdOrder(Long idOrderCode) {
+        Optional<OrderCodeEntity> orderCodeEntity =
+                orderCodeRepository.findOrderCodeByIdOrder(idOrderCode);
+        if (orderCodeEntity.isEmpty()) {
+            throw new NoDataFoundException();
+        }
+        return orderCodeEntityMapper.toModel(orderCodeEntity.get());
+    }
 }

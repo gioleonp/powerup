@@ -5,23 +5,23 @@ import com.pragma.plazoleta.domain.api.IOrderCodeServicePort;
 import com.pragma.plazoleta.domain.api.IOrderDishServicePort;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.EmployeeIsNotOrderChefException;
+import com.pragma.plazoleta.domain.exception.EmployeeNotBelongToTheRestaurantException;
+import com.pragma.plazoleta.domain.exception.OrderCodeDoNotMatchException;
 import com.pragma.plazoleta.domain.model.EOrderState;
 import com.pragma.plazoleta.domain.model.EmployeeModel;
+import com.pragma.plazoleta.domain.model.OrderCodeModel;
 import com.pragma.plazoleta.domain.model.OrderModel;
-import com.pragma.plazoleta.domain.model.RolModel;
 import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.persistence.IOrderPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.ITwilioServiceCommunicationPort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
-import com.pragma.plazoleta.infrastructure.out.jpa.entity.EmployeeEntity;
-import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderEntity;
+import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderCodeEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -103,5 +103,112 @@ class OrderUseCaseTest {
                         () ->
                                 underTest.orderReady(
                                         expectedOrder.getId(), expectedEmployee.getIdUsuario()));
+    }
+
+    @Test
+    void deliverOrderOk() {
+        // Given
+        EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
+        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
+
+        expectedOrder.setEstado(EOrderState.LISTO);
+
+        // When
+        when(employeeServicePort.findByIdUsuario(expectedEmployee.getIdUsuario()))
+                .thenReturn(expectedEmployee);
+        when(orderPersistencePort.findById(expectedOrder.getId())).thenReturn(expectedOrder);
+        when(orderCodeServicePort.getOrderCodeByIdOrder(expectedOrderCode.getIdOrder()))
+                .thenReturn(expectedOrderCode);
+
+        underTest.deliverOrder(
+                expectedOrder.getId(),
+                expectedEmployee.getIdUsuario(),
+                expectedOrderCode.getCode());
+
+        // Then
+        verify(orderPersistencePort).findById(expectedOrder.getId());
+        verify(orderCodeServicePort).getOrderCodeByIdOrder(expectedOrderCode.getIdOrder());
+        verify(orderPersistencePort).deliverOrder(expectedOrder);
+        verify(employeeServicePort).findByIdUsuario(expectedEmployee.getIdUsuario());
+    }
+
+    @Test
+    void deliverOrderEmployeeNotBelongsToRestaurant() {
+        // Given
+        EmployeeModel expectedEmployee = new EmployeeModel(2L, 3L);
+        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
+
+        expectedOrder.setEstado(EOrderState.LISTO);
+
+        // When
+        when(employeeServicePort.findByIdUsuario(expectedEmployee.getIdUsuario()))
+                .thenReturn(expectedEmployee);
+        when(orderPersistencePort.findById(expectedOrder.getId())).thenReturn(expectedOrder);
+        when(orderCodeServicePort.getOrderCodeByIdOrder(expectedOrderCode.getIdOrder()))
+                .thenReturn(expectedOrderCode);
+
+        // Then
+        assertThatExceptionOfType(EmployeeNotBelongToTheRestaurantException.class)
+                .isThrownBy(
+                        () ->
+                                underTest.deliverOrder(
+                                        expectedOrder.getId(),
+                                        expectedEmployee.getIdUsuario(),
+                                        expectedOrderCode.getCode()));
+    }
+
+    @Test
+    void deliverOrderOrderIsNotInReadyState() {
+        // Given
+        EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
+        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
+
+        expectedOrder.setEstado(EOrderState.PENDIENTE);
+
+        // When
+        when(employeeServicePort.findByIdUsuario(expectedEmployee.getIdUsuario()))
+                .thenReturn(expectedEmployee);
+        when(orderPersistencePort.findById(expectedOrder.getId())).thenReturn(expectedOrder);
+        when(orderCodeServicePort.getOrderCodeByIdOrder(expectedOrderCode.getIdOrder()))
+                .thenReturn(expectedOrderCode);
+
+        // Then
+        assertThatExceptionOfType(DomainException.class)
+                .isThrownBy(
+                        () ->
+                                underTest.deliverOrder(
+                                        expectedOrder.getId(),
+                                        expectedEmployee.getIdUsuario(),
+                                        expectedOrderCode.getCode()));
+    }
+
+    @Test
+    void deliverOrderCodeNotMatch() {
+        // Given
+        EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
+        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
+        String wrongCode = "654321";
+
+        expectedOrder.setEstado(EOrderState.LISTO);
+
+        // When
+        when(employeeServicePort.findByIdUsuario(expectedEmployee.getIdUsuario()))
+                .thenReturn(expectedEmployee);
+        when(orderPersistencePort.findById(expectedOrder.getId())).thenReturn(expectedOrder);
+        when(orderCodeServicePort.getOrderCodeByIdOrder(expectedOrderCode.getIdOrder()))
+                .thenReturn(expectedOrderCode);
+
+        // Then
+        assertThatExceptionOfType(OrderCodeDoNotMatchException.class)
+                .isThrownBy(
+                        () ->
+                                underTest.deliverOrder(
+                                        expectedOrder.getId(),
+                                        expectedEmployee.getIdUsuario(),
+                                        wrongCode));
     }
 }

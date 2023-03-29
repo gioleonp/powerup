@@ -11,4 +11,5 @@ public interface IOrderCodeServicePort {
     OrderCodeModel getOrderCode(String orderCode);
 
     void deleteOrderCode(String orderCode);
+    OrderCodeModel getOrderCodeByIdOrder(Long idOrder);
 }

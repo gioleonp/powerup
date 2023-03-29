@@ -8,7 +8,7 @@ import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.EmployeeIsNotOrderChefException;
 import com.pragma.plazoleta.domain.exception.EmployeeNotBelongToTheRestaurantException;
 import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
-import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
+import com.pragma.plazoleta.domain.exception.OrderCodeDoNotMatchException;import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
 import com.pragma.plazoleta.domain.model.EOrderState;
 import com.pragma.plazoleta.domain.model.EmployeeModel;
 import com.pragma.plazoleta.domain.model.MessageModel;
@@ -83,12 +83,13 @@ public class OrderUseCase implements IOrderServicePort {
 
         EmployeeModel employeeModel = employeeServicePort.findByIdUsuario(idEmployee);
 
-
-        List<OrderModel> orderModels = orderPersistencePort.findAllOrdersByStateAndRestaurant(
-                state, employeeModel.getIdRestaurante(), page, size);
+        List<OrderModel> orderModels =
+                orderPersistencePort.findAllOrdersByStateAndRestaurant(
+                        state, employeeModel.getIdRestaurante(), page, size);
 
         for (OrderModel orderModel : orderModels) {
-            List<OrderDishModel> orderDishModels = orderDishServicePort.findAllByIdPedido(orderModel.getId());
+            List<OrderDishModel> orderDishModels =
+                    orderDishServicePort.findAllByIdPedido(orderModel.getId());
             orderModel.setOrderDishes(orderDishModels);
         }
 
@@ -154,5 +155,34 @@ public class OrderUseCase implements IOrderServicePort {
         twilioServiceCommunicationPort.sendMessage(message);
 
         orderPersistencePort.orderReady(order);
+    }
+
+    @Override
+    public void deliverOrder(Long idOrder, Long idEmployee, String code) {
+
+        // Find order and employee
+        OrderModel order = orderPersistencePort.findById(idOrder);
+        EmployeeModel employee = employeeServicePort.findByIdUsuario(idEmployee);
+
+        // Validate them
+        if (order.getEstado() != EOrderState.LISTO) {
+            throw new DomainException("ONLY A READY ORDER CAN BE DELIVER");
+        } else if (!order.getRestaurante().getId().equals(employee.getIdRestaurante())) {
+            throw new EmployeeNotBelongToTheRestaurantException();
+        }
+
+        // Find orderCode to match it with the given one.
+        OrderCodeModel orderCode = orderCodeServicePort.getOrderCodeByIdOrder(order.getId());
+        if (!orderCode.getCode().equals(code)) {
+            throw new OrderCodeDoNotMatchException();
+        }
+
+        // Changing state to delivered
+        order.setEstado(EOrderState.ENTREGADO);
+        // Delete order code to avoid repeated codes errors
+        orderCodeServicePort.deleteOrderCode(code);
+
+        // Save order with changed state.
+        orderPersistencePort.deliverOrder(order);
     }
 }

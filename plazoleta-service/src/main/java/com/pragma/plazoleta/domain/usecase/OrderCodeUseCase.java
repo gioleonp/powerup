@@ -3,7 +3,8 @@ package com.pragma.plazoleta.domain.usecase;
 import com.pragma.plazoleta.domain.api.IOrderCodeServicePort;
 import com.pragma.plazoleta.domain.model.OrderCodeModel;
 import com.pragma.plazoleta.domain.model.OrderModel;
-import com.pragma.plazoleta.domain.spi.persistence.IOrderCodePersistencePort;import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderCodeEntity;
+import com.pragma.plazoleta.domain.spi.persistence.IOrderCodePersistencePort;
+import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderCodeEntity;
 
 public class OrderCodeUseCase implements IOrderCodeServicePort {
 
@@ -15,7 +16,7 @@ public class OrderCodeUseCase implements IOrderCodeServicePort {
 
     @Override
     public void saveOrderCode(OrderCodeModel orderCodeModel) {
-       orderCodePersistencePort.saveOrderCode(orderCodeModel);
+        orderCodePersistencePort.saveOrderCode(orderCodeModel);
     }
 
     @Override
@@ -26,5 +27,10 @@ public class OrderCodeUseCase implements IOrderCodeServicePort {
     @Override
     public void deleteOrderCode(String orderCode) {
         orderCodePersistencePort.deleteOrderCode(orderCode);
+    }
+
+    @Override
+    public OrderCodeModel getOrderCodeByIdOrder(Long idOrder) {
+        return orderCodePersistencePort.getOrderCodeByIdOrder(idOrder);
     }
 }

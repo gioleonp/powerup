@@ -4,6 +4,7 @@ import com.pragma.plazoleta.domain.exception.DishNotCorrespondToRestaurantExcept
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.EmployeeIsNotOrderChefException;
 import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
+import com.pragma.plazoleta.domain.exception.OrderCodeDoNotMatchException;
 import com.pragma.plazoleta.domain.exception.SameStateException;
 import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
 import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
@@ -99,6 +100,13 @@ public class ControllerAdvisor {
     @ExceptionHandler(EmployeeIsNotOrderChefException.class)
     public ResponseEntity<Map<String, String>> DomainExceptions(
             EmployeeIsNotOrderChefException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+    @ExceptionHandler(OrderCodeDoNotMatchException.class)
+    public ResponseEntity<Map<String, String>> orderCodeNotMatch(
+            OrderCodeDoNotMatchException ignoredDomainException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
     }
