@@ -26,9 +26,9 @@ public class DishHandlerImpl implements IDishHandler {
     private final IDishRequestPriceAndDescriptionMapper dishRequestPriceAndDescriptionMapper;
 
     @Override
-    public void saveDish(Long id_proprietary, DishRequestDto dishRequestDto) {
+    public void saveDish(Long idProprietary, DishRequestDto dishRequestDto) {
         DishModel dishModel = dishRequestMapper.toDishModel(dishRequestDto);
-        dishServicePort.saveDish(id_proprietary, dishModel);
+        dishServicePort.saveDish(idProprietary, dishModel);
     }
 
     @Override

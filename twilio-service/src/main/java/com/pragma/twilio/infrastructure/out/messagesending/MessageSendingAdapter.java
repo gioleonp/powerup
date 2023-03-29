@@ -3,10 +3,8 @@ package com.pragma.twilio.infrastructure.out.messagesending;
 import com.pragma.twilio.dominio.model.MessageModel;
 import com.pragma.twilio.dominio.spi.IMessageSendingPort;
 import com.twilio.Twilio;
-import com.twilio.converter.Promoter;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
-import org.springframework.stereotype.Service;
 
 public class MessageSendingAdapter implements IMessageSendingPort {
 

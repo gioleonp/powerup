@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -29,7 +30,7 @@ public class DishRequestDto {
     @NotBlank(message = "DESCRIPCION ES UN ATRIBUTO OBLIGATORIO")
     private String descripcion;
 
-    @Min(1)
+    @Range(min = 1, message = "PRECIO DEBE SER UN NUMERO ENTERO Y MAYOR A CERO")
     private int precio;
 
     @NotNull(message = "RESTAURANTE ES UN ATRIBUTO OBLIGATORIO")
@@ -37,5 +38,6 @@ public class DishRequestDto {
 
     @NotBlank(message = "URL IMAGEN ES UN ATRIBUTO OBLIGATORIO")
     private String urlImagen;
+
     private Boolean activo;
 }

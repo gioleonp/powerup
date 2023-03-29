@@ -8,6 +8,7 @@ import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
 import com.pragma.plazoleta.domain.exception.OrderCodeDoNotMatchException;
 import com.pragma.plazoleta.domain.exception.SameStateException;
 import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
+import com.pragma.plazoleta.domain.exception.UserIsNotAProprietaryException;
 import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import feign.RetryableException;
@@ -115,6 +116,20 @@ public class ControllerAdvisor {
     @ExceptionHandler(ClientIsNotOrderOwnerException.class)
     public ResponseEntity<Map<String, String>> clientNotOwner(
             ClientIsNotOrderOwnerException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+    @ExceptionHandler(UserIsNotAProprietaryException.class)
+    public ResponseEntity<Map<String, String>> userIsNotAProprietary(
+            UserIsNotAProprietaryException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+    @ExceptionHandler(EmployeeIsNotOrderChefException.class)
+    public ResponseEntity<Map<String, String>> employeeIsNotOrderChef(
+            EmployeeIsNotOrderChefException ignoredDomainException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
     }

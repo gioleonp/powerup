@@ -3,7 +3,7 @@ package com.pragma.plazoleta.domain.exception;
 public class ProprietaryNotMatchException extends RuntimeException{
 
     public ProprietaryNotMatchException(){
-        super("USER NOT AUTHORIZED");
+        super("USTED NO ES EL DUEÑO DEL RESTAURANTE");
     }
 
 }

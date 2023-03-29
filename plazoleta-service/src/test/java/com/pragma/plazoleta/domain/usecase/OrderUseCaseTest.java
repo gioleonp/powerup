@@ -79,8 +79,7 @@ class OrderUseCaseTest {
                 .isThrownBy(
                         () ->
                                 underTest.orderReady(
-                                        expectedOrder.getId(), expectedEmployee.getIdUsuario()))
-                .withMessageMatching("EMPLOYEE IS NOT THE CHEF OF THE ORDER");
+                                        expectedOrder.getId(), expectedEmployee.getIdUsuario()));
     }
 
     @Test

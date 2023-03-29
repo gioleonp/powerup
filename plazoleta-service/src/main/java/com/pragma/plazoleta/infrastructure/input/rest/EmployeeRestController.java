@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -34,7 +35,7 @@ public class EmployeeRestController {
             })
     @PostMapping("/new")
     public ResponseEntity<Void> createEmployee(
-            @RequestBody UserModel userRequestDto,
+            @Valid @RequestBody UserModel userRequestDto,
             @RequestParam("proprietary") Long idProprietary,
             @RequestParam("restaurant") Long idRestaurant) {
         employeeHandler.saveEmployee(userRequestDto, idProprietary, idRestaurant);

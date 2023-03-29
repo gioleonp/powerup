@@ -29,6 +29,9 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleValidationException(
             MethodArgumentNotValidException ignoredDomainException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+                .body(
+                        Collections.singletonMap(
+                                MESSAGE,
+                                ignoredDomainException.getFieldError().getDefaultMessage()));
     }
 }

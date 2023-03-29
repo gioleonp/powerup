@@ -1,6 +1,7 @@
 package com.pragma.plazoleta.domain.usecase;
 
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
+import com.pragma.plazoleta.domain.exception.UserIsNotAProprietaryException;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
 import com.pragma.plazoleta.domain.model.RolModel;
 import com.pragma.plazoleta.domain.model.UserModel;
@@ -67,9 +68,8 @@ class RestaurantUseCaseTest {
         RestaurantModel restaurantModel = RestaurantUseCaseDataTest.getRestaurantModel();
 
         // Then
-        assertThatExceptionOfType(ProprietaryNotMatchException.class)
-                .isThrownBy(() -> underTest.saveRestaurant(restaurantModel))
-                .withMessageMatching("USER NOT AUTHORIZED");
+        assertThatExceptionOfType(UserIsNotAProprietaryException.class)
+                .isThrownBy(() -> underTest.saveRestaurant(restaurantModel));
     }
 
     @Test

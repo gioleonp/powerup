@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -77,7 +78,7 @@ public class RestaurantRestController {
             })
     @PostMapping("")
     public ResponseEntity<Void> saveRestaurant(
-            @RequestBody RestaurantRequestDto restaurantRequestDto) {
+            @Valid @RequestBody RestaurantRequestDto restaurantRequestDto) {
         restaurantHandler.saveRestaurant(restaurantRequestDto);
         return new ResponseEntity<Void>(HttpStatus.CREATED);
     }
