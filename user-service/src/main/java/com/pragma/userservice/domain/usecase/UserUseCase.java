@@ -13,20 +13,20 @@ public class UserUseCase implements IUserServicePort {
     private final IUserPersistencePort userPersistencePort;
     private final IUserPasswordEncoderPort passwordEncoder;
 
-    public UserUseCase(IUserPersistencePort userPersistencePort, IUserPasswordEncoderPort passwordEncoder) {
+    public UserUseCase(
+            IUserPersistencePort userPersistencePort, IUserPasswordEncoderPort passwordEncoder) {
         this.userPersistencePort = userPersistencePort;
         this.passwordEncoder = passwordEncoder;
     }
-
-
 
     @Override
     public void saveUser(UserModel userModel) {
 
         // Giving format to the phoneNumber
-        String correctedPhoneNumber = userModel.getCelular().contains("+")
-        ? userModel.getCelular()
-        : "+" + userModel.getCelular();
+        String correctedPhoneNumber =
+                userModel.getCelular().contains("+")
+                        ? userModel.getCelular()
+                        : "+" + userModel.getCelular();
 
         userModel.setCelular(correctedPhoneNumber);
 

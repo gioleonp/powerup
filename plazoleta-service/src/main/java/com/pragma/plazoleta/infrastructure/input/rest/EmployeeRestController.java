@@ -1,7 +1,7 @@
 package com.pragma.plazoleta.infrastructure.input.rest;
 
-import com.pragma.plazoleta.application.dto.request.UserRequestDto;
 import com.pragma.plazoleta.application.handler.IEmployeeHandler;
+import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,14 +32,11 @@ public class EmployeeRestController {
                         description = "Employee saved",
                         content = @Content)
             })
-    @PostMapping("/")
+    @PostMapping("/new")
     public ResponseEntity<Void> createEmployee(
-            @RequestBody UserRequestDto userRequestDto,
+            @RequestBody UserModel userRequestDto,
             @RequestParam("proprietary") Long idProprietary,
             @RequestParam("restaurant") Long idRestaurant) {
-
-        userServiceCommunicationPort.createEmployee(userRequestDto);
-
         employeeHandler.saveEmployee(userRequestDto, idProprietary, idRestaurant);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
