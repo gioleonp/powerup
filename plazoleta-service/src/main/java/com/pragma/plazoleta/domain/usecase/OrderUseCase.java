@@ -83,8 +83,16 @@ public class OrderUseCase implements IOrderServicePort {
 
         EmployeeModel employeeModel = employeeServicePort.findByIdUsuario(idEmployee);
 
-        return orderPersistencePort.findAllOrdersByStateAndRestaurant(
+
+        List<OrderModel> orderModels = orderPersistencePort.findAllOrdersByStateAndRestaurant(
                 state, employeeModel.getIdRestaurante(), page, size);
+
+        for (OrderModel orderModel : orderModels) {
+            List<OrderDishModel> orderDishModels = orderDishServicePort.findAllByIdPedido(orderModel.getId());
+            orderModel.setOrderDishes(orderDishModels);
+        }
+
+        return orderModels;
     }
 
     @Override
