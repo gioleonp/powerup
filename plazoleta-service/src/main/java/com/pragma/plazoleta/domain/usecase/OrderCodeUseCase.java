@@ -2,9 +2,7 @@ package com.pragma.plazoleta.domain.usecase;
 
 import com.pragma.plazoleta.domain.api.IOrderCodeServicePort;
 import com.pragma.plazoleta.domain.model.OrderCodeModel;
-import com.pragma.plazoleta.domain.model.OrderModel;
 import com.pragma.plazoleta.domain.spi.persistence.IOrderCodePersistencePort;
-import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderCodeEntity;
 
 public class OrderCodeUseCase implements IOrderCodeServicePort {
 

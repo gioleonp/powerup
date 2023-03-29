@@ -36,10 +36,10 @@ public class UserEntity {
     @Column(length = 70, nullable = false)
     private String apellido;
 
-    @Column(length = 13, nullable = false)
+    @Column(length = 13, nullable = false, unique = true)
     private String celular;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
 

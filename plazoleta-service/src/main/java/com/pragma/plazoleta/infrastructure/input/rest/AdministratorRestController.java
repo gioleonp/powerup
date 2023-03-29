@@ -1,6 +1,5 @@
 package com.pragma.plazoleta.infrastructure.input.rest;
 
-import com.pragma.plazoleta.application.dto.request.UserRequestDto;
 import com.pragma.plazoleta.application.dto.response.UserResponseDto;
 import com.pragma.plazoleta.application.mapper.IUserResponseMapper;
 import com.pragma.plazoleta.domain.model.UserModel;
@@ -10,7 +9,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.LifecycleState;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +36,7 @@ public class AdministratorRestController {
                         content = @Content)
             })
     @PostMapping("/propietario")
-    public ResponseEntity<Void> createProprietary(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<Void> createProprietary(@RequestBody UserModel userRequestDto) {
         userServiceCommunicationPort.createProprietary(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }

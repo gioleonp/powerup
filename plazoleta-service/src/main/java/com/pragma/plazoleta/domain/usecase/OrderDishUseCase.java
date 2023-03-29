@@ -26,7 +26,7 @@ public class OrderDishUseCase implements IOrderDishServicePort {
         for (OrderDishModel orderDishModel : orderDishModelList) {
 
             DishModel dishModel = dishServicePort.findDishById(orderDishModel.getIdPlato());
-            if (orderModel.getRestaurante().getId() != dishModel.getRestaurante().getId()) {
+            if (orderModel.getRestaurante().getId().equals(dishModel.getRestaurante().getId())) {
                 throw new DishNotCorrespondToRestaurantException();
             }
             orderDishModel.setIdPlato(dishModel.getId());

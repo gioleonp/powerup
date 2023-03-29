@@ -27,12 +27,18 @@ public class EmployeeUseCase implements IEmployeeServicePort {
     @Override
     public void saveEmployee(UserModel userModel, Long idProprietary, Long idRestaurant) {
 
-        UserModel foundUser = userServiceCommunicationPort.findByEmail(userModel.getEmail());
+        // Save user
+        userServiceCommunicationPort.createEmployee(userModel);
+
+        // Found restaurant
         RestaurantModel restaurant = restaurantServicePort.findRestaurantById(idRestaurant);
 
         if (idProprietary != restaurant.getIdPropietario()) {
             throw new DomainException("EL PROPIETARIO NO ES DUEÑO DEL RESTAURANTE");
         }
+
+        // Get user to obtain the id
+        UserModel foundUser = userServiceCommunicationPort.findFullUserByEmail(userModel.getEmail());
 
         EmployeeModel employeeModel = new EmployeeModel(foundUser.getId(), idRestaurant);
 
