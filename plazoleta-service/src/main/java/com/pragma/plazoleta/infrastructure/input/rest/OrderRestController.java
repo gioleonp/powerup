@@ -108,4 +108,19 @@ public class OrderRestController {
         orderHandler.deliverOrder(idOrder, idEmployee, code);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @Operation(summary = "Cancel order")
+    @ApiResponses(
+            value = {
+                @ApiResponse(
+                        responseCode = "200",
+                        description = "Order was successfully cancelled",
+                        content = @Content)
+            })
+    @GetMapping("/cancel/{id_pedido}")
+    public ResponseEntity<Void> cancelOrder(
+            @PathVariable("id_pedido") Long idOrder, @RequestParam("client") Long idClient) {
+        orderHandler.cancelOrder(idOrder, idClient);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

@@ -18,4 +18,6 @@ public interface IOrderPersistencePort {
     OrderModel orderReady(OrderModel order);
 
     OrderModel deliverOrder(OrderModel order);
+
+    OrderModel cancelOrder(OrderModel order);
 }
