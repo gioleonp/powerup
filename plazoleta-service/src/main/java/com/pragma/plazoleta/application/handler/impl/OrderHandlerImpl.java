@@ -58,4 +58,9 @@ public class OrderHandlerImpl implements IOrderHandler {
     public void deliverOrder(Long idOrder, Long idEmployee, String code) {
         orderServicePort.deliverOrder(idOrder, idEmployee, code);
     }
+
+    @Override
+    public void cancelOrder(Long idOrder, Long idClient) {
+        orderServicePort.cancelOrder(idOrder, idClient);
+    }
 }

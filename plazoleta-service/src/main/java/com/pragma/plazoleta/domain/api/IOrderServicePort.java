@@ -17,4 +17,6 @@ public interface IOrderServicePort {
     void orderReady(Long idOrder, Long idEmployee);
 
     void deliverOrder(Long idOrder, Long idEmployee, String code);
+
+    void cancelOrder(Long idOrder, Long idClient);
 }

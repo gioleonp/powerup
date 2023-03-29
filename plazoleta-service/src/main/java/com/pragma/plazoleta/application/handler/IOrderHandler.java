@@ -19,4 +19,6 @@ public interface IOrderHandler {
     void orderReady(Long idOrder, Long idRestaurant);
 
     void deliverOrder(Long idOrder, Long idEmployee, String code);
+
+    void cancelOrder(Long idOrder, Long idClient);
 }

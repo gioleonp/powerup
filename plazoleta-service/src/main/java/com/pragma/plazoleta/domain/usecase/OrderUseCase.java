@@ -4,11 +4,13 @@ import com.pragma.plazoleta.domain.api.IEmployeeServicePort;
 import com.pragma.plazoleta.domain.api.IOrderCodeServicePort;
 import com.pragma.plazoleta.domain.api.IOrderDishServicePort;
 import com.pragma.plazoleta.domain.api.IOrderServicePort;
+import com.pragma.plazoleta.domain.exception.ClientIsNotOrderOwnerException;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.EmployeeIsNotOrderChefException;
 import com.pragma.plazoleta.domain.exception.EmployeeNotBelongToTheRestaurantException;
 import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
-import com.pragma.plazoleta.domain.exception.OrderCodeDoNotMatchException;import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
+import com.pragma.plazoleta.domain.exception.OrderCodeDoNotMatchException;
+import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
 import com.pragma.plazoleta.domain.model.EOrderState;
 import com.pragma.plazoleta.domain.model.EmployeeModel;
 import com.pragma.plazoleta.domain.model.MessageModel;
@@ -184,5 +186,22 @@ public class OrderUseCase implements IOrderServicePort {
 
         // Save order with changed state.
         orderPersistencePort.deliverOrder(order);
+    }
+
+    @Override
+    public void cancelOrder(Long idOrder, Long idClient) {
+
+        OrderModel order = orderPersistencePort.findById(idOrder);
+
+        if (!order.getIdCliente().equals(idClient)) {
+            throw new ClientIsNotOrderOwnerException();
+        } else if (order.getEstado() != EOrderState.PENDIENTE) {
+            throw new DomainException(
+                    "Lo sentimos, tu pedido esta en preparacion y ya no puede cancelarse");
+        }
+
+        order.setEstado(EOrderState.CANCELADO);
+
+        orderPersistencePort.cancelOrder(order);
     }
 }

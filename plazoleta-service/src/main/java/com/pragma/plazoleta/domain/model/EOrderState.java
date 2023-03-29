@@ -4,5 +4,6 @@ public enum EOrderState {
     PENDIENTE,
     EN_PREPARACION,
     LISTO,
-    ENTREGADO
+    ENTREGADO,
+    CANCELADO
 }

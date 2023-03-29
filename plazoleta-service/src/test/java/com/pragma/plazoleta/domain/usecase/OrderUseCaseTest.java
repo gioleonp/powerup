@@ -3,6 +3,7 @@ package com.pragma.plazoleta.domain.usecase;
 import com.pragma.plazoleta.domain.api.IEmployeeServicePort;
 import com.pragma.plazoleta.domain.api.IOrderCodeServicePort;
 import com.pragma.plazoleta.domain.api.IOrderDishServicePort;
+import com.pragma.plazoleta.domain.exception.ClientIsNotOrderOwnerException;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.EmployeeIsNotOrderChefException;
 import com.pragma.plazoleta.domain.exception.EmployeeNotBelongToTheRestaurantException;
@@ -210,5 +211,52 @@ class OrderUseCaseTest {
                                         expectedOrder.getId(),
                                         expectedEmployee.getIdUsuario(),
                                         wrongCode));
+    }
+
+    @Test
+    void cancelOrderOk() {
+        // Given
+        Long idClient = 1L;
+        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        expectedOrder.setEstado(EOrderState.PENDIENTE);
+
+        // When
+        when(orderPersistencePort.findById(expectedOrder.getId())).thenReturn(expectedOrder);
+
+        underTest.cancelOrder(expectedOrder.getId(), idClient);
+
+        // Then
+        verify(orderPersistencePort).findById(expectedOrder.getId());
+        verify(orderPersistencePort).cancelOrder(expectedOrder);
+    }
+
+    @Test
+    void cancelOrderWrongClient() {
+        // Given
+        Long idClient = 2L;
+        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        expectedOrder.setEstado(EOrderState.PENDIENTE);
+
+        // When
+        when(orderPersistencePort.findById(expectedOrder.getId())).thenReturn(expectedOrder);
+
+        // Then
+        assertThatExceptionOfType(ClientIsNotOrderOwnerException.class)
+                .isThrownBy(() -> underTest.cancelOrder(expectedOrder.getId(), idClient));
+    }
+
+    @Test
+    void cancelOrderStateIsNotPending() {
+        // Given
+        Long idClient = 1L;
+        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        expectedOrder.setEstado(EOrderState.LISTO);
+
+        // When
+        when(orderPersistencePort.findById(expectedOrder.getId())).thenReturn(expectedOrder);
+
+        // Then
+        assertThatExceptionOfType(DomainException.class)
+                .isThrownBy(() -> underTest.cancelOrder(expectedOrder.getId(), idClient));
     }
 }

@@ -1,5 +1,6 @@
 package com.pragma.plazoleta.infrastructure.exceptionhandler;
 
+import com.pragma.plazoleta.domain.exception.ClientIsNotOrderOwnerException;
 import com.pragma.plazoleta.domain.exception.DishNotCorrespondToRestaurantException;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.EmployeeIsNotOrderChefException;
@@ -107,6 +108,13 @@ public class ControllerAdvisor {
     @ExceptionHandler(OrderCodeDoNotMatchException.class)
     public ResponseEntity<Map<String, String>> orderCodeNotMatch(
             OrderCodeDoNotMatchException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+    @ExceptionHandler(ClientIsNotOrderOwnerException.class)
+    public ResponseEntity<Map<String, String>> clientNotOwner(
+            ClientIsNotOrderOwnerException ignoredDomainException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
     }
