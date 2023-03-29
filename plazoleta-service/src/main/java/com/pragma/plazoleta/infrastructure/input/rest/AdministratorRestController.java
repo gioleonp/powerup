@@ -27,20 +27,6 @@ public class AdministratorRestController {
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
     private final IUserResponseMapper userResponseMapper;
 
-    @Operation(summary = "Save proprietary")
-    @ApiResponses(
-            value = {
-                @ApiResponse(
-                        responseCode = "201",
-                        description = "Proprietary saved",
-                        content = @Content)
-            })
-    @PostMapping("/propietario")
-    public ResponseEntity<Void> createProprietary(@RequestBody UserModel userRequestDto) {
-        userServiceCommunicationPort.createProprietary(userRequestDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
     @Operation(summary = "Get all users")
     @ApiResponses(
             value = {

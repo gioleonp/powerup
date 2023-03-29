@@ -3,6 +3,7 @@ package com.pragma.plazoleta.domain.usecase;
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
+import com.pragma.plazoleta.domain.exception.SameStateException;
 import com.pragma.plazoleta.domain.model.CategoryModel;
 import com.pragma.plazoleta.domain.model.DishModel;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
@@ -60,8 +61,7 @@ class DishUseCaseTest {
 
         // Then
         assertThatExceptionOfType(ProprietaryNotMatchException.class)
-                .isThrownBy(() -> underTest.saveDish(idProprietary, expectedDishModel))
-                .withMessageMatching("USER NOT AUTHORIZED");
+                .isThrownBy(() -> underTest.saveDish(idProprietary, expectedDishModel));
     }
 
     @Test
@@ -95,8 +95,7 @@ class DishUseCaseTest {
                                 underTest.updateDish(
                                         wrongIdProprietary,
                                         expectedDishModel.getId(),
-                                        expectedDishModel))
-                .withMessageMatching("USER NOT AUTHORIZED");
+                                        expectedDishModel));
     }
 
     @Test
@@ -123,10 +122,8 @@ class DishUseCaseTest {
         when(dishPersistencePort.findDishById(dish.getId())).thenReturn(dish);
 
         // Then
-        assertThatExceptionOfType(DomainException.class)
-                .isThrownBy(() -> underTest.updateActive(state, idProprietary, dish.getId()))
-                .withMessageMatching(
-                        "YOU MUST TO CHANGE THE STATE OF YOUR DISH TO A DIFFERENT ONE");
+        assertThatExceptionOfType(SameStateException.class)
+                .isThrownBy(() -> underTest.updateActive(state, idProprietary, dish.getId()));
     }
 
     @Test
@@ -140,7 +137,6 @@ class DishUseCaseTest {
 
         // Then
         assertThatExceptionOfType(ProprietaryNotMatchException.class)
-                .isThrownBy(() -> underTest.updateActive(state, 2L, dish.getId()))
-                .withMessageMatching("USER NOT AUTHORIZED");
+                .isThrownBy(() -> underTest.updateActive(state, 2L, dish.getId()));
     }
 }

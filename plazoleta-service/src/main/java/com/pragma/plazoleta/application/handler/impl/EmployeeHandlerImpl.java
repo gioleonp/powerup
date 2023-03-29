@@ -14,8 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmployeeHandlerImpl implements IEmployeeHandler {
 
     private final IEmployeeServicePort employeeServicePort;
-    private final IEmployeeRequestMapper employeeResponseMapper;
-    private final IEmployeeRequestMapper employeeRequestMapper;
     private final IUserRequestMapper userRequestMapper;
 
     @Override

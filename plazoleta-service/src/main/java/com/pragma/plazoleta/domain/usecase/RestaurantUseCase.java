@@ -2,7 +2,7 @@ package com.pragma.plazoleta.domain.usecase;
 
 import com.pragma.plazoleta.domain.api.IRestaurantServicePort;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
-import com.pragma.plazoleta.domain.model.RestaurantModel;
+import com.pragma.plazoleta.domain.exception.UserIsNotAProprietaryException;import com.pragma.plazoleta.domain.model.RestaurantModel;
 import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.persistence.IRestaurantPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
@@ -36,7 +36,7 @@ public class RestaurantUseCase implements IRestaurantServicePort {
 
         // Checking the validity and authorization
         if (!user.getRol().getNombre().equals("ROLE_PROPIETARIO")) {
-            throw new ProprietaryNotMatchException();
+            throw new UserIsNotAProprietaryException();
         }
 
         restaurantPersistencePort.saveRestaurant(restaurantModel);

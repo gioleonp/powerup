@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .antMatchers("/api/v1/admin/**").hasRole("ADMINISTRADOR")
                 .antMatchers("/api/v1/user/**").hasAuthority("ADMINISTRADOR")
                 .antMatchers("/api/v1/restaurante/paging").hasRole("CLIENTE")
-                .antMatchers("/api/v1/plato/menu**").hasRole("CLIENTE")
+                .antMatchers("/api/v1/plato/menu/**").hasRole("CLIENTE")
                 .antMatchers("/api/v1/pedido/new").hasRole("CLIENTE")
                 .antMatchers("/api/v1/pedido/cancel/**").hasRole("CLIENTE")
                 .antMatchers("/api/v1/empleado/new").hasRole("PROPIETARIO")

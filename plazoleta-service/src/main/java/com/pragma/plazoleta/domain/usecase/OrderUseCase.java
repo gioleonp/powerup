@@ -73,6 +73,10 @@ public class OrderUseCase implements IOrderServicePort {
 
         // set order id to each orderDish
         for (OrderDishModel orderDish : orderDishModels) {
+            if (orderDish.getCantidad() <= 0) {
+                throw new DomainException(
+                        "LA CANTIDAD DE PLATOS DEBE SER UN NUMERO ENTERO MAYOR A CERO");
+            }
             orderDish.setIdPedido(order.getId());
         }
 

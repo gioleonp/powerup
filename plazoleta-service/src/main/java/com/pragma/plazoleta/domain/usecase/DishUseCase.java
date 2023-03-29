@@ -23,7 +23,7 @@ public class DishUseCase implements IDishServicePort {
     }
 
     @Override
-    public void saveDish(Long id_proprietary, DishModel dishModel) {
+    public void saveDish(Long idProprietary, DishModel dishModel) {
         // If a restaurant was provided retrieve it from database
         RestaurantModel restaurantModel =
                 restaurantServicePort.findRestaurantById(dishModel.getRestaurante().getId());
@@ -32,7 +32,7 @@ public class DishUseCase implements IDishServicePort {
           Check if the idProprietary of the restaurant match with the id
           with the id of who is making the petition
         */
-        if (restaurantModel.getIdPropietario() != id_proprietary) {
+        if (restaurantModel.getIdPropietario() != idProprietary) {
             throw new ProprietaryNotMatchException();
         }
 

@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,26 +24,17 @@ public class ProprietaryRestController {
     private final IUserServiceCommunicationPort userServiceCommunicationPort;
     private final IEmployeeHandler employeeHandler;
 
-    /*
-    @Operation(summary = "Save employee")
+    @Operation(summary = "Save proprietary")
     @ApiResponses(
             value = {
                 @ApiResponse(
                         responseCode = "201",
-                        description = "Employee saved",
+                        description = "Proprietary saved",
                         content = @Content)
             })
-    @PostMapping("/empleado")
-    public ResponseEntity<Void> createEmployee(
-            @RequestBody UserModel userRequestDto,
-            @RequestParam("proprietary") Long idProprietary,
-            @RequestParam("restaurant") Long idRestaurant) {
-
-        userServiceCommunicationPort.createEmployee(userRequestDto);
-
-        employeeHandler.saveEmployee(userRequestDto, idProprietary, idRestaurant);
+    @PostMapping("")
+    public ResponseEntity<Void> createProprietary(@Valid @RequestBody UserModel userRequestDto) {
+        userServiceCommunicationPort.createProprietary(userRequestDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-
-     */
 }
