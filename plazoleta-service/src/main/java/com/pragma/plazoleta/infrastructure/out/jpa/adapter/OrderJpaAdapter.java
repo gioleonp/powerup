@@ -28,6 +28,20 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
     }
 
     @Override
+    public List<OrderModel> findAllOrders() {
+        List<OrderEntity> orderList = orderRepository.findAll();
+        if (orderList.isEmpty()) {
+            throw new NoDataFoundException("ORDERS");
+        }
+        return orderEntityMapper.toModelList(orderList);
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        orderRepository.deleteById(orderId);
+    }
+
+    @Override
     public int getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient) {
         return orderRepository.getNumberOfOrdersWithStateInPreparationPendingOrReady(idClient);
     }
@@ -51,7 +65,7 @@ public class OrderJpaAdapter implements IOrderPersistencePort {
 
         Optional<OrderEntity> order = orderRepository.findById(id);
         if (order.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("ORDER");
         }
         return orderEntityMapper.toModel(order.get());
     }

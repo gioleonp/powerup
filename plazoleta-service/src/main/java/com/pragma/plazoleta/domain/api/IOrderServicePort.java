@@ -12,6 +12,8 @@ public interface IOrderServicePort {
     List<OrderModel> findAllOrdersByStatusAndRestaurant(
             EOrderState state, Long idEmployee, int page, int size);
 
+    void deleteOrder(Long idOrder);
+
     void assignOrder(Long idOrder, Long idEmployee);
 
     void orderReady(Long idOrder, Long idEmployee);

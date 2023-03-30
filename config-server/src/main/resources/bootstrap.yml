@@ -7,8 +7,8 @@ spring:
       server:
         git:
           uri: https://github.com/gioleonp/powerup.git
-          username: giovannileonp
-          password: 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
+          username: ${GIT_USERNAME}
+          password: ${GIT_PASSWORD}
           default-label: main
           search-paths: config-data
 

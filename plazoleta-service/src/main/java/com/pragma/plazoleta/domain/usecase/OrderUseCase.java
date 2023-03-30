@@ -69,18 +69,20 @@ public class OrderUseCase implements IOrderServicePort {
         }
 
         // save order
-        OrderModel order = orderPersistencePort.createOrder(orderModel);
+        OrderModel foundOrder = orderPersistencePort.createOrder(orderModel);
 
-        // set order id to each orderDish
+        // Verify people is not ordering a dish with quantity lower than 1
         for (OrderDishModel orderDish : orderDishModels) {
             if (orderDish.getCantidad() <= 0) {
+                orderPersistencePort.deleteOrder(foundOrder.getId());
+
                 throw new DomainException(
                         "LA CANTIDAD DE PLATOS DEBE SER UN NUMERO ENTERO MAYOR A CERO");
             }
-            orderDish.setIdPedido(order.getId());
+            orderDish.setIdPedido(foundOrder.getId());
         }
 
-        orderDishServicePort.createOrderDish(orderDishModels, orderModel);
+        orderDishServicePort.createOrderDish(orderDishModels, foundOrder);
     }
 
     @Override
@@ -103,6 +105,11 @@ public class OrderUseCase implements IOrderServicePort {
         }
 
         return orderModels;
+    }
+
+    @Override
+    public void deleteOrder(Long idOrder) {
+        orderPersistencePort.deleteOrder(idOrder);
     }
 
     @Override

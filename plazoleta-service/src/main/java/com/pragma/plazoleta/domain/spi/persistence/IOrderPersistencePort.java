@@ -8,6 +8,10 @@ public interface IOrderPersistencePort {
 
     OrderModel createOrder(OrderModel order);
 
+    List<OrderModel> findAllOrders();
+
+    void deleteOrder(Long orderId);
+
     int getNumberOfOrdersWithStateInPreparationPendingOrReady(Long idClient);
 
     List<OrderModel> findAllOrdersByStateAndRestaurant(

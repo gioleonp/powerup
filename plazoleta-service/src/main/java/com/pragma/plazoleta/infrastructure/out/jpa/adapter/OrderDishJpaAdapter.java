@@ -34,7 +34,7 @@ public class OrderDishJpaAdapter implements IOrderDishPersistencePort {
     public List<OrderDishModel> findAllByIdPedido(Long idPedido) {
         List<OrderDishEntity> orderDishEntities = orderDishRepository.findAllByIdPedido(idPedido);
         if (orderDishEntities.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("ORDER DISH MODEL");
         }
         return orderDishEntityMapper.toModelList(orderDishEntities);
     }

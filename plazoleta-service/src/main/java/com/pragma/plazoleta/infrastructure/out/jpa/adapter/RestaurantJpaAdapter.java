@@ -32,7 +32,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     public RestaurantModel findRestaurantById(Long id) {
         Optional<RestaurantEntity> restaurantEntity = restaurantRepository.findById(id);
         if (restaurantEntity.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("RESTAURANT");
         }
         return restaurantEntityMapper.toRestaurantModel(restaurantEntity.get());
     }
@@ -41,7 +41,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
     public List<RestaurantModel> getAllRestaurants() {
         List<RestaurantEntity> restaurantEntityList = restaurantRepository.findAll();
         if (restaurantEntityList.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("RESTAURANTS");
         }
         return restaurantEntityMapper.toRestaurantModelList(restaurantEntityList);
     }

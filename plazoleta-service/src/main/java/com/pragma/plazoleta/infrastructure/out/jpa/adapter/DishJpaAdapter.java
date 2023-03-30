@@ -29,7 +29,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
     public DishModel findDishById(Long id) {
         Optional<DishEntity> dishEntity = dishRepository.findById(id);
         if (dishEntity.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("DISH");
         }
         return dishEntityMapper.toDishModel(dishEntity.get());
     }
@@ -38,7 +38,7 @@ public class DishJpaAdapter implements IDishPersistencePort {
     public List<DishModel> getAllDishes() {
         List<DishEntity> dishEntities = dishRepository.findAll();
         if (dishEntities.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("DISHES");
         }
         return dishEntityMapper.toDishModelList(dishEntities);
     }

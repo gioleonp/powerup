@@ -7,11 +7,12 @@ import com.pragma.plazoleta.domain.model.RestaurantModel;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderEntity;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.RestaurantEntity;
 import java.time.LocalDateTime;
+import java.util.Arrays;import java.util.List;
 
 public class OrderUseCaseDataTest {
 
-    public static OrderModel getOrder() {
-        OrderModel orderEntity =
+    public static List<OrderModel> getAllOrders() {
+        OrderModel orderModel =
                 new OrderModel(
                         1L,
                         1L,
@@ -27,6 +28,23 @@ public class OrderUseCaseDataTest {
                                 "573004586742",
                                 "http://url.com",
                                 "1000000"));
-        return orderEntity;
+
+        OrderModel orderModel2 =
+                new OrderModel(
+                        2L,
+                        1L,
+                        LocalDateTime.now(),
+                        EOrderState.PENDIENTE,
+                        2L,
+                        null,
+                        new RestaurantModel(
+                                1L,
+                                "Restaurante prueba",
+                                "Direccion prueba",
+                                1L,
+                                "573004586742",
+                                "http://url.com",
+                                "1000000"));
+        return Arrays.asList(orderModel, orderModel2);
     }
 }
