@@ -28,7 +28,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public UserModel findUserByEmail(String email) {
         Optional<UserEntity> user = this.userRepository.findByEmail(email);
         if (user.isEmpty()){
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("USER");
         }
         return userEntityMapper.toUserModel(user.get());
     }
@@ -37,7 +37,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public UserModel findUserById(Long id) {
         Optional<UserEntity> user = userRepository.findById(id);
         if (user.isEmpty()){
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("USER");
         }
         return userEntityMapper.toUserModel(user.get());
     }
@@ -46,7 +46,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public List<UserModel> getAllUsers() {
         List<UserEntity> entityList = userRepository.findAll();
         if (entityList.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("USERS");
         }
         return userEntityMapper.toUserModelList(entityList);
     }

@@ -26,6 +26,5 @@ import com.pragma.plazoleta.domain.model.CategoryModel;import com.pragma.plazole
         expectedDishModel.setRestaurante(expectedRestaurant);
 
         return expectedDishModel;
-
     }
 }

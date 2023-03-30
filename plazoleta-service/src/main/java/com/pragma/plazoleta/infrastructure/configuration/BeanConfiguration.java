@@ -116,15 +116,6 @@ public class BeanConfiguration {
                 employeePersistencePort(), userServiceCommunicationPort, restaurantServicePort());
     }
 
-    @Bean
-    public IOrderDishPersistencePort orderDishPersistencePort() {
-        return new OrderDishJpaAdapter(orderDishRepository, orderDishEntityMapper);
-    }
-
-    @Bean
-    public IOrderDishServicePort orderDishServicePort() {
-        return new OrderDishUseCase(orderDishPersistencePort(), dishServicePort());
-    }
 
     @Bean
     public IOrderCodePersistencePort orderCodePersistencePort() {
@@ -139,6 +130,16 @@ public class BeanConfiguration {
     @Bean
     public IOrderPersistencePort orderPersistencePort() {
         return new OrderJpaAdapter(orderRepository, orderEntityMapper);
+    }
+    @Bean
+    public IOrderDishPersistencePort orderDishPersistencePort() {
+        return new OrderDishJpaAdapter(orderDishRepository, orderDishEntityMapper);
+    }
+
+    @Bean
+    public IOrderDishServicePort orderDishServicePort() {
+        return new OrderDishUseCase(
+                orderDishPersistencePort(), dishServicePort(), orderPersistencePort());
     }
 
     @Bean

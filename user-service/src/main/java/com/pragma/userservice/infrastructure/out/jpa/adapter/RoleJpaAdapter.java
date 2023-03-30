@@ -29,7 +29,7 @@ public class RoleJpaAdapter implements IRolePersistencePort {
 
         Optional<RoleEntity> rol = rolRepository.findById(id);
         if (rol.isEmpty()){
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("ROL");
         }
         return rolEntityMapper.toRoleModel(rol.get());
     }
@@ -38,7 +38,7 @@ public class RoleJpaAdapter implements IRolePersistencePort {
     public List<RoleModel> getAllRoles() {
         List<RoleEntity> entityList = rolRepository.findAll();
         if (entityList.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("ROLES");
         }
         return rolEntityMapper.toRoleModelList(entityList);
     }

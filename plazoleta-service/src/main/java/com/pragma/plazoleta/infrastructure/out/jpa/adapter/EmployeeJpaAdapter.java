@@ -28,7 +28,7 @@ public class EmployeeJpaAdapter implements IEmployeePersistencePort {
         EmployeeEntity employeeEntity =
                 employeeRepository.findByIdUsuario(idEmployee);
         if (employeeEntity == null) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("USERS");
         }
 
         return employeeEntityMapper.toModel(employeeEntity);

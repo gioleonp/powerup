@@ -8,11 +8,12 @@ import com.twilio.type.PhoneNumber;
 
 public class MessageSendingAdapter implements IMessageSendingPort {
 
-    public static final String ACCOUNT_SID = "ACc2271d3e3ca79a1aef3880903875dd39";
-    public static final String AUTH_TOKEN = "609bcebcd0d03b610de56e128755aa27";
+    public static final String ACCOUNT_SID = System.getenv("TWILIO_ACCOUNT_SID");
+    public static final String AUTH_TOKEN = System.getenv("TWILIO_AUTH_TOKEN");
 
     @Override
     public void sendMessage(MessageModel messageModel) {
+        System.out.println(System.getenv("TWILIO_AUTH_TOKEN"));
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message messageToSend =
                 Message.creator(

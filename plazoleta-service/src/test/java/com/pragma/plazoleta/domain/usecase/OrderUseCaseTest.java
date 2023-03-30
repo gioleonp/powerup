@@ -7,11 +7,16 @@ import com.pragma.plazoleta.domain.exception.ClientIsNotOrderOwnerException;
 import com.pragma.plazoleta.domain.exception.DomainException;
 import com.pragma.plazoleta.domain.exception.EmployeeIsNotOrderChefException;
 import com.pragma.plazoleta.domain.exception.EmployeeNotBelongToTheRestaurantException;
+import com.pragma.plazoleta.domain.exception.NotClientToMakeAnOrderException;
 import com.pragma.plazoleta.domain.exception.OrderCodeDoNotMatchException;
+import com.pragma.plazoleta.domain.exception.UserAlreadyHaveAnOrderPreparingPendingOrReadyException;
+import com.pragma.plazoleta.domain.model.DishModel;
 import com.pragma.plazoleta.domain.model.EOrderState;
 import com.pragma.plazoleta.domain.model.EmployeeModel;
 import com.pragma.plazoleta.domain.model.OrderCodeModel;
+import com.pragma.plazoleta.domain.model.OrderDishModel;
 import com.pragma.plazoleta.domain.model.OrderModel;
+import com.pragma.plazoleta.domain.model.RolModel;
 import com.pragma.plazoleta.domain.model.UserModel;
 import com.pragma.plazoleta.domain.spi.persistence.IOrderPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.ITwilioServiceCommunicationPort;
@@ -22,6 +27,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import java.util.Arrays;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,11 +45,86 @@ class OrderUseCaseTest {
     @Mock IOrderCodeServicePort orderCodeServicePort;
 
     @Test
+    void createOrderOk() {
+        // Given
+        UserModel expectedClient = UserDataTest.getUserModel();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(1);
+        OrderDishModel expectedOrderDish = OrderDishDataTest.getOrderDish();
+
+        expectedClient.setRol(new RolModel(1, "ROLE_CLIENTE", ""));
+
+        // When
+        when(userServiceCommunicationPort.findUserById(expectedClient.getId()))
+                .thenReturn(expectedClient);
+        when(orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(
+                        expectedClient.getId()))
+                .thenReturn(0);
+        when(orderPersistencePort.findAllOrders()).thenReturn(Arrays.asList(expectedOrder));
+
+        underTest.createOrder(expectedOrder, Arrays.asList(expectedOrderDish));
+
+        // Then
+        verify(orderPersistencePort).createOrder(expectedOrder);
+        verify(orderDishServicePort)
+                .createOrderDish(Arrays.asList(expectedOrderDish), expectedOrder);
+    }
+
+    @Test
+    void createOrderIsNotAClient() {
+        // Given
+        UserModel expectedClient = UserDataTest.getUserModel();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(1);
+        OrderDishModel expectedOrderDish = OrderDishDataTest.getOrderDish();
+
+        expectedClient.setRol(new RolModel(1, "ROLE_EMPLEADO", ""));
+
+        // When
+        when(userServiceCommunicationPort.findUserById(expectedClient.getId()))
+                .thenReturn(expectedClient);
+        when(orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(
+                        expectedClient.getId()))
+                .thenReturn(0);
+        when(orderPersistencePort.findAllOrders()).thenReturn(Arrays.asList(expectedOrder));
+
+        // Then
+        assertThatExceptionOfType(NotClientToMakeAnOrderException.class)
+                .isThrownBy(
+                        () ->
+                                underTest.createOrder(
+                                        expectedOrder, Arrays.asList(expectedOrderDish)));
+    }
+
+    @Test
+    void createOrderClientAlreadyHaveAnOrder() {
+        // Given
+        UserModel expectedClient = UserDataTest.getUserModel();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(1);
+        OrderDishModel expectedOrderDish = OrderDishDataTest.getOrderDish();
+
+        expectedClient.setRol(new RolModel(1, "ROLE_CLIENTE", ""));
+
+        // When
+        when(userServiceCommunicationPort.findUserById(expectedClient.getId()))
+                .thenReturn(expectedClient);
+        when(orderPersistencePort.getNumberOfOrdersWithStateInPreparationPendingOrReady(
+                        expectedClient.getId()))
+                .thenReturn(1);
+        when(orderPersistencePort.findAllOrders()).thenReturn(Arrays.asList(expectedOrder));
+
+        // Then
+        assertThatExceptionOfType(UserAlreadyHaveAnOrderPreparingPendingOrReadyException.class)
+                .isThrownBy(
+                        () ->
+                                underTest.createOrder(
+                                        expectedOrder, Arrays.asList(expectedOrderDish)));
+    }
+
+    @Test
     void orderReadyOk() {
         // Given
         EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
         UserModel expectedClient = UserDataTest.getUserModel();
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
 
         // When
         when(userServiceCommunicationPort.findUserById(expectedClient.getId()))
@@ -65,7 +146,7 @@ class OrderUseCaseTest {
         // Given
         EmployeeModel expectedEmployee = new EmployeeModel(3L, 1L);
         UserModel expectedClient = UserDataTest.getUserModel();
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
 
         // When
         when(userServiceCommunicationPort.findUserById(expectedClient.getId()))
@@ -87,7 +168,7 @@ class OrderUseCaseTest {
         // Given
         EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
         UserModel expectedClient = UserDataTest.getUserModel();
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         expectedOrder.setEstado(EOrderState.PENDIENTE);
 
         // When
@@ -109,7 +190,7 @@ class OrderUseCaseTest {
     void deliverOrderOk() {
         // Given
         EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
 
         expectedOrder.setEstado(EOrderState.LISTO);
@@ -137,7 +218,7 @@ class OrderUseCaseTest {
     void deliverOrderEmployeeNotBelongsToRestaurant() {
         // Given
         EmployeeModel expectedEmployee = new EmployeeModel(2L, 3L);
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
 
         expectedOrder.setEstado(EOrderState.LISTO);
@@ -163,7 +244,7 @@ class OrderUseCaseTest {
     void deliverOrderOrderIsNotInReadyState() {
         // Given
         EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
 
         expectedOrder.setEstado(EOrderState.PENDIENTE);
@@ -189,7 +270,7 @@ class OrderUseCaseTest {
     void deliverOrderCodeNotMatch() {
         // Given
         EmployeeModel expectedEmployee = new EmployeeModel(2L, 1L);
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         OrderCodeModel expectedOrderCode = new OrderCodeModel("123456", 1L);
         String wrongCode = "654321";
 
@@ -216,7 +297,7 @@ class OrderUseCaseTest {
     void cancelOrderOk() {
         // Given
         Long idClient = 1L;
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         expectedOrder.setEstado(EOrderState.PENDIENTE);
 
         // When
@@ -233,7 +314,7 @@ class OrderUseCaseTest {
     void cancelOrderWrongClient() {
         // Given
         Long idClient = 2L;
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         expectedOrder.setEstado(EOrderState.PENDIENTE);
 
         // When
@@ -248,7 +329,7 @@ class OrderUseCaseTest {
     void cancelOrderStateIsNotPending() {
         // Given
         Long idClient = 1L;
-        OrderModel expectedOrder = OrderUseCaseDataTest.getOrder();
+        OrderModel expectedOrder = OrderUseCaseDataTest.getAllOrders().get(0);
         expectedOrder.setEstado(EOrderState.LISTO);
 
         // When

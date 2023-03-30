@@ -27,7 +27,7 @@ public class OrderCodeJpaAdapter implements IOrderCodePersistencePort {
     public OrderCodeModel getOrderCode(String orderCode) {
         Optional<OrderCodeEntity> orderCodeEntity = orderCodeRepository.findById(orderCode);
         if (orderCodeEntity.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("ORDER CODE");
         }
         return orderCodeEntityMapper.toModel(orderCodeEntity.get());
     }
@@ -43,7 +43,7 @@ public class OrderCodeJpaAdapter implements IOrderCodePersistencePort {
         Optional<OrderCodeEntity> orderCodeEntity =
                 orderCodeRepository.findOrderCodeByIdOrder(idOrderCode);
         if (orderCodeEntity.isEmpty()) {
-            throw new NoDataFoundException();
+            throw new NoDataFoundException("ORDER CODE");
         }
         return orderCodeEntityMapper.toModel(orderCodeEntity.get());
     }

@@ -12,13 +12,13 @@ import com.pragma.plazoleta.domain.exception.UserIsNotAProprietaryException;
 import com.pragma.plazoleta.infrastructure.exception.NoDataFoundException;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import feign.RetryableException;
-import org.springframework.http.HttpStatus;
+import org.springframework.dao.DataIntegrityViolationException;import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import java.util.Collections;
+import javax.validation.ConstraintViolationException;import java.util.Collections;
 import java.util.Map;
 
 @ControllerAdvice
@@ -32,7 +32,7 @@ public class ControllerAdvisor {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(
                         Collections.singletonMap(
-                                MESSAGE, ExceptionResponse.NO_DATA_FOUND.getMessage()));
+                                MESSAGE, ignoredNoDataFoundException.getMessage()));
     }
 
     @ExceptionHandler(ProprietaryNotMatchException.class)
@@ -99,13 +99,6 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
     }
 
-    @ExceptionHandler(EmployeeIsNotOrderChefException.class)
-    public ResponseEntity<Map<String, String>> DomainExceptions(
-            EmployeeIsNotOrderChefException ignoredDomainException) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
-    }
-
     @ExceptionHandler(OrderCodeDoNotMatchException.class)
     public ResponseEntity<Map<String, String>> orderCodeNotMatch(
             OrderCodeDoNotMatchException ignoredDomainException) {
@@ -130,6 +123,22 @@ public class ControllerAdvisor {
     @ExceptionHandler(EmployeeIsNotOrderChefException.class)
     public ResponseEntity<Map<String, String>> employeeIsNotOrderChef(
             EmployeeIsNotOrderChefException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, String>> constraintException(
+            ConstraintViolationException ignoredDomainException) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
+    }
+
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<Map<String, String>> dataIntegrityException(
+            DataIntegrityViolationException ignoredDomainException) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap(MESSAGE, ignoredDomainException.getMessage()));
     }
