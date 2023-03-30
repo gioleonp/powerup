@@ -1,6 +1,6 @@
 package com.pragma.plazoleta.domain.usecase;
 
-import com.pragma.plazoleta.domain.model.RestaurantModel;
+import com.pragma.plazoleta.application.dto.response.RestaurantResponseNameAndUrlDto;import com.pragma.plazoleta.domain.model.RestaurantModel;import java.util.List;
 
 public class RestaurantUseCaseDataTest {
 
@@ -16,5 +16,22 @@ public class RestaurantUseCaseDataTest {
                         "1000000");
 
         return restaurantModel;
+    }
+
+
+    public static List<RestaurantResponseNameAndUrlDto> getRestaurantsNameAndUrlDtoList(){
+        List<RestaurantResponseNameAndUrlDto> restaurantResponseNameAndUrlDtoList =
+                List.of(
+                        new RestaurantResponseNameAndUrlDto(
+                                "Restaurant prueba",
+                                "http://majo.com"
+                        ),
+                        new RestaurantResponseNameAndUrlDto(
+                                "Donde gio",
+                                "http://gio.com"
+                        )
+                );
+
+        return restaurantResponseNameAndUrlDtoList;
     }
 }

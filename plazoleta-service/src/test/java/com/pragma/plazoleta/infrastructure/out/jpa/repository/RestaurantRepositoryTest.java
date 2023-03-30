@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-
 @DataJpaTest
 class RestaurantRepositoryTest {
 
@@ -19,8 +18,8 @@ class RestaurantRepositoryTest {
 
     @BeforeEach
     void init() {
-        RestaurantEntity restaurant = RestaurantRepositoryDataTest.getRestaurant();
-        underTest.save(restaurant);
+        List<RestaurantEntity> restaurants = RestaurantRepositoryDataTest.getListOfRestaurants();
+        underTest.saveAll(restaurants);
     }
 
     @AfterEach
@@ -32,10 +31,14 @@ class RestaurantRepositoryTest {
     void findAllRestaurantsWithPagination() {
         // Given
         Pageable pageable = PageRequest.of(0, 5);
+        List<RestaurantEntity> expectedRestaurants =
+                RestaurantRepositoryDataTest.getListOfRestaurants();
 
         List<RestaurantEntity> restaurantEntityList =
                 underTest.findAllRestaurantsWithPagination(pageable).toList();
 
-        assertThat(restaurantEntityList.size()).isGreaterThan(0);
+        assertThat(restaurantEntityList.size()).isEqualTo(2);
+        assertThat(restaurantEntityList.get(0).getNombre())
+                .isEqualTo(expectedRestaurants.get(1).getNombre());
     }
 }

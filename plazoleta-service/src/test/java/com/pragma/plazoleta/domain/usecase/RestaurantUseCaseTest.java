@@ -1,5 +1,7 @@
 package com.pragma.plazoleta.domain.usecase;
 
+import com.pragma.plazoleta.application.dto.response.RestaurantResponseNameAndUrlDto;
+import com.pragma.plazoleta.application.mapper.IRestaurantResponseNameAndUrlMapper;
 import com.pragma.plazoleta.domain.exception.ProprietaryNotMatchException;
 import com.pragma.plazoleta.domain.exception.UserIsNotAProprietaryException;
 import com.pragma.plazoleta.domain.model.RestaurantModel;
@@ -27,6 +29,7 @@ class RestaurantUseCaseTest {
     @Mock IRestaurantPersistencePort restaurantPersistencePort;
 
     @Mock IUserServiceCommunicationPort userServiceCommunicationPort;
+    @Mock IRestaurantResponseNameAndUrlMapper restaurantResponseNameAndUrlMapper;
 
     UserModel expectedUser =
             new UserModel(
@@ -91,5 +94,15 @@ class RestaurantUseCaseTest {
     }
 
     @Test
-    void getRestaurantsWithPagination() {}
+    void getRestaurantsWithPagination() {
+
+        // Given
+        int page = 0;
+        int size = 5;
+
+        List<RestaurantResponseNameAndUrlDto> expectedRestaurants =
+                RestaurantUseCaseDataTest.getRestaurantsNameAndUrlDtoList();
+
+        // 
+    }
 }
