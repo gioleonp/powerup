@@ -48,7 +48,7 @@ public class RestaurantJpaAdapter implements IRestaurantPersistencePort {
 
     @Override
     public List<RestaurantModel> getRestaurantsWithPagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("nombre").ascending());
+        Pageable pageable = PageRequest.of(page, size);
         List<RestaurantEntity> restaurantEntityList =
                 restaurantRepository.findAllRestaurantsWithPagination(pageable).toList();
 

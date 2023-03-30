@@ -10,19 +10,11 @@ import java.util.List;
 public class DishRepositoryDataTest {
 
     public static List<DishEntity> getDishes() {
-        RestaurantEntity restaurant =
-                new RestaurantEntity(
-                        1L,
-                        "Restaurante prueba",
-                        "Direccion prueba",
-                        1L,
-                        "573004586742",
-                        "http://url.com",
-                        "1000000");
+        RestaurantEntity restaurant = RestaurantRepositoryDataTest.getRestaurant();
 
         DishEntity dishEntity =
                 new DishEntity(
-                        1L,
+                        2L,
                         "Arroz de pollo",
                         new CategoryEntity(1, "Granos", "Arroz, lentejas, frijoles"),
                         "Arroz de pollo con salchichas",
@@ -32,7 +24,7 @@ public class DishRepositoryDataTest {
                         true);
         DishEntity dishEntity2 =
                 new DishEntity(
-                        2L,
+                        1L,
                         "Jugo de corozo",
                         new CategoryEntity(2, "Jugos", "Jugos naturales"),
                         "Jugo de corozo natural",
@@ -41,7 +33,7 @@ public class DishRepositoryDataTest {
                         "jugo.url",
                         true);
 
-        List<DishEntity> dishes = Arrays.asList(dishEntity, dishEntity2);
+        List<DishEntity> dishes = Arrays.asList(dishEntity2, dishEntity);
 
         return dishes;
     }

@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface IRestaurantRepository extends JpaRepository<RestaurantEntity, Long> {
 
-    @Query(value = "SELECT r FROM RestaurantEntity r")
+    @Query(value = "SELECT r FROM RestaurantEntity r order by r.nombre asc")
     Page<RestaurantEntity> findAllRestaurantsWithPagination(Pageable pageable);
 }
