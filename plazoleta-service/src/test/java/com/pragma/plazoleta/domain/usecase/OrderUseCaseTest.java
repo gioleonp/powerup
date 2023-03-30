@@ -60,6 +60,7 @@ class OrderUseCaseTest {
                         expectedClient.getId()))
                 .thenReturn(0);
         when(orderPersistencePort.findAllOrders()).thenReturn(Arrays.asList(expectedOrder));
+        when(orderPersistencePort.createOrder(expectedOrder)).thenReturn(expectedOrder);
 
         underTest.createOrder(expectedOrder, Arrays.asList(expectedOrderDish));
 
