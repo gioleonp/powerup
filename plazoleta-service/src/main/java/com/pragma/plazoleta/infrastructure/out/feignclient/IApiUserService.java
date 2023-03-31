@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "user-service", url = "http://localhost:8091/")
+@FeignClient(name = "user-service")
 public interface IApiUserService {
 
     @GetMapping("api/v1/user/id/{id}")
