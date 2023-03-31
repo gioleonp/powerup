@@ -9,7 +9,6 @@ import com.pragma.plazoleta.domain.model.RolModel;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import com.pragma.plazoleta.infrastructure.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,11 +22,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TokenUtils {
 
-    @Value("${jwt.secret-key}")
-    private final String SECRET_KEY;
+    private String SECRET_KEY = System.getenv("SECRET_KEY");
 
-    @Value("${jwt.token-validity}")
-    private final Long TOKEN_TIME_VALIDITY;
+    private Long TOKEN_TIME_VALIDITY = 86400L;
 
     private final JWTVerifier verifier =
             JWT.require(Algorithm.HMAC256(SECRET_KEY.getBytes())).build();
