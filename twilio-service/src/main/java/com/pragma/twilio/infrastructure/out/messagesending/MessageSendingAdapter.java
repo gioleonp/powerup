@@ -13,7 +13,6 @@ public class MessageSendingAdapter implements IMessageSendingPort {
 
     @Override
     public void sendMessage(MessageModel messageModel) {
-        System.out.println(System.getenv("TWILIO_AUTH_TOKEN"));
         Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
         Message messageToSend =
                 Message.creator(
