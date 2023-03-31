@@ -22,6 +22,7 @@ import com.pragma.plazoleta.domain.spi.persistence.IOrderPersistencePort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.ITwilioServiceCommunicationPort;
 import com.pragma.plazoleta.domain.spi.servicecommunication.IUserServiceCommunicationPort;
 import com.pragma.plazoleta.infrastructure.out.jpa.entity.OrderCodeEntity;
+import org.h2.schema.Domain;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -118,6 +119,61 @@ class OrderUseCaseTest {
                         () ->
                                 underTest.createOrder(
                                         expectedOrder, Arrays.asList(expectedOrderDish)));
+    }
+
+    @Test
+    void assignOrderOk() {
+        EmployeeModel employeeOrder = new EmployeeModel(1L, 1L);
+
+        OrderModel order = OrderUseCaseDataTest.getAllOrders().get(1);
+        order.setIdChef(null); // reset the default idChef
+
+        // When
+        when(orderPersistencePort.findById(order.getId())).thenReturn(order);
+        when(employeeServicePort.findByIdUsuario(employeeOrder.getIdUsuario()))
+                .thenReturn(employeeOrder);
+        underTest.assignOrder(order.getId(), employeeOrder.getIdUsuario());
+
+        // Then
+        verify(employeeServicePort).findByIdUsuario(employeeOrder.getIdUsuario());
+        verify(orderPersistencePort).findById(order.getId());
+        verify(orderPersistencePort).createOrder(order);
+    }
+
+    @Test
+    void assignOrderEmployeeNotBelongsToRestaurant() {
+        EmployeeModel employeeOrder = new EmployeeModel(1L, 2L);
+
+        OrderModel order = OrderUseCaseDataTest.getAllOrders().get(1);
+        order.setIdChef(null); // reset the default idChef
+
+        // When
+        when(orderPersistencePort.findById(order.getId())).thenReturn(order);
+        when(employeeServicePort.findByIdUsuario(employeeOrder.getIdUsuario()))
+                .thenReturn(employeeOrder);
+
+        // Then
+        assertThatExceptionOfType(EmployeeNotBelongToTheRestaurantException.class)
+                .isThrownBy(
+                        () -> underTest.assignOrder(order.getId(), employeeOrder.getIdUsuario()));
+    }
+
+    @Test
+    void assignOrderOrderIsNotPending() {
+        EmployeeModel employeeOrder = new EmployeeModel(1L, 1L);
+
+        OrderModel order = OrderUseCaseDataTest.getAllOrders().get(0);
+        order.setIdChef(null); // reset the default idChef
+
+        // When
+        when(orderPersistencePort.findById(order.getId())).thenReturn(order);
+        when(employeeServicePort.findByIdUsuario(employeeOrder.getIdUsuario()))
+                .thenReturn(employeeOrder);
+
+        // Then
+        assertThatExceptionOfType(DomainException.class)
+                .isThrownBy(
+                        () -> underTest.assignOrder(order.getId(), employeeOrder.getIdUsuario()));
     }
 
     @Test
