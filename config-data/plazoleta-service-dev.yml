@@ -21,5 +21,10 @@ eureka:
     service-url:
       defaultZone: http://localhost:8099/eureka    
 
+
+jwt:
+  token-validity: 86400
+  secret-key: 1231rfdsfcseafa41545656fd 
+
 appDescription: "Plazoleta service"
 appVersion: "1.0.0"
