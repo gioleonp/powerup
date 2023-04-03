@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,7 +71,7 @@ public class OrderRestController {
                         description = "Order is assigned to employee",
                         content = @Content)
             })
-    @GetMapping("/{id_pedido}")
+    @PatchMapping("/{id_pedido}")
     public ResponseEntity<Void> assignOrder(
             @PathVariable("id_pedido") Long idOrder, @RequestParam("employee") Long idEmployee) {
         orderHandler.assignOrder(idOrder, idEmployee);
@@ -85,7 +86,7 @@ public class OrderRestController {
                         description = "Order state was successfully changed to Ready",
                         content = @Content)
             })
-    @GetMapping("/ready/{id_pedido}")
+    @PatchMapping("/ready/{id_pedido}")
     public ResponseEntity<Void> orderReady(
             @PathVariable("id_pedido") Long idOrder, @RequestParam("employee") Long idEmployee) {
         orderHandler.orderReady(idOrder, idEmployee);
@@ -100,7 +101,7 @@ public class OrderRestController {
                         description = "Order was successfully delivered",
                         content = @Content)
             })
-    @GetMapping("/deliver/{id_pedido}")
+    @PatchMapping("/deliver/{id_pedido}")
     public ResponseEntity<Void> deliverOrder(
             @PathVariable("id_pedido") Long idOrder,
             @RequestParam("employee") Long idEmployee,
@@ -117,7 +118,7 @@ public class OrderRestController {
                         description = "Order was successfully cancelled",
                         content = @Content)
             })
-    @GetMapping("/cancel/{id_pedido}")
+    @PatchMapping("/cancel/{id_pedido}")
     public ResponseEntity<Void> cancelOrder(
             @PathVariable("id_pedido") Long idOrder, @RequestParam("client") Long idClient) {
         orderHandler.cancelOrder(idOrder, idClient);

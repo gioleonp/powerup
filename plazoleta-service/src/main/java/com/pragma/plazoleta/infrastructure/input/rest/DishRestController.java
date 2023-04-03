@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -51,7 +52,7 @@ public class DishRestController {
             value = {
                 @ApiResponse(responseCode = "200", description = "Dish Updated", content = @Content)
             })
-    @PostMapping("/update/{id_dish}")
+    @PatchMapping("/update/{id_dish}")
     public ResponseEntity<Void> updateDish(
             @Valid @RequestBody DishRequestPriceAndDescriptionDto dishRequestDto,
             @RequestParam("proprietary") long idProprietary,
@@ -68,7 +69,7 @@ public class DishRestController {
                         description = "Dish state updated successfully",
                         content = @Content),
             })
-    @PostMapping("/updateActive/{id_dish}")
+    @PatchMapping("/updateActive/{id_dish}")
     public ResponseEntity<DishResponseDto> updateActive(
             @RequestParam("active") boolean active,
             @RequestParam("proprietary") long idProprietary,
