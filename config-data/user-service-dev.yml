@@ -7,9 +7,9 @@ spring:
       user-service
   
   datasource:
-    url: jdbc:mysql://localhost:3306/usuarios
-    username: powerup
-    password: powerup
+    url: jdbc:mysql://database-plazoleta.ceoe9dhgx8fs.us-east-1.rds.amazonaws.com:3306/usuarios
+    username: ${RDS_USER}
+    password: ${RDS_PASSWORD}
 
   jpa:
     hibernate:
