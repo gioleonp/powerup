@@ -8,8 +8,8 @@ spring:
   
   datasource:
     url: jdbc:mysql://database-plazoleta.ceoe9dhgx8fs.us-east-1.rds.amazonaws.com:3306/usuarios
-    username: ${RDS_USER}
-    password: ${RDS_PASSWORD}
+    username: admin
+    password: pragma2023
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
