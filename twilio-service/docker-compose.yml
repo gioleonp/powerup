@@ -4,11 +4,8 @@ services:
     image: config-server:latest
     ports:
       - "8088:8088"
-  user-service:
-    image: user-service:latest
+  twilio-service:
+    image: twilio-service:latest
     ports:
-      - "8091:8091"
+      - "8092:8092"
     restart: on-failure
-
-
-

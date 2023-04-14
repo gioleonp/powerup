@@ -22,7 +22,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8099/eureka    
-
+      defaultZone: http://discovery-server:8099/eureka    
+ 
 appDescription: "User service"
 appVersion: "1.0.0"

@@ -7,9 +7,10 @@ spring:
       plazoleta-service
 
   datasource:
-     url: jdbc:mysql://database-plazoleta.ceoe9dhgx8fs.us-east-1.rds.amazonaws.com:3306/plazoleta
-    username: ${RDS_USER}
+    url: jdbc:mysql://database-plazoleta.ceoe9dhgx8fs.us-east-1.rds.amazonaws.com:3306/plazoleta
+    username: ${RDS_USERNAME}
     password: ${RDS_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
@@ -19,7 +20,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8099/eureka    
+      defaultZone: http://discovery-server:8099/eureka    
 
 
 jwt:

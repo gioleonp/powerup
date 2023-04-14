@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  config-server:
+    image: config-server:latest
+    ports:
+      - "8088:8088"
+  discovery-server:
+    image: discovery-server:latest
+    ports:
+      - "8099:8099"
+    restart: on-failure
+    depends_on:
+      - config-server
+  user-service:
+    image: user-service:latest
+    ports:
+      - "8091:8091"
+    restart: on-failure
+    depends_on:
+      - config-server
+  twilio-service:
+    image: twilio-service:latest
+    ports:
+      - "8092:8092"
+    restart: on-failure
+    depends_on:
+      - config-server
+  plazoleta-service:
+    image: plazoleta-service:latest
+    ports:
+      - "8090:8090"
+    restart: on-failure
+    depends_on:
+      - config-server
+      - discovery-server
+      - user-service
+      - twilio-service
