@@ -11,3 +11,8 @@ spring:
           password: ${GIT_PASSWORD}
           default-label: main
           search-paths: config-data
+
+  security:
+    user:
+      name: root
+      password: s3cr3t
