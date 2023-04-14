@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  config-server:
+    image: config-server:latest
+    ports:
+      - "8088:8088"
+  user-service:
+    image: user-service:latest
+    ports:
+      - "8091:8091"
+
